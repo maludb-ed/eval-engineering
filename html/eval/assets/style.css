@@ -1,0 +1,156 @@
+/* style.css — Eval Engineering courseware theme (layered on Bootstrap 5.3) */
+
+:root {
+    --ev-accent: #c8613a;          /* warm clay accent */
+    --ev-accent-rgb: 200, 97, 58;
+    --ev-hero-from: #1f2530;
+    --ev-hero-to: #2c3644;
+}
+
+body {
+    /* Bootstrap default sans stack is fine; nudge line-height for reading */
+    line-height: 1.55;
+}
+
+/* ---- Navbar ---------------------------------------------------------- */
+.ev-navbar {
+    background-color: var(--bs-body-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+    backdrop-filter: saturate(180%) blur(6px);
+}
+.ev-navbar .navbar-brand { color: var(--bs-emphasis-color); }
+.ev-navbar .navbar-brand i { color: var(--ev-accent); }
+.ev-navbar .nav-link { font-size: .95rem; }
+
+/* ---- Hero ------------------------------------------------------------ */
+.ev-hero {
+    background: linear-gradient(135deg, var(--ev-hero-from), var(--ev-hero-to));
+    color: #f4f1ec;
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+}
+.ev-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(60rem 30rem at 90% -20%, rgba(var(--ev-accent-rgb), .35), transparent 60%);
+    pointer-events: none;
+}
+.ev-hero .ev-hero-body { position: relative; z-index: 1; }
+.ev-badge-domain {
+    background: rgba(var(--ev-accent-rgb), .18);
+    border: 1px solid rgba(var(--ev-accent-rgb), .5);
+    color: #f6d9cc;
+}
+
+/* ---- Stat tiles ------------------------------------------------------ */
+.ev-stat {
+    border: 1px solid var(--bs-border-color);
+    border-radius: .85rem;
+    background: var(--bs-body-bg);
+    height: 100%;
+}
+.ev-stat .ev-stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ev-accent);
+}
+.ev-stat .ev-stat-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--bs-secondary-color);
+}
+
+/* ---- Module cards ---------------------------------------------------- */
+.ev-module-card {
+    border: 1px solid var(--bs-border-color);
+    border-radius: .85rem;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    height: 100%;
+}
+.ev-module-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 .75rem 2rem rgba(0, 0, 0, .12);
+    border-color: rgba(var(--ev-accent-rgb), .5);
+}
+.ev-module-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .7rem;
+    background: rgba(var(--ev-accent-rgb), .12);
+    color: var(--ev-accent);
+    font-size: 1.25rem;
+    flex: 0 0 auto;
+}
+.ev-module-no {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--bs-secondary-color);
+}
+/* Long task statements must wrap inside the pill, not clip at the card edge */
+.ev-task-badge {
+    white-space: normal;
+    text-align: left;
+    line-height: 1.35;
+    display: inline-flex;
+    align-items: flex-start;
+}
+.ev-task-badge i { margin-top: .12rem; }
+
+.ev-topic-list { list-style: none; padding-left: 0; margin-bottom: 0; }
+.ev-topic-list li {
+    display: flex;
+    gap: .5rem;
+    padding: .3rem 0;
+    border-top: 1px dashed var(--bs-border-color);
+    font-size: .92rem;
+}
+.ev-topic-list li:first-child { border-top: 0; }
+.ev-topic-id {
+    font-family: var(--bs-font-monospace);
+    font-size: .72rem;
+    color: var(--bs-secondary-color);
+    flex: 0 0 auto;
+    padding-top: .12rem;
+}
+
+/* ---- Scenario + section helpers ------------------------------------- */
+.ev-section-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--ev-accent);
+}
+.ev-scenario-card {
+    border: 1px solid var(--bs-border-color);
+    border-radius: .75rem;
+    height: 100%;
+}
+.ev-scenario-no {
+    width: 1.9rem; height: 1.9rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: rgba(var(--ev-accent-rgb), .14);
+    color: var(--ev-accent);
+    font-weight: 700;
+    font-size: .9rem;
+    flex: 0 0 auto;
+}
+
+.ev-footer { background: var(--bs-tertiary-bg); }
+
+/* Offset anchor jumps for the sticky navbar */
+:target { scroll-margin-top: 5rem; }
+section[id]  { scroll-margin-top: 5rem; }
+
+.ev-outcome-check { color: var(--ev-accent); }

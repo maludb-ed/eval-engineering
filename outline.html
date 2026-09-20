@@ -1,0 +1,432 @@
+<title>CCAR-P Eval Engineering</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#F3F5F4; --surface:#FBFCFB; --surface-2:#EAEEEE;
+    --ink:#17262C; --ink-2:#4A5C63; --ink-3:#71858B;
+    --rule:#D2DBDA; --rule-strong:#B8C5C4;
+    --accent:#1C6C88; --accent-soft:#E0EDF2;
+    --ok:#3C6B4C; --warn:#8C601A; --warn-soft:#F4EBD8;
+    --serif:"Spectral",Georgia,"Times New Roman",serif;
+    --sans:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F171A; --surface:#151F23; --surface-2:#1B282C;
+      --ink:#E7EDEB; --ink-2:#A2B4B9; --ink-3:#7E9298;
+      --rule:#26353A; --rule-strong:#35484E;
+      --accent:#74BCD1; --accent-soft:#16323C;
+      --ok:#86B993; --warn:#D7A75C; --warn-soft:#2A2314;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F171A; --surface:#151F23; --surface-2:#1B282C;
+    --ink:#E7EDEB; --ink-2:#A2B4B9; --ink-3:#7E9298;
+    --rule:#26353A; --rule-strong:#35484E;
+    --accent:#74BCD1; --accent-soft:#16323C;
+    --ok:#86B993; --warn:#D7A75C; --warn-soft:#2A2314;
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding-inline:20px; padding-block:0;
+  }
+  .wrap{max-width:1060px; margin-inline:auto; padding-block:56px 72px;
+        display:flex; flex-direction:column; gap:56px}
+  h1,h2,h3{font-family:var(--serif); font-weight:600; text-wrap:balance; margin:0; line-height:1.15}
+  h1{font-size:clamp(2.1rem,5.4vw,3.15rem); letter-spacing:-.015em}
+  h2{font-size:1.5rem; letter-spacing:-.01em}
+  h3{font-size:1.12rem}
+  p{margin:0}
+  a{color:var(--accent)}
+  .eyebrow{font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
+           text-transform:uppercase; color:var(--ink-3)}
+
+  /* header */
+  header{display:flex; flex-direction:column; gap:18px}
+  .standfirst{font-size:1.1rem; color:var(--ink-2); max-width:64ch}
+  .spec{display:flex; flex-wrap:wrap; gap:0; border-top:1px solid var(--rule-strong);
+        border-bottom:1px solid var(--rule); margin-top:6px}
+  .spec div{flex:1 1 150px; padding:14px 18px 14px 0; border-right:1px solid var(--rule)}
+  .spec div:last-child{border-right:0}
+  .spec dt{font-family:var(--mono); font-size:.68rem; letter-spacing:.12em;
+           text-transform:uppercase; color:var(--ink-3)}
+  .spec dd{margin:4px 0 0; font-family:var(--serif); font-size:1.45rem;
+           font-variant-numeric:tabular-nums}
+  .spec dd span{font-family:var(--sans); font-size:.82rem; color:var(--ink-2)}
+
+  section{display:flex; flex-direction:column; gap:20px}
+  .sec-head{display:flex; flex-direction:column; gap:6px;
+            border-top:1px solid var(--rule-strong); padding-top:14px}
+  .lede{color:var(--ink-2); max-width:68ch}
+
+  /* tables */
+  .tbl-scroll{overflow-x:auto}
+  table{border-collapse:collapse; width:100%; font-size:.92rem; min-width:480px}
+  th,td{text-align:left; padding:10px 14px 10px 0; border-bottom:1px solid var(--rule);
+        vertical-align:top}
+  th{font-family:var(--mono); font-size:.68rem; letter-spacing:.1em;
+     text-transform:uppercase; color:var(--ink-3); font-weight:500}
+  td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--ink-2)}
+  td code{font-family:var(--mono); font-size:.86em; color:var(--accent)}
+
+  /* modules */
+  .modules{display:flex; flex-direction:column; gap:0}
+  .mod{display:grid; grid-template-columns:minmax(0,1fr); gap:20px;
+       padding:26px 0; border-top:1px solid var(--rule)}
+  .mod:first-child{border-top:1px solid var(--rule-strong)}
+  @media (min-width:860px){ .mod{grid-template-columns:minmax(0,1fr) 262px; gap:38px} }
+  .mod-head{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:10px}
+  .code{font-family:var(--mono); font-size:.78rem; font-weight:500; color:var(--accent);
+        background:var(--accent-soft); padding:2px 7px; border-radius:3px}
+  .dur{font-family:var(--mono); font-size:.74rem; color:var(--ink-3); margin-left:auto}
+  .ts{font-size:.86rem; color:var(--ink-2); font-style:italic; margin-bottom:12px}
+  .mod ul{margin:0; padding-left:1.05rem; display:flex; flex-direction:column; gap:7px;
+          font-size:.95rem; color:var(--ink-2); max-width:66ch}
+  .mod ul strong{color:var(--ink); font-weight:600}
+  aside{background:var(--surface); border:1px solid var(--rule); border-radius:4px;
+        padding:16px; display:flex; flex-direction:column; gap:14px; font-size:.88rem;
+        align-self:start}
+  aside h4{margin:0 0 4px; font-family:var(--mono); font-size:.66rem; letter-spacing:.12em;
+           text-transform:uppercase; color:var(--ink-3); font-weight:500}
+  aside p{color:var(--ink-2)}
+  aside .traps{color:var(--ink-2)}
+  aside .traps b{color:var(--ink); font-weight:600}
+  .quizline{font-family:var(--mono); font-size:.78rem; color:var(--ink-3);
+            border-top:1px solid var(--rule); padding-top:10px; font-variant-numeric:tabular-nums}
+
+  /* callout */
+  .flags{background:var(--warn-soft); border-left:3px solid var(--warn);
+         padding:18px 20px; border-radius:0 4px 4px 0;
+         display:flex; flex-direction:column; gap:10px}
+  .flags h2{font-size:1.15rem}
+  .flags ol{margin:0; padding-left:1.15rem; display:flex; flex-direction:column; gap:8px;
+            font-size:.93rem; color:var(--ink-2); max-width:70ch}
+  .flags ol strong{color:var(--ink)}
+
+  footer{border-top:1px solid var(--rule-strong); padding-top:18px;
+         display:flex; flex-direction:column; gap:10px; font-size:.86rem; color:var(--ink-2)}
+  footer ul{margin:0; padding-left:1.05rem; display:flex; flex-direction:column; gap:5px}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Course outline · v0.1 · 15 September 2026</p>
+    <h1>Eval engineering for the Claude Certified Architect: Professional</h1>
+    <p class="standfirst">A training course for the exam's <strong>Evaluation, Testing &amp; Optimisation</strong>
+      domain — measuring quality, testing rigorously, and tuning for cost and performance on a Claude system
+      you have to defend in production.</p>
+    <dl class="spec">
+      <div><dt>Domain weight</dt><dd>16%</dd></div>
+      <div><dt>Scored items</dt><dd>≈10 <span>of 63</span></dd></div>
+      <div><dt>Modules</dt><dd>9 <span>incl. orientation</span></dd></div>
+      <div><dt>Learner time</dt><dd>14 h <span>7 lesson / 5 lab / 2 assess</span></dd></div>
+      <div><dt>Pacing target</dt><dd>114 s <span>per exam item</span></dd></div>
+    </dl>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Scope</p>
+      <h2>What the course covers, and why it runs wider than ten questions</h2>
+    </div>
+    <p class="lede">The domain is worth roughly ten scored items, but its ideas are load-bearing elsewhere on
+      the exam — RAG quality sits in Integration, safety evals in Governance, and results reporting in
+      Lifecycle. Realistically this material touches 15–18 items. Every module below traces to a published
+      task statement; none exists without one.</p>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Official task statement</th><th>Module</th><th>Depth</th></tr></thead>
+        <tbody>
+          <tr><td>Define evaluation metrics (accuracy, latency, cost, safety, security)</td><td class="num">M1</td><td>Primary</td></tr>
+          <tr><td>Design evaluation datasets and test frameworks using mixed methodologies</td><td class="num">M2, M3</td><td>Primary</td></tr>
+          <tr><td>Conduct A/B testing and iterative improvements</td><td class="num">M4</td><td>Primary</td></tr>
+          <tr><td>Diagnose system issues (prompt failure, hallucinations, model mismatch)</td><td class="num">M5</td><td>Primary</td></tr>
+          <tr><td>Optimise token usage, latency, and cost-performance trade-offs</td><td class="num">M6</td><td>Primary</td></tr>
+          <tr><td>Monitor system performance using logging and observability tools</td><td class="num">M7</td><td>Primary</td></tr>
+          <tr><td>Cross-domain: eval evidence in governance, integration, stakeholder communication</td><td class="num">M8</td><td>Secondary</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Curriculum</p>
+      <h2>Nine modules, in build order</h2>
+      <p class="lede">Each module ships a lesson, a key-facts sheet, an exam-traps sheet, one hands-on lab with
+        a worked solution, and a quiz. Modules are sequential: M2 assumes M1's vocabulary, M5 assumes M3's
+        grader families.</p>
+    </div>
+
+    <div class="modules">
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M0</span><h3>Orientation</h3><span class="dur">0.5 h</span></div>
+          <ul>
+            <li>Domain weight, item count, and the 114-seconds-per-item pacing arithmetic.</li>
+            <li>The exam's point of view: an architect who must <strong>defend a measurement choice</strong>, not a researcher chasing a benchmark.</li>
+            <li>The four stems that recur here — "quality dropped after X", "prove this change is better", "cut cost without losing accuracy", "what do we log".</li>
+            <li>Reading distractors: plausible-but-expensive, plausible-but-unmeasurable, fixes-a-symptom, right-answer-wrong-layer.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>None — orientation only.</p></div>
+          <p class="quizline">Quiz: 0 items</p>
+        </aside>
+      </article>
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M1</span><h3>Success criteria and metrics</h3><span class="dur">1.5 h</span></div>
+          <p class="ts">Task statement: define evaluation metrics across accuracy, latency, cost, safety, security.</p>
+          <ul>
+            <li>The four properties of good success criteria — <strong>specific, measurable, achievable, relevant</strong> — applied to LLM systems; why "the agent feels worse" is not a criterion.</li>
+            <li>The five axes as a checklist — credited answers usually name <strong>more than one axis</strong>; single-axis answers are the trap.</li>
+            <li>Accuracy metric selection: exact match, precision/recall/F1 (and when class imbalance makes F1 lie), ROUGE-L for summarisation, embedding similarity for consistency, rubric scores for open-ended work.</li>
+            <li><strong>pass@k vs pass^k</strong> — "one success matters" vs "consistency essential"; identical at k=1, sharply divergent by k=10.</li>
+            <li>Latency: baseline latency vs <strong>time to first token</strong>; percentiles over means; perceived latency under streaming.</li>
+            <li>Cost per resolved task, not cost per token; amortising cache writes into the unit cost.</li>
+            <li>Safety and security as measured properties: refusal correctness, toxicity rate, PII/PHI leakage, injection resistance, tool-permission violations.</li>
+            <li>Multidimensional targets and criterion-referenced thresholds fixed before the run.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>Three requirement statements — support triage bot, contract-clause extractor, research agent — turned into full criteria tables: axis, metric, target, measurement method, owner.</p></div>
+          <div class="traps"><h4>Traps drilled</h4><p><b>Means hide tail latency.</b> Single-axis targets invite regressions on the axis you didn't name. Thresholds set after seeing results aren't criteria.</p></div>
+          <p class="quizline">Quiz: 8 items</p>
+        </aside>
+      </article>
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M2</span><h3>Eval datasets and harness design</h3><span class="dur">2 h</span></div>
+          <p class="ts">Task statement: design evaluation datasets and test frameworks (part 1 of 2).</p>
+          <ul>
+            <li>Canonical vocabulary — <strong>task, trial, grader, transcript, outcome, evaluation harness, agent scaffold</strong>. Distractors work by swapping transcript for outcome.</li>
+            <li>Start small: <strong>20–50 tasks drawn from real failures</strong> beats a perfect suite that never gets built; scale toward 50–1,000 as effect sizes shrink.</li>
+            <li>Sourcing: production failures, user reports, dev checks, and deliberate edge cases (irrelevant, oversized, ambiguous, adversarial input).</li>
+            <li><strong>Unambiguous tasks</strong> — two domain experts independently reach the same verdict, with a reference solution proving the task is solvable.</li>
+            <li><strong>Balanced sets</strong>: negative cases where the behaviour should not fire; class imbalance turns a useless grader into a 95%-scorer.</li>
+            <li><strong>Harness parity</strong> with production, clean state per trial — shared state produces correlated failures that look like model regressions.</li>
+            <li>Trials per task and model variance; saturation as a signal to harden the suite.</li>
+            <li>Golden set, regression set, exploratory set — three artefacts, three lifecycles, one named owner.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>Build a 25-task eval set from a support-agent transcript corpus: label, balance, write reference solutions, document the harness contract.</p></div>
+          <div class="traps"><h4>Traps drilled</h4><p><b>0% pass@100 on a frontier model means a broken task</b>, not a weak agent. Synthetic-only data misses the distribution that matters. "Add more cases" doesn't fix ambiguous ones.</p></div>
+          <p class="quizline">Quiz: 10 items</p>
+        </aside>
+      </article>
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M3</span><h3>Graders and mixed methodologies</h3><span class="dur">2 h</span></div>
+          <p class="ts">Task statement: design evaluation datasets and test frameworks (part 2 of 2).</p>
+          <ul>
+            <li>Three grader families and their economics — <strong>code-based</strong> (fast, cheap, reproducible, brittle to valid variation), <strong>model-based</strong> (flexible, non-deterministic, needs calibration), <strong>human</strong> (gold standard, expensive, the calibration source).</li>
+            <li>Code-based techniques: exact match, unit and integration tests, static analysis, schema validation, tool-call verification, outcome verification against the environment.</li>
+            <li>Model-based techniques: rubric scoring, natural-language assertions, pairwise comparison, reference-based grading, multi-judge consensus.</li>
+            <li><strong>Trajectory vs outcome</strong> — grade what was produced, not the path taken; the booking agent whose transcript claims success while no reservation row exists.</li>
+            <li>LLM-judge design: one isolated judge per rubric dimension, an "Unknown" escape hatch, a grading model separate from the generating model, positional and verbosity bias.</li>
+            <li><strong>Calibration</strong>: validate against a human-labelled golden set before scaling; 75–90% agreement targets; the "intern test" — if two humans can't agree 80% of the time, the rubric is too vague to automate.</li>
+            <li>The hybrid norm: verifiable rewards ("did it solve the problem?") paired with LLM rubrics ("is it readable, efficient, secure?").</li>
+            <li>Partial credit, grading rigidity, and eval cheating caught by transcript review.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>Write and calibrate an LLM judge: draft a three-dimension rubric, hand-label 30 outputs, measure agreement, revise, re-measure, report the delta.</p></div>
+          <div class="traps"><h4>Traps drilled</h4><p><b>The cheapest grader that answers the question wins</b> — "use an LLM judge" is wrong when a unit test settles it. One judge grading five dimensions at once. An uncalibrated judge is evidence of nothing.</p></div>
+          <p class="quizline">Quiz: 10 items · Checkpoint A follows (15 items / 28 min)</p>
+        </aside>
+      </article>
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M4</span><h3>A/B testing and iterative improvement</h3><span class="dur">1.5 h</span></div>
+          <p class="ts">Task statement: conduct A/B testing and iterative improvements.</p>
+          <ul>
+            <li>Offline evals gate; online experiments confirm. Neither substitutes for the other.</li>
+            <li>Prompt and config <strong>versioning</strong> as the precondition for any comparison at all.</li>
+            <li>Regression suites in CI — what blocks a merge versus what only warns.</li>
+            <li>A/B design for LLM systems: unit of randomisation (user, session, or request), sample size and minimum detectable effect, and <strong>guardrail metrics that must not move</strong> — cost, p95 latency, refusal rate.</li>
+            <li>Why per-request randomisation corrupts multi-turn agent experiments.</li>
+            <li>Shadow mode, canary, staged rollout, champion/challenger — what each proves and what each costs.</li>
+            <li>A shipping sequence to reason with: version → regression → offline eval → A/B significance → canary → rollback path.</li>
+            <li>Closing the loop: every production failure becomes a new eval task.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>Given a +3% eval delta over 40 tasks, design the rollout: justify (or reject) an A/B, choose the randomisation unit, set guardrails and stop conditions, write the rollback trigger.</p></div>
+          <div class="traps"><h4>Traps drilled</h4><p><b>A win on a saturated eval is not a win.</b> "Ship it, the eval improved" with no guardrail metrics. Comparing a new prompt against a new dataset.</p></div>
+          <p class="quizline">Quiz: 8 items</p>
+        </aside>
+      </article>
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M5</span><h3>Diagnosis and root-cause analysis</h3><span class="dur">2 h</span></div>
+          <p class="ts">Task statement: diagnose system issues — prompt failure, hallucinations, model mismatch.</p>
+          <ul>
+            <li>The domain's core heuristic: <strong>trace the symptom to the component that changed.</strong></li>
+            <li>A failure taxonomy with the distinguishing evidence for each — prompt failure, ungrounded generation, retrieval/indexing failure, model mismatch, tool and schema failure, context truncation or compaction loss, agent-loop failure.</li>
+            <li>The canonical scenario: <strong>confident-but-wrong RAG answers after a document refresh → investigate retrieval and indexing first</strong>, not the prompt, not the model.</li>
+            <li>Splitting RAG metrics — retrieval recall and precision versus generation faithfulness; one end-to-end accuracy number cannot localise a fault.</li>
+            <li>Ablation as method: change one layer at a time against a fixed eval set.</li>
+            <li>Transcript review as a first-class practice rather than a last resort.</li>
+            <li>Hallucination controls — allow uncertainty, ground in quotes, require citations, verification passes — and what each costs.</li>
+            <li>When the answer genuinely is model mismatch: tier escalation and extended thinking as the cheap fix.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>Five annotated failure transcripts — RAG, agent loop, tool schema, prompt, model tier. Diagnose each, name the evidence, propose the minimal fix.</p></div>
+          <div class="traps"><h4>Traps drilled</h4><p><b>Swapping models to fix a retrieval bug.</b> Adding "be accurate" to fix hallucination. Rebuilding a pipeline when one component changed.</p></div>
+          <p class="quizline">Quiz: 10 items</p>
+        </aside>
+      </article>
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M6</span><h3>Optimising tokens, latency, and cost</h3><span class="dur">2 h</span></div>
+          <p class="ts">Task statement: optimise token usage, latency, and cost-performance trade-offs.</p>
+          <ul>
+            <li>Optimise only once quality is established — the documented order of operations.</li>
+            <li><strong>Model selection and routing</strong>: tier by task, Haiku for speed-critical paths, cascades and escalation, per-stage choice inside a pipeline.</li>
+            <li><strong>Caching economics with the real multipliers</strong> — writes at 1.25× base input (5-minute TTL) or 2× (1-hour), reads at 0.1×; the break-even read count that justifies a write.</li>
+            <li>Cache mechanics that generate items: model-dependent minimum cacheable prefix, four explicit breakpoints, the tools → system → messages hierarchy, breakpoint on the last <em>stable</em> block, and what invalidates a cache.</li>
+            <li>Context reduction: retrieval trimming, compaction, structured over prose, dropping stale tool output.</li>
+            <li>Output-side levers: <code>max_tokens</code>, sentence and paragraph limits rather than word counts, structured output.</li>
+            <li>Throughput levers: batch processing for non-interactive work, parallel tool calls, streaming for perceived latency.</li>
+            <li>Building a defensible cost model — cost per resolved task across a pipeline, and naming what the optimisation gives up.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>Cost-and-latency teardown of a three-stage pipeline: compute cost per task, apply caching and a tier change, recompute, state the accuracy risk taken.</p></div>
+          <div class="traps"><h4>Traps drilled</h4><p><b>Caching a per-request block yields zero hits.</b> Prompts under the model minimum silently don't cache. Downgrading the model before trimming context. Optimising a stage that isn't the cost driver.</p></div>
+          <p class="quizline">Quiz: 10 items · Checkpoint B follows (15 items / 28 min)</p>
+        </aside>
+      </article>
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M7</span><h3>Monitoring and observability</h3><span class="dur">1.5 h</span></div>
+          <p class="ts">Task statement: monitor system performance using logging and observability tools.</p>
+          <ul>
+            <li>What a Claude system must emit: full traces carrying prompt version, model, tool calls, token counts, cache hit/miss and stop reason — plus latency percentiles, error and refusal rates, cost per session, escalation rate.</li>
+            <li>Traces as the bridge to evals: the log format should make a failed interaction <strong>replayable as a new eval task</strong>.</li>
+            <li>Online evals — sampling live traffic into judges, with sampling rates and cost ceilings.</li>
+            <li>Drift: input distribution, retrieval corpus, model version, eval-set staleness — and which signal catches each.</li>
+            <li>Alerting that survives a pager rotation: thresholds on rates and percentiles, never absolute counts, tied to the same guardrails the A/B used.</li>
+            <li>Dashboards by audience — engineer sees traces, architect sees quality and cost trend, executive sees outcome per dollar.</li>
+            <li>Logging and privacy: PII in prompts, retention windows, redaction before storage — the seam with Governance.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>Write the observability plan for a given architecture: event schema, six dashboard metrics, four alerts with thresholds, sampling policy, retention and redaction rules.</p></div>
+          <div class="traps"><h4>Traps drilled</h4><p><b>Logging outputs without inputs or versions</b> makes diagnosis impossible. Alerting on absolute counts. Sampling only failures. Monitoring the model but not retrieval.</p></div>
+          <p class="quizline">Quiz: 8 items</p>
+        </aside>
+      </article>
+
+      <article class="mod">
+        <div>
+          <div class="mod-head"><span class="code">M8</span><h3>Where eval meets the other domains</h3><span class="dur">1 h</span></div>
+          <p class="ts">Cross-domain reinforcement — no new task statement.</p>
+          <ul>
+            <li><strong>Governance</strong>: safety evals, red-teaming, human-in-the-loop placement justified by measured error severity, evidence packs for compliance review.</li>
+            <li><strong>Integration</strong>: evaluating retrieval and tool layers separately; tool-selection accuracy across MCP servers.</li>
+            <li><strong>Solution design</strong>: using eval results to choose between workflow and agentic patterns.</li>
+            <li><strong>Stakeholder communication</strong>: reporting results honestly — intervals, blind spots, what the number does not cover — and setting SLAs you can actually measure.</li>
+            <li><strong>Developer enablement</strong>: evals in CI and who owns the suite in the team model.</li>
+          </ul>
+        </div>
+        <aside>
+          <div><h4>Lab</h4><p>Write a one-page eval report for an executive sponsor from a supplied results table.</p></div>
+          <p class="quizline">Quiz: 6 items · Domain mock follows (30 items / 57 min)</p>
+        </aside>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Assessment</p>
+      <h2>How readiness gets measured</h2>
+      <p class="lede">Mock weighting mirrors the six task statements proportionally, with roughly a quarter
+        multi-response items and scenario stems that carry the business constraint deciding the answer.</p>
+    </div>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Instrument</th><th>When</th><th>Items</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Module quizzes</td><td>End of each module</td><td class="num">70 total</td><td>Recall and application</td></tr>
+          <tr><td>Checkpoint A (timed)</td><td>After M3</td><td class="num">15 / 28 min</td><td>Dataset and grader judgment under pacing</td></tr>
+          <tr><td>Checkpoint B (timed)</td><td>After M6</td><td class="num">15 / 28 min</td><td>Diagnosis and optimisation under pacing</td></tr>
+          <tr><td>Domain mock</td><td>After M8</td><td class="num">30 / 57 min</td><td>Exam-condition simulation, blueprint-weighted</td></tr>
+          <tr><td>Weak-area retest</td><td>Post-mock</td><td class="num">adaptive</td><td>Close the gaps the mock found</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lede"><strong>Readiness bar:</strong> 80% or better on the domain mock, with no single task
+      statement below 70%.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Production</p>
+      <h2>Build plan</h2>
+    </div>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Phase</th><th>Output</th><th>Estimate</th></tr></thead>
+        <tbody>
+          <tr><td class="num">0</td><td>Verify the blueprint against the official Exam Guide; resolve open questions</td><td class="num">2 h</td></tr>
+          <tr><td class="num">1</td><td>M1–M3 lessons, key facts, exam traps</td><td class="num">8 h</td></tr>
+          <tr><td class="num">2</td><td>M4–M7 lessons, key facts, exam traps</td><td class="num">10 h</td></tr>
+          <tr><td class="num">3</td><td>M8 plus all seven labs with worked solutions</td><td class="num">8 h</td></tr>
+          <tr><td class="num">4</td><td>70 quiz items and 60 checkpoint/mock items</td><td class="num">10 h</td></tr>
+          <tr><td class="num">5</td><td>Accuracy pass against sources; pilot with 2–3 candidates; revise</td><td class="num">6 h</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lede">Content is authored to drop into the existing <code>learn-claude</code> plugin layout —
+      topic files with task-statement frontmatter, a question bank keyed to topic IDs — so the quiz and
+      mock-exam skills consume it without changes.</p>
+  </section>
+
+  <div class="flags">
+    <h2>Verify before Phase 1</h2>
+    <ol>
+      <li><strong>The blueprint here is reconstructed from secondary sources</strong> quoting Anthropic's
+        Exam Guide v1.0. Pull the official guide from Partner Academy and diff the task statements and weights
+        against it before any content is written.</li>
+      <li><strong>Sources disagree on logistics</strong> — price ($125 vs $175), a one-year validity claim, and
+        whether Professional items are scenario-framed or standalone. The outline assumes scenario-framed
+        because it is the harder preparation; if items turn out standalone, the drills get easier, not wrong.</li>
+      <li><strong>An official Professional prep track may be coming</strong> — one source says it is "on the
+        way", which could supersede parts of this course.</li>
+    </ol>
+  </div>
+
+  <footer>
+    <p class="eyebrow">Primary sources</p>
+    <ul>
+      <li><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic engineering — Demystifying evals for AI agents</a></li>
+      <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/eval-tool">Anthropic docs — Create strong empirical evaluations</a></li>
+      <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">Anthropic docs — Prompt caching</a></li>
+      <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency">Anthropic docs — Reducing latency</a></li>
+      <li><a href="https://claude.com/blog/four-role-based-claude-certifications">Anthropic — Four role-based Claude certifications</a></li>
+      <li>Blueprint detail cross-checked against three independent community exam guides; see the research notes for per-fact confidence.</li>
+    </ul>
+  </footer>
+
+</div>

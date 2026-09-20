@@ -1,0 +1,9 @@
+{
+  "name": "ccarp-eval-course-decks",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Slide decks for the CCAR-P eval engineering course",
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
