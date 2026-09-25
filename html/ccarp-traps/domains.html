@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Domain Notes · CCAR-P Exam Traps</title>
+<meta name="description" content="Notes for all seven CCAR-P domains: key concepts, the traps each one uses, and a 60-second recap.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-P Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html">Start</a>
+      <a href="traps.html">Trap Families</a>
+      <a href="constraint-map.html">Constraint Map</a>
+      <a href="domains.html" aria-current="page">Domains</a>
+      <a href="autopsies.html">Autopsies</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Official blueprint · 7 domains</p>
+    <h1>Domain notes</h1>
+    <p class="lede">Each domain lists its key concepts, the traps it uses, and a 60-second recap. Numbering and weights match the official exam guide and your score report. <span class="kit">KIT</span> marks points from the study kit rather than the video.</p>
+  </section>
+
+  <div class="with-toc" style="margin-top:2rem">
+    <nav class="toc" aria-label="Domains">
+      <ol>
+        <li><a href="#d1">D1 Design <span class="w">17%</span></a></li>
+        <li><a href="#d2">D2 Models <span class="w">13%</span></a></li>
+        <li><a href="#d3">D3 Integration <span class="w">19%</span></a></li>
+        <li><a href="#d4">D4 Evaluation <span class="w">16%</span></a></li>
+        <li><a href="#d5">D5 Governance <span class="w">14%</span></a></li>
+        <li><a href="#d6">D6 Stakeholders <span class="w">14%</span></a></li>
+        <li><a href="#d7">D7 Dev Prod <span class="w">7%</span></a></li>
+      </ol>
+    </nav>
+
+    <div>
+      <!-- ================= D1 ================= -->
+      <section class="domain" id="d1">
+        <div class="domain-head"><h2>D1 · Solution Design &amp; Architecture</h2><span class="weight-pill">17%</span></div>
+        <p class="src">Video: <a href="https://youtu.be/YjjeATv2Edc?t=468">EP02 ▶ 7:48</a> · <a href="https://youtu.be/YjjeATv2Edc?t=1049">EP03 ▶ 17:29</a></p>
+        <div class="concepts">
+          <div class="concept">
+            <h3>1.1 The pattern ladder</h3>
+            <p><strong>Augmented model</strong> (one model plus retrieval, tools and memory) → <strong>workflow</strong> (you draw the path in code; the model fills in the hard steps) → <strong>agent</strong> (the model picks its own steps at runtime). Each rung up buys flexibility and costs predictability, money and latency.</p>
+          </div>
+          <div class="concept">
+            <h3>1.2 The rule</h3>
+            <p>Use the simplest pattern that meets the requirement, and not one rung higher. The simplest rung is a legitimate pattern, not a failure to try hard enough. You can't tune your way out of the wrong pattern.</p>
+            <p class="traps-line">Traps: <a href="traps.html#t9">T9 gold plating</a> (agent for a fixed task), <a href="traps.html#t8">T8 over-orchestration</a></p>
+          </div>
+          <div class="concept">
+            <h3>1.3 Decomposition</h3>
+            <p>Break a big, vague task into steps that each do one thing you can check. If one overloaded prompt gives inconsistent output, the exam usually wants decomposition, not a bigger model.</p>
+            <p class="traps-line">Traps: <a href="traps.html#t1">T1</a>, <a href="traps.html#t2">T2</a> (step-by-step plus more tokens), an agent that "loops until done"</p>
+          </div>
+          <div class="concept">
+            <h3>1.4 The four-part shape</h3>
+            <p>Input → processing → output → <strong>feedback loop</strong>. A system without the last part can never improve. Expect stems where the feedback loop is quietly missing.</p>
+          </div>
+          <div class="concept">
+            <h3>1.5 When multi-agent pays</h3>
+            <p>There are two honest reasons to split: <strong>context isolation</strong> (each sub-agent sees only its slice) and <strong>parallel breadth</strong> (independent directions explored at once). Multi-agent runs cost about <strong>15×</strong> the tokens of a chat, so the task has to be valuable enough to justify that.</p>
+            <p>Don't split when every agent needs the same context or each step depends on the one before. Contracts with cross-references and most coding work fall in this category.</p>
+            <p class="traps-line">Traps: split + a coordinator to patch the split (<a href="traps.html#t7">T7</a>), caching a split you never needed (<a href="traps.html#t10">T10</a>), <a href="traps.html#t1">T1</a></p>
+          </div>
+          <div class="concept">
+            <h3>1.6 Business-value pillars</h3>
+            <p>The guide names five: efficiency, transformation, productivity, cost, and a promised performance target. Name the pillar a design serves <em>and</em> what it costs on the others.</p>
+            <p class="traps-line">Trap: <a href="traps.html#t12">T12</a>, serving the pillar someone said out loud instead of the one the constraint points to</p>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>Climb the ladder only as high as the constraint forces you.</li>
+            <li>Reproducible or auditable → workflow. Open-ended and genuinely hard → agent.</li>
+            <li>Split into multiple agents only for isolation or breadth, and name the token bill.</li>
+            <li>The least impressive option is often the right one.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= D2 ================= -->
+      <section class="domain" id="d2">
+        <div class="domain-head"><h2>D2 · Claude Models, Prompting &amp; Context Engineering</h2><span class="weight-pill">13%</span></div>
+        <p class="src">Video: <a href="https://youtu.be/YjjeATv2Edc?t=1537">EP04 ▶ 25:37</a></p>
+        <div class="concepts">
+          <div class="concept">
+            <h3>2.1 Model choice</h3>
+            <p>Model choice trades capability against speed against cost, and your <strong>eval set</strong> decides it, not your gut. Either start cheap and move up, or start at the top and optimize down. Try adjusting settings such as effort before switching models.</p>
+            <p class="traps-line">Traps: <a href="traps.html#t1">T1</a> ("best model"), a router you don't need yet (<a href="traps.html#t9">T9</a>), <a href="traps.html#t2">T2</a></p>
+          </div>
+          <div class="concept">
+            <h3>2.2 Prompt design</h3>
+            <p>Treat the system prompt as a stable template with slots to fill. Few-shot examples are the most reliable way to pin down format. <strong>Chain of thought isn't free</strong>: it adds latency, so use it only where it measurably helps.</p>
+            <p class="traps-line">Traps: <a href="traps.html#t3">T3</a> (a firmer line about format), <a href="traps.html#t1">T1</a>, <a href="traps.html#t2">T2</a></p>
+          </div>
+          <div class="concept">
+            <h3>2.3 Prompt caching</h3>
+            <p>Put <strong>static content first</strong> (instructions, tools, policy) and <strong>dynamic content last</strong>. Cached reads cost about a tenth of the base input price and come back faster.</p>
+            <ul>
+              <li><span class="kit">KIT</span> If <code>cache_read_input_tokens</code> stays near zero, the prefix isn't byte-stable. A timestamp or reordered tools at the top will break it.</li>
+              <li><span class="kit">KIT</span> Caching cuts cost and latency but <strong>frees no context-window space</strong>, so it doesn't fix context rot.</li>
+            </ul>
+          </div>
+          <div class="concept">
+            <h3>2.4 Skills and progressive disclosure</h3>
+            <p>A Skill is a folder of instructions. Only its name and description load up front. The full instructions load when a task matches, and heavy files load later or never. That lets you offer a large library of expertise for almost no cost until it's used.</p>
+          </div>
+          <div class="concept">
+            <h3>2.5 Context budget</h3>
+            <p>More context isn't better context. Feed each step only what it needs through retrieval or Skills. <span class="kit">KIT</span> Load everything up front only when inputs are small and fixed; otherwise load just in time.</p>
+            <p class="traps-line">Traps: the biggest window with every document pasted in (<a href="traps.html#t1">T1</a>), raising effort (<a href="traps.html#t2">T2</a>), "tell it to ignore irrelevant content" (<a href="traps.html#t3">T3</a>)</p>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>None of the correct answers here was "get the bigger thing".</li>
+            <li>Accuracy to spare and cost hurting → drop a tier, rerun the eval set.</li>
+            <li>Static first, cache on, dynamic last.</li>
+            <li>Examples pin format. Chain of thought only where it earns its latency.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= D3 ================= -->
+      <section class="domain" id="d3">
+        <div class="domain-head"><h2>D3 · Integration</h2><span class="weight-pill">19%</span><span class="chip dom">Largest domain</span></div>
+        <p class="src">Video: <a href="https://youtu.be/YjjeATv2Edc?t=2033">EP05 ▶ 33:53</a> · <a href="https://youtu.be/YjjeATv2Edc?t=2685">EP06 ▶ 44:45</a> · <a href="https://youtu.be/YjjeATv2Edc?t=3367">EP07 ▶ 56:07</a></p>
+        <div class="concepts">
+          <div class="concept">
+            <h3>3.1 Tool lists are permission lists</h3>
+            <p>Each capability you give the agent is attack surface: an attacker who controls its input can use it. When a tool is too dangerous, <strong>remove it</strong>. Don't log around it or add a confirmation step. A bloated tool list also costs tokens on every request and makes the model more likely to pick the wrong tool.</p>
+            <p class="traps-line">Traps: logging (<a href="traps.html#t5">T5</a>), a confirmation step (<a href="traps.html#t9">T9</a>), <a href="traps.html#t1">T1</a>. This is official sample 1.</p>
+          </div>
+          <div class="concept">
+            <h3>3.2 Identity and authority gaps</h3>
+            <p>An agent on a shared, all-seeing account will fetch data its user was never allowed to see. Make the agent act <strong>with the requesting user's identity</strong> so the system itself refuses what that user can't access.</p>
+            <p class="traps-line">Traps: "tell it to refuse sensitive questions" (<a href="traps.html#t4">T4</a>), <a href="traps.html#t5">T5</a>, <a href="traps.html#t1">T1</a></p>
+          </div>
+          <div class="concept">
+            <h3>3.3 Direct API vs MCP vs agent-to-agent</h3>
+            <ul>
+              <li><strong>Direct API/CLI</strong> fits one thing, once, from a system you already call, or a fixed integration where you own both sides. It's the cheapest option and gives the tightest control.</li>
+              <li><strong>MCP</strong> fits many tools that change often or are shared across agents. It gives you a reusable tool surface with discovery.</li>
+              <li><strong>A2A</strong> fits a sub-task that genuinely needs its own reasoning, context and tools. It has the highest coordination cost.</li>
+            </ul>
+            <p>Don't use a protocol heavier than the integration needs.</p>
+            <p><span class="kit">KIT</span> MCP auth: tokens should be audience-bound to the MCP server. Never pass client tokens through to upstream APIs; that's the confused-deputy problem.</p>
+            <p class="traps-line">Traps: an MCP server "for future tools" (<a href="traps.html#t9">T9</a>), a finance agent for one number (<a href="traps.html#t8">T8</a>), a general web tool (<a href="traps.html#t11">T11</a>)</p>
+          </div>
+          <div class="concept">
+            <h3>3.4 Progressive tool discovery</h3>
+            <p>Let the model load tools on demand instead of listing every tool up front. It's least privilege applied to attention.</p>
+            <p class="traps-line">Traps: a bigger window (<a href="traps.html#t1">T1</a>), merging servers (<a href="traps.html#t7">T7</a>), a routing agent (<a href="traps.html#t8">T8</a>)</p>
+          </div>
+          <div class="concept">
+            <h3>3.5 RAG: chunking and index freshness</h3>
+            <p><strong>Chunk for coherence</strong> on the document's own boundaries (paragraph, clause, function). Fixed-size cuts split rules in half.</p>
+            <p>The index is a <strong>snapshot</strong>, so reindexing belongs in the pipeline and runs whenever the source changes. If you change the document embedding model but not the query one, retrieval quietly returns near misses.</p>
+            <p><strong>Signature:</strong> confident, fluent and wrong right after a data change, with normal latency and an unchanged model. That points to the index. This is official sample 3.</p>
+          </div>
+          <div class="concept">
+            <h3>3.6 Match retrieval to data shape and query</h3>
+            <ul>
+              <li><strong>Prose</strong> → semantic search.</li>
+              <li><strong>Structured records</strong> → query the database (filter, count, aggregate).</li>
+              <li><strong>Code</strong> → symbols and call graph.</li>
+              <li><strong>Lookup</strong> questions → narrow, precise retrieval. <strong>Synthesis</strong> questions → broad coverage.</li>
+            </ul>
+            <p>Name the data shape and query pattern <em>before</em> choosing a strategy.</p>
+          </div>
+          <div class="concept">
+            <h3>3.7 Contextual retrieval, or no retrieval</h3>
+            <p>Prepend a short context sentence to each chunk when building the index. Used with both semantic and keyword (BM25) search, Anthropic reported roughly half as many failed retrievals.</p>
+            <p>A small, stable corpus of a few hundred pages can go straight into the prompt and be cached, with no pipeline. But a bigger window is a container, not a retrieval strategy.</p>
+          </div>
+          <div class="concept">
+            <h3>3.8 Observability at scale</h3>
+            <p>Four layers:</p>
+            <ul>
+              <li><strong>Traces:</strong> each request followed end to end.</li>
+              <li><strong>Per-stage metrics:</strong> latency <em>and</em> quality for every stage.</li>
+              <li><strong>Sampled judging:</strong> a sample of outputs scored against a rubric.</li>
+              <li><strong>Cost meter:</strong> from the usage object on each response.</li>
+            </ul>
+            <p>At scale, watch <strong>distributions</strong> and <strong>alert on drift</strong>, not on a single failure. Watch <strong>p95</strong>, not the average.</p>
+            <p>Latency levers: route simple traffic to a faster model, stream responses (users see text sooner), and move non-urgent work to batch.</p>
+            <p class="traps-line">Traps: more logging (<a href="traps.html#t6">T6</a>), dropping verification (<a href="traps.html#t6">T6</a>), a human on every response (<a href="traps.html#t9">T9</a>), token/temperature knobs (<a href="traps.html#t2">T2</a>)</p>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>The audit question is <em>which tools exist</em> and <em>whose permissions they run with</em>.</li>
+            <li>Use the simplest connection mechanism that meets the need.</li>
+            <li>Retrieval can be perfectly healthy and completely wrong at once. Check the index.</li>
+            <li>A logged request isn't a watched request.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= D4 ================= -->
+      <section class="domain" id="d4">
+        <div class="domain-head"><h2>D4 · Evaluation, Testing &amp; Optimization</h2><span class="weight-pill">16%</span></div>
+        <p class="src">Video: <a href="https://youtu.be/YjjeATv2Edc?t=4024">EP08 ▶ 1:07:04</a> · <a href="https://youtu.be/YjjeATv2Edc?t=4510">EP09 ▶ 1:15:10</a></p>
+        <div class="concepts">
+          <div class="concept">
+            <h3>4.1 The golden set</h3>
+            <p>Real inputs paired with known-good answers, seeded from past failures. Curating it <em>is</em> the method. It turns "is the new version better?" into a number.</p>
+            <p><span class="kit">KIT</span> Version it, and gate releases on <strong>no regression in any category</strong>, not only a better average.</p>
+          </div>
+          <div class="concept">
+            <h3>4.2 Five metrics</h3>
+            <p>Accuracy, latency, cost, <strong>safety</strong> and <strong>security</strong>. Safety and security are first-class metrics, each with its own cases and pass line.</p>
+          </div>
+          <div class="concept">
+            <h3>4.3 Mixed grading</h3>
+            <ul>
+              <li><strong>Code checks</strong> are cheap and never drift. Use them wherever right and wrong are clear.</li>
+              <li><strong>A model judge</strong> handles fuzzy qualities like tone, but calibrate it against transcripts first.</li>
+              <li><strong>Human reads</strong> confirm the other two are measuring what you think.</li>
+            </ul>
+            <p>Using one grader for everything is the classic wrong answer.</p>
+          </div>
+          <div class="concept">
+            <h3>4.4 Coverage</h3>
+            <p>Include failures and adversarial inputs: typos, sarcasm, injection attempts. Test both where a behavior <strong>should</strong> happen and where it <strong>should not</strong>. <span class="kit">KIT</span> Also include irrelevant input, over-long input, and cases where experts disagree.</p>
+          </div>
+          <div class="concept">
+            <h3>4.5 Baseline + A/B discipline</h3>
+            <p>Record a baseline before you tune anything. Run both versions on the same golden set. <strong>Change one variable at a time</strong>, or you can't tell which change moved the score.</p>
+            <p class="traps-line">Traps: <a href="traps.html#t6">T6</a>, <a href="traps.html#t1">T1</a>, <a href="traps.html#t2">T2</a></p>
+          </div>
+          <div class="concept">
+            <h3>4.6 The diagnosis tree</h3>
+            <p>There are five suspects: <strong>prompt, context, retrieval, model, tooling</strong>. Read the symptom as evidence. If it tracks input length or how deep in the document the detail sits, suspect context and fix it by chunking, not by rewriting the prompt.</p>
+            <p class="traps-line">Trap: <a href="traps.html#t7">T7</a> wrong-layer fix</p>
+          </div>
+          <div class="concept">
+            <h3>4.7 Cost order: outside in</h3>
+            <p><strong>Cache → route → batch.</strong> These don't change a word of the output, so you can apply them together and check the win on the bill. Batch runs about 50% cheaper. Only after that should you touch settings that affect quality (prompt wording, model tier, trimmed context), and then with an A/B test.</p>
+            <p class="traps-line">Trap: <a href="traps.html#t10">T10</a> premature optimization</p>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>Define what "correct" means before you argue about how to reach it.</li>
+            <li>The demo flatters. The golden set decides.</li>
+            <li>One change, one measurement.</li>
+            <li>Take the free wins first; touch quality-bearing settings last.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= D5 ================= -->
+      <section class="domain" id="d5">
+        <div class="domain-head"><h2>D5 · Governance, Safety &amp; Risk Management</h2><span class="weight-pill">14%</span></div>
+        <p class="src">Video: <a href="https://youtu.be/YjjeATv2Edc?t=5211">EP10 ▶ 1:26:51</a> · <a href="https://youtu.be/YjjeATv2Edc?t=5927">EP11 ▶ 1:38:47</a></p>
+        <div class="concepts">
+          <div class="concept">
+            <h3>5.1 Must vs should</h3>
+            <p><em>Must</em> → deterministic code. <em>Should</em> → a prompt is fine. A system prompt is guidance, not a guarantee. It shapes what the model probably does, never what it can't do.</p>
+          </div>
+          <div class="concept">
+            <h3>5.2 Five failure modes</h3>
+            <ul>
+              <li><strong>Hallucination:</strong> states something false with confidence.</li>
+              <li><strong>Prompt injection:</strong> direct from the user, or <strong>indirect</strong> through content the model reads.</li>
+              <li><strong>Tool misuse:</strong> a real tool called with the wrong arguments or at the wrong time.</li>
+              <li><strong>Context poisoning:</strong> bad information treated as truth for the rest of the session.</li>
+              <li><strong>Drift:</strong> slow degradation as the world changes.</li>
+            </ul>
+            <p>Only hallucination is about the model on its own. The rest are about what the surrounding system lets it read and do.</p>
+          </div>
+          <div class="concept">
+            <h3>5.3 Three guardrail layers</h3>
+            <ul>
+              <li><strong>Input:</strong> screen requests, e.g. with a cheap, fast model.</li>
+              <li><strong>Action:</strong> least privilege on tools.</li>
+              <li><strong>Output:</strong> validate before the result reaches a user or system.</li>
+            </ul>
+            <p>No single layer is enough. For hallucination: allow "I don't know", require quotes, and verify claims against the quotes.</p>
+          </div>
+          <div class="concept">
+            <h3>5.4 Human-in-the-loop by risk tier</h3>
+            <p>Sort actions by <strong>impact × reversibility</strong>. Low-stakes, reversible work (drafts) needs no human. Irreversible, high-stakes actions (moving money, regulator filings) get a human every time.</p>
+            <p class="traps-line">Traps: reviewing everything (<a href="traps.html#t9">T9</a>), a "be careful" prompt (<a href="traps.html#t4">T4</a>), self-rated confidence (<a href="traps.html#t14">T14</a>)</p>
+          </div>
+          <div class="concept">
+            <h3>5.5 Compliance starts with the data-flow map</h3>
+            <p>Map where data is created, how it travels, where it rests, and who can touch it. Every arrow is somewhere a regulator will point. Each regulation is then a lens over the same map.</p>
+            <ul>
+              <li><strong>GDPR:</strong> residency (pin the inference and storage region), erasure, minimization. Minimization and erasure are still <em>your</em> job.</li>
+              <li><strong>HIPAA:</strong> a signed BAA, HIPAA-ready access, encryption, access control and audit logging. Don't write raw PHI to logs. <span class="kit">KIT</span> SOC 2 is not HIPAA.</li>
+              <li><strong>FedRAMP:</strong> authorizes the <strong>environment / boundary</strong>, not the model. Deploy inside an authorized path.</li>
+            </ul>
+            <p><span class="kit">KIT</span> These are obligations on the deployer. Never assume the vendor covers them.</p>
+          </div>
+          <div class="concept">
+            <h3>5.6 Real controls vs theater</h3>
+            <p>Real controls: zero data retention, signed agreements, region pinning, log redaction, and a human on consequential decisions. Proof comes from published audits (the trust portal), not from memos.</p>
+            <p class="traps-line">Traps: a privacy notice, a policy document, "encrypt and declare compliant" (<a href="traps.html#t5">T5</a>)</p>
+          </div>
+          <div class="concept">
+            <h3>5.7 Ethics as architecture</h3>
+            <p>Bias testing is an eval spread across the groups you serve. Fairness means accuracy holds for each segment, not just on average. Transparency means telling users they're talking to an AI.</p>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>If a rule matters, make the architecture unable to break it.</li>
+            <li>Treat outside content as untrusted data, and limit what the model can do with it.</li>
+            <li>Put a human where a mistake is worst, not everywhere.</li>
+            <li>Draw the data flow before naming a control.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= D6 ================= -->
+      <section class="domain" id="d6">
+        <div class="domain-head"><h2>D6 · Stakeholder Communication &amp; Lifecycle Management</h2><span class="weight-pill">14%</span></div>
+        <p class="src">Video: <a href="https://youtu.be/YjjeATv2Edc?t=6441">EP12 ▶ 1:47:21</a></p>
+        <div class="concepts">
+          <div class="concept">
+            <h3>6.1 Discovery</h3>
+            <p>Keep asking until the <em>one</em> deciding constraint shows up. It's usually cost or compliance, and it rules out most designs before you draw a box. Ask "what can never happen here?" "An agent that answers customer questions" is a feature, not a constraint.</p>
+          </div>
+          <div class="concept">
+            <h3>6.2 A decision, not a diagram</h3>
+            <p>A diagram shows what you'll build. A decision shows why. Say what the option <strong>buys</strong>, what it <strong>costs</strong>, and which <strong>pillar</strong> it serves, all in the sponsor's language rather than benchmark scores or model internals.</p>
+            <p class="traps-line">Traps: presenting the same pitch more forcefully (<a href="traps.html#t3">T3</a>), adding components to impress (<a href="traps.html#t9">T9</a>), rebuilding a correct design (<a href="traps.html#t7">T7</a>)</p>
+          </div>
+          <div class="concept">
+            <h3>6.3 SLAs for probabilistic systems</h3>
+            <p>Promise a <strong>measured rate</strong> on a representative eval set, a <strong>p95 latency</strong> target, and an <strong>escalation path</strong> for misses. Never promise "always right."</p>
+            <p class="traps-line">Trap: <a href="traps.html#t13">T13</a> promising determinism</p>
+          </div>
+          <div class="concept">
+            <h3>6.4 Handoff and lifecycle</h3>
+            <p>The handoff should include:</p>
+            <ul>
+              <li>the architecture, <em>with the rationale</em> for each major choice</li>
+              <li>the golden set and eval harness</li>
+              <li>known failure modes and what to watch for</li>
+            </ul>
+            <p>The lifecycle is discovery → design → handoff → monitoring → iteration. <span class="kit">KIT</span> After launch, the system needs a named owner, drift alerts and an iteration cadence.</p>
+            <p class="traps-line">Trap: thinking the job ends at design</p>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>Find the constraint in discovery before drawing a box.</li>
+            <li>Bring a decision (buys / costs / pillar), not a wall of boxes.</li>
+            <li>Commit to a measured rate plus an escalation path.</li>
+            <li>Design the handoff so the system outlives you.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= D7 ================= -->
+      <section class="domain" id="d7">
+        <div class="domain-head"><h2>D7 · Developer Productivity &amp; Operational Enablement</h2><span class="weight-pill">7%</span><span class="chip dom">Smallest domain</span></div>
+        <p class="src">Video: <a href="https://youtu.be/YjjeATv2Edc?t=7097">EP13 ▶ 1:58:17</a></p>
+        <div class="concepts">
+          <div class="concept">
+            <h3>7.1 Three config tiers</h3>
+            <p><strong>Personal:</strong> local to your machine and uncommitted. <strong>Team/project:</strong> checked into the repository. <strong>Managed:</strong> org policy pushed to every machine, which no one below can switch off. Put each decision on the right shelf.</p>
+          </div>
+          <div class="concept">
+            <h3>7.2 Guidance vs enforcement</h3>
+            <p>The instructions/memory file (e.g. <code>CLAUDE.md</code>) is <strong>guidance</strong>. Permission rules and <strong>hooks</strong> in settings are <strong>enforcement</strong>. "Never touch production" in the instructions file is a note, not a wall.</p>
+          </div>
+          <div class="concept">
+            <h3>7.3 Precedence</h3>
+            <p><strong>Deny beats allow.</strong> Rules from different scopes <strong>merge</strong> rather than replace each other. A <strong>managed</strong> rule can't be loosened by personal or team settings, which is why real guardrails live there.</p>
+          </div>
+          <div class="concept">
+            <h3>7.4 What belongs in the shared file</h3>
+            <p>Build and test commands, project layout and conventions: anything a teammate would otherwise have to be told. Personal shortcuts and private sandbox links stay out of the repository.</p>
+            <p class="traps-line">Traps: cramming everything into one file, per-engineer copies (<a href="traps.html#t15">T15</a>), copying a senior engineer's personal setup</p>
+          </div>
+          <div class="concept">
+            <h3>7.5 Operational use</h3>
+            <p>The coding agent can read logs, trace errors and draft fixes, with least privilege: <strong>read, diagnose, propose</strong>, then ship through the normal deploy path.</p>
+            <p class="traps-line">Traps: prod write access "for speed" (<a href="traps.html#t11">T11</a>), a "be careful" note (<a href="traps.html#t4">T4</a>), log-and-review afterwards (<a href="traps.html#t5">T5</a>), turning permissions off and relying on code review</p>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>Must hold → a settings rule or hook. Should → the instructions file.</li>
+            <li>Guarantees go in the managed layer.</li>
+            <li>It's 7% of the exam. Learn it cleanly, then study a heavier domain.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-P Exam Traps</strong> · Independent study notes · Not affiliated with Anthropic.</p>
+    <p>Domain names and weights: official CCAR-P Exam Guide v1.0 (effective July 2026).</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

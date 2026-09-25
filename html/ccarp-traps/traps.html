@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trap Families · CCAR-P Exam Traps</title>
+<meta name="description" content="The 16 recurring wrong-answer patterns on the CCAR-P exam: the tell, why it's wrong, and what the right answer looks like.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-P Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html">Start</a>
+      <a href="traps.html" aria-current="page">Trap Families</a>
+      <a href="constraint-map.html">Constraint Map</a>
+      <a href="domains.html">Domains</a>
+      <a href="autopsies.html">Autopsies</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Core of the notes</p>
+    <h1>The 16 trap families</h1>
+    <p class="lede">Nearly every wrong option on the exam belongs to one of these families. Learn the <em>tell</em>, the wording that gives the trap away, and you can strike the option before you've finished reading it.</p>
+  </section>
+
+  <div class="chips" style="margin-top:1rem">
+    <span class="chip found">Foundations shapes: T1–T4, T11</span>
+    <span class="chip pro">Professional shapes: T5–T10, T16</span>
+    <span class="chip course">Course patterns: T12–T15</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="seg" data-group-filter role="group" aria-label="Filter by group">
+      <button type="button" data-group="all" aria-pressed="true">All</button>
+      <button type="button" data-group="found" aria-pressed="false">Foundations</button>
+      <button type="button" data-group="pro" aria-pressed="false">Professional</button>
+      <button type="button" data-group="course" aria-pressed="false">Course patterns</button>
+    </div>
+    <span class="spacer"></span>
+    <button type="button" class="icon-btn" data-flash-toggle aria-pressed="false">Flashcard mode: off</button>
+  </div>
+
+  <div class="grid grid-2" data-trap-grid>
+
+    <article class="card trap-card" id="t1" data-group="found">
+      <header><span class="trap-id">T1</span><div><h3>Scale, not strategy</h3><span class="chip found">Foundations shape</span></div></header>
+      <p class="tell">"Switch to the largest model." "Move to a bigger context window." "Use a bigger embedding model."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Size is a knob, not a design. A bigger model doesn't fix auditability, permissions, a stale index, an overloaded prompt or context rot, and it usually makes the cost problem worse.</dd>
+          <dt>Right-answer pattern</dt><dd>Change the design at the layer that caused the failure: decompose, trim context, fix retrieval, scope permissions.</dd>
+          <dt>Seen in</dt><dd>Every domain. This is the most common distractor on the exam.</dd>
+        </dl>
+        <p class="hook">Hook: "A bigger container doesn't unsplit a clause."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t2" data-group="found">
+      <header><span class="trap-id">T2</span><div><h3>Knob, not design</h3><span class="chip found">Foundations shape</span></div></header>
+      <p class="tell">"Lower the temperature." "Raise max tokens." "Retrieve fewer (or more) chunks." "Raise the judge's temperature."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>It tunes how much a broken design wobbles without fixing the design. Low temperature makes output <em>repeatable</em>, not <em>correct</em>.</dd>
+          <dt>Right-answer pattern</dt><dd>A structural fix: examples, decomposition, a better chunking strategy, a deterministic grader.</dd>
+          <dt>Seen in</dt><dd>D2 prompting, D3 retrieval, D4 evals, D6 SLAs ("pin temperature to 0 and promise perfection").</dd>
+        </dl>
+        <p class="hook">Hook: "Repeatable ≠ correct."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t3" data-group="found">
+      <header><span class="trap-id">T3</span><div><h3>Louder, not explicit</h3><span class="chip found">Foundations shape</span></div></header>
+      <p class="tell">"Add a firmer line insisting the format be exact." "Tell the model never to forget." "Re-present the same diagram with more detail."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Emphasis adds no missing information or capability. A model can't attend to what's buried in an overloaded window just because you asked harder, and a committee's unstated objection doesn't go away when you repeat the pitch.</dd>
+          <dt>Right-answer pattern</dt><dd><em>Show</em> rather than <em>tell</em>: few-shot examples, explicit criteria, restructured context, or reframing the pitch for the real constraint.</dd>
+          <dt>Seen in</dt><dd>D2 (format drift), D4 (context rot), D6 (rejected proposals).</dd>
+        </dl>
+        <p class="hook">Hook: "Asking louder for what only an example can show."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t4" data-group="found">
+      <header><span class="trap-id">T4</span><div><h3>Prompt as guarantee</h3><span class="chip found">Foundations shape</span></div></header>
+      <p class="tell">"Add to the system prompt: never…" "Move the instruction into the tool description." "Add a line to CLAUDE.md."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Prompts and instruction files are <strong>guidance</strong>. They are probabilistic, so they shape what the model <em>probably</em> does. They can't enforce access, spending limits or compliance. A <em>must</em> requirement needs enforcement.</dd>
+          <dt>Right-answer pattern</dt><dd>A deterministic check in code, a permission rule, a hook, or access scoped to the requesting user's identity. Prompt-level defenses are a legitimate <em>layer</em>, but never the only control on a must.</dd>
+          <dt>Seen in</dt><dd>D5 (payment limits, PII leaving the network), D3 (the HR agent on a shared account), D7 ("a note is not a wall").</dd>
+        </dl>
+        <p class="hook">Hook: "A prompt asks. Code stops it."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t5" data-group="pro">
+      <header><span class="trap-id">T5</span><div><h3>Compliance theater</h3><span class="chip pro">Professional shape</span></div></header>
+      <p class="tell">"Log every call for later audit." "Add a privacy notice." "A manager signs off the weekly log." "More uptime dashboards." "A memo asserting compliance."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>It detects or documents the problem. It records the harm after it happens instead of preventing it. Verbose logging can even <em>create</em> exposure, for example by writing raw PHI into logs.</dd>
+          <dt>Right-answer pattern</dt><dd>A preventive control that blocks the action. For quality problems, a measured signal that pages you.</dd>
+          <dt>Seen in</dt><dd>D3 least privilege (official sample 1), D5 compliance, D4 monitoring.</dd>
+        </dl>
+        <p class="hook">Hook: "A log tells you the barn door was open."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t6" data-group="pro">
+      <header><span class="trap-id">T6</span><div><h3>Eval blindness</h3><span class="chip pro">Professional shape</span></div></header>
+      <p class="tell">"It read better in the demo, so ship it." "Watch production for regressions." "Wait for more customer reports." "Drop the verification step to go faster."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Without a fixed ruler you can't tell a real regression from noise, and debugging turns into waiting for complaints.</dd>
+          <dt>Right-answer pattern</dt><dd>A golden set, a recorded baseline, and a ship gate every change must pass. In production, sample outputs, score them, and alert on drift.</dd>
+          <dt>Seen in</dt><dd>D4 throughout, and in the "silent quality drop" autopsy.</dd>
+        </dl>
+        <p class="hook">Hook: "The demo flatters. The golden set decides."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t7" data-group="pro">
+      <header><span class="trap-id">T7</span><div><h3>Wrong-layer fix</h3><span class="chip pro">Professional shape</span></div></header>
+      <p class="tell">Rewriting the prompt when the index is stale. A bigger model when context is overloaded. A coordinator agent to patch a bad split. Enabling caching to fix context rot.</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>It fixes the loudest layer, usually the prompt or model because they're the most visible, instead of the layer that caused the failure. The wrong fix always <em>feels</em> productive.</dd>
+          <dt>Right-answer pattern</dt><dd>Diagnose first: What changed? What does the symptom track with? Which layer does that point to? The five suspects are prompt, context, retrieval, model and tooling.</dd>
+          <dt>Seen in</dt><dd>D4 diagnosis, and all four <a href="autopsies.html">autopsies</a>.</dd>
+        </dl>
+        <p class="hook">Hook: "Stop blaming the loudest layer."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t8" data-group="pro">
+      <header><span class="trap-id">T8</span><div><h3>Over-orchestration</h3><span class="chip pro">Professional shape</span></div></header>
+      <p class="tell">"One agent per field / section / report type." "Add a supervisor, coordinator or routing agent." "A separate agent to fetch one number."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Coordination replaces work. Every handoff can drop context, latency stacks up, and multi-agent systems burn roughly 15× the tokens of a chat.</dd>
+          <dt>Right-answer pattern</dt><dd>One well-contexted agent or a fixed workflow. Split only for <strong>context isolation</strong> or <strong>parallel breadth</strong> on work that genuinely separates.</dd>
+          <dt>Seen in</dt><dd>D1 multi-agent design, D3 (A2A used for a simple lookup).</dd>
+        </dl>
+        <p class="hook">Hook: "Every handoff is a place context gets dropped."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t9" data-group="pro">
+      <header><span class="trap-id">T9</span><div><h3>Gold plating</h3><span class="chip pro">Professional shape</span></div></header>
+      <p class="tell">"A human reviews every output." "Add a cross-checking model and a full dashboard." "Build an MCP server so future tools can plug in." "Add a model router now."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>It's the maximum build instead of the minimum that clears the constraint. It adds cost and latency nobody asked for, and a heavier proposal is harder to get approved.</dd>
+          <dt>Right-answer pattern</dt><dd>The smallest design that meets every stated constraint, with the trade-off named out loud.</dd>
+          <dt>Seen in</dt><dd>D1 (climbing the pattern ladder too high), D5 (reviewing everything), D6 (making the proposal "more impressive").</dd>
+        </dl>
+        <p class="hook">Hook: "The strongest architecture is usually the smallest one that clears the bar."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t10" data-group="pro">
+      <header><span class="trap-id">T10</span><div><h3>Premature optimization</h3><span class="chip pro">Professional shape</span></div></header>
+      <p class="tell">"Rewrite every prompt shorter." "Turn on caching right away." "Switch everything to the smallest model." Each is offered before anyone has measured.</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>You can't optimize what you haven't measured, and this makes risky changes that affect output quality first.</dd>
+          <dt>Right-answer pattern</dt><dd>Record a baseline. Take the output-neutral wins first: <strong>cache → route → batch</strong>. Change quality-affecting settings (prompt, model tier, context) last, one at a time, with an A/B test.</dd>
+          <dt>Seen in</dt><dd>D4 cost optimization. The buried clue is "haven't measured where the cost comes from yet".</dd>
+        </dl>
+        <p class="hook">Hook: "Free wins first. Risky wins last, and tested."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t11" data-group="found">
+      <header><span class="trap-id">T11</span><div><h3>Convenience over safety</h3><span class="chip found">Foundations shape</span></div></header>
+      <p class="tell">"Grant broad write access so it never hits a permission error." "Widen the shared allow rules to stop the prompts." "Give it a general web tool." "Grant prod write access during the incident."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>It trades a larger attack surface and blast radius for speed. Anything the agent can do, an attacker who controls its input can also do.</dd>
+          <dt>Right-answer pattern</dt><dd>Least privilege, and the existing approval and deploy path.</dd>
+          <dt>Seen in</dt><dd>D3 integration, D7 (incident response, shared settings).</dd>
+        </dl>
+        <p class="hook">Hook: "A tool the agent doesn't have is a tool an attacker can't reach."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t12" data-group="course">
+      <header><span class="trap-id">T12</span><div><h3>Answering the stated pillar</h3><span class="chip course">Course pattern</span></div></header>
+      <p class="tell">"Build the ambitious platform, since the VP asked to <em>transform</em> the team."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>What someone said out loud isn't necessarily the constraint. Discovery facts such as fixed reports, a modest budget or a stable format point to a different pillar.</dd>
+          <dt>Right-answer pattern</dt><dd>Serve the pillar the constraint points to (efficiency, transformation, productivity, cost or a performance target), and name what the choice costs on the others.</dd>
+          <dt>Seen in</dt><dd>D1 business value, D6 discovery.</dd>
+        </dl>
+        <p class="hook">Hook: "Hear 'transformation', architect for efficiency."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t13" data-group="course">
+      <header><span class="trap-id">T13</span><div><h3>Promising determinism</h3><span class="chip course">Course pattern</span></div></header>
+      <p class="tell">"Guarantee in writing that it will never misclassify." "Promise perfect accuracy by pinning temperature to 0."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>An LLM system is probabilistic by design, so no configuration can guarantee it is never wrong.</dd>
+          <dt>Right-answer pattern</dt><dd>A measured rate on a representative eval set, a p95 latency target, and an escalation path for misses and low-confidence or high-impact cases, reviewed on a schedule.</dd>
+          <dt>Seen in</dt><dd>D6 SLAs, D3 accuracy/latency trade-offs.</dd>
+        </dl>
+        <p class="hook">Hook: "Promise a measured rate and a plan for misses, never perfection."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t14" data-group="course">
+      <header><span class="trap-id">T14</span><div><h3>Self-reported confidence gate</h3><span class="chip course">Course pattern</span></div></header>
+      <p class="tell">"Have the agent rate its own confidence and only pause for a human when it's unsure."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>The expensive failure is the model being <em>confidently</em> wrong, and a confidently wrong model reports high confidence, so the gate never fires.</dd>
+          <dt>Right-answer pattern</dt><dd>Place the human by <strong>risk tier</strong> (impact × reversibility), enforced outside the model. Gate irreversible or high-stakes actions and let low-stakes, reversible ones flow.</dd>
+          <dt>Seen in</dt><dd>D5 human-in-the-loop.</dd>
+        </dl>
+        <p class="hook">Hook: "The gate is for the rare time the model is confidently, expensively wrong."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t15" data-group="course">
+      <header><span class="trap-id">T15</span><div><h3>Right rule, wrong scope</h3><span class="chip course">Course pattern</span></div></header>
+      <p class="tell">"Ask each engineer to add the deny rule to their personal settings." "Copy one senior engineer's setup onto everyone's machine."</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Per-person configuration is optional and drifts. One engineer who skips it reopens the hole, and copied setups aren't under source control.</dd>
+          <dt>Right-answer pattern</dt><dd>Put guarantees in <strong>managed</strong> policy, which can't be loosened from below. Put shared standards in checked-in <strong>project</strong> config. Keep personal settings personal.</dd>
+          <dt>Seen in</dt><dd>D7 team configuration.</dd>
+        </dl>
+        <p class="hook">Hook: "Right wall, wrong building."</p>
+      </div>
+    </article>
+
+    <article class="card trap-card" id="t16" data-group="pro">
+      <header><span class="trap-id">T16</span><div><h3>Stale fact <span class="kit">KIT</span></h3><span class="chip pro">Professional shape</span></div></header>
+      <p class="tell">"Retrieval is mandatory for any document question." "SOC 2 covers HIPAA." Claims that were true on an older platform or under older limits.</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>The platform has moved on (larger windows, prompt caching, Skills, HIPAA-ready access), so the option answers a question from a year ago.</dd>
+          <dt>Right-answer pattern</dt><dd>Reason from current capabilities. A small, stable corpus can go straight into the prompt and be cached, with no retrieval pipeline.</dd>
+          <dt>Seen in</dt><dd>D3 RAG, D5 compliance.</dd>
+        </dl>
+        <p class="hook">Hook: "True once isn't true now."</p>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="callout" style="margin-top:2rem">
+    <p><strong>How to use these on exam day:</strong> as you read each option, silently label it with its trap number. If three options each get a label, the fourth is your answer. For a multiple-response item, any option you can't label is a candidate.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-P Exam Traps</strong> · Independent study notes · Not affiliated with Anthropic.</p>
+    <p>Trap-family names are study-aid labels, not Anthropic terminology.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

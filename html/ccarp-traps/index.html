@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCAR-P Exam Traps</title>
+<meta name="description" content="Independent review notes for the Claude Certified Architect – Professional (CCAR-P) exam, organized around the wrong-answer patterns the exam is built on.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-P Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html" aria-current="page">Start</a>
+      <a href="traps.html">Trap Families</a>
+      <a href="constraint-map.html">Constraint Map</a>
+      <a href="domains.html">Domains</a>
+      <a href="autopsies.html">Autopsies</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Claude Certified Architect – Professional</p>
+    <h1>Spot the trap before it spots you.</h1>
+    <p class="lede">Most CCAR-P items give you four options that all sound reasonable. Three of them usually break one architectural principle each. These notes teach you to recognize those wrong-answer patterns on sight, so you can eliminate options by principle instead of by feel.</p>
+  </section>
+
+  <p class="eyebrow">Exam at a glance</p>
+  <div class="grid grid-4">
+    <div class="card stat"><div class="num">63</div><div class="lbl">items: multiple choice and multiple response</div></div>
+    <div class="card stat"><div class="num">120<small style="font-size:1rem"> min</small></div><div class="lbl">≈ 1.9 minutes per item</div></div>
+    <div class="card stat"><div class="num">720</div><div class="lbl">scaled pass mark (100–1,000 scale)</div></div>
+    <div class="card stat"><div class="num">0</div><div class="lbl">official practice exams. Build your own signal.</div></div>
+  </div>
+
+  <h2>The one idea behind every trap</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <p class="eyebrow" style="margin-top:0">Foundations asked</p>
+      <p class="mantra">"Can you build it?"</p>
+      <p>You wire the tools, prompts and agents together.</p>
+    </div>
+    <div class="card">
+      <p class="eyebrow" style="margin-top:0">Professional asks</p>
+      <p class="mantra">"<em>Should</em> you build it, and can you defend the call?"</p>
+      <p>You are the architect in the room when someone asks why you didn't pick the cheaper design.</p>
+    </div>
+  </div>
+
+  <h2>The three-move method</h2>
+  <ol class="steps">
+    <li>
+      <h3>Read for the constraint, not the topic</h3>
+      <p>The deciding clause is usually buried mid-stem: <strong>must, never, guarantee, reproducible, audit, cost ceiling, regulator, no baseline yet</strong>. Find it before you look at the options.</p>
+    </li>
+    <li>
+      <h3>Eliminate by principle</h3>
+      <p>Name the principle the item is testing (least privilege, simplest pattern, must → code, measure first) and strike every option that breaks it. Each wrong option usually maps to one of the <a href="traps.html">16 trap families</a>.</p>
+    </li>
+    <li>
+      <h3>On multiple-response items, judge each option alone</h3>
+      <p>Treat every option as a separate true/false against the stem, then select exactly the number the item asks for.</p>
+    </li>
+  </ol>
+  <div class="callout">
+    <p class="mantra">Find the constraint. Name the principle. Pick the option that breaks nothing.</p>
+    <p>Tie-breaker: the winning option usually <strong>removes</strong> something or is the <strong>simplest</strong> design that meets every constraint. It is almost never "use a bigger model" or "add more machinery".</p>
+  </div>
+
+  <h2>Study by weight</h2>
+  <p>The seven domains are not equal. Spend your hours in proportion to their weight, and take a diagnostic early. <a href="domains.html">Open the domain notes →</a></p>
+  <div class="card">
+    <div class="bars">
+      <a class="bar-row" href="domains.html#d3"><span class="bar-label">D3 · Integration<small>MCP vs API vs A2A, RAG, observability</small></span><span class="bar-track"><span class="bar-fill" style="width:100%"></span></span><span class="bar-val">19%</span></a>
+      <a class="bar-row" href="domains.html#d1"><span class="bar-label">D1 · Solution Design &amp; Architecture<small>Patterns, decomposition, multi-agent</small></span><span class="bar-track"><span class="bar-fill" style="width:89.5%"></span></span><span class="bar-val">17%</span></a>
+      <a class="bar-row" href="domains.html#d4"><span class="bar-label">D4 · Evaluation, Testing &amp; Optimization<small>Golden sets, A/B, diagnosis, cost</small></span><span class="bar-track"><span class="bar-fill" style="width:84.2%"></span></span><span class="bar-val">16%</span></a>
+      <a class="bar-row" href="domains.html#d5"><span class="bar-label">D5 · Governance, Safety &amp; Risk<small>Guardrails, HITL, GDPR/HIPAA/FedRAMP</small></span><span class="bar-track"><span class="bar-fill" style="width:73.7%"></span></span><span class="bar-val">14%</span></a>
+      <a class="bar-row" href="domains.html#d6"><span class="bar-label">D6 · Stakeholder Comms &amp; Lifecycle<small>Discovery, trade-offs, SLAs, handoff</small></span><span class="bar-track"><span class="bar-fill" style="width:73.7%"></span></span><span class="bar-val">14%</span></a>
+      <a class="bar-row" href="domains.html#d2"><span class="bar-label">D2 · Models, Prompting &amp; Context<small>Model choice, caching, Skills</small></span><span class="bar-track"><span class="bar-fill" style="width:68.4%"></span></span><span class="bar-val">13%</span></a>
+      <a class="bar-row" href="domains.html#d7"><span class="bar-label">D7 · Developer Productivity<small>Claude Code team config</small></span><span class="bar-track"><span class="bar-fill" style="width:36.8%"></span></span><span class="bar-val">7%</span></a>
+    </div>
+  </div>
+  <div class="callout warn">
+    <p><strong>Study-allocation trap:</strong> splitting hours evenly across domains, or pouring them into the topic you already enjoy. D7 is worth 7%. Learn it cleanly, then go back to D3.</p>
+  </div>
+
+  <h2>Your study path</h2>
+  <p>Tick steps off as you go. Progress is saved in this browser only.</p>
+  <div class="progress-line" aria-hidden="true"><span data-progress-bar></span></div>
+  <p class="src" data-progress-label>0 steps done</p>
+  <ul class="checklist" data-checklist>
+    <li><label><input type="checkbox" value="traps"><span><strong>Learn the 16 trap families.</strong> Read them once, then drill them in flashcard mode. <a href="traps.html">Trap Families</a></span></label></li>
+    <li><label><input type="checkbox" value="map"><span><strong>Memorize the constraint map.</strong> Stem keyword → principle → correct move. <a href="constraint-map.html">Constraint Map</a></span></label></li>
+    <li><label><input type="checkbox" value="d3"><span><strong>D3 Integration (19%).</strong> Least privilege, identity, MCP vs API vs A2A, RAG, observability. <a href="domains.html#d3">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d1"><span><strong>D1 Solution Design (17%).</strong> Pattern ladder, decomposition, when multi-agent pays. <a href="domains.html#d1">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d4"><span><strong>D4 Evaluation &amp; Optimization (16%).</strong> Golden sets, A/B discipline, cost order. <a href="domains.html#d4">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d5"><span><strong>D5 Governance &amp; Safety (14%).</strong> Must → code, guardrail layers, compliance lenses. <a href="domains.html#d5">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d6"><span><strong>D6 Stakeholders &amp; Lifecycle (14%).</strong> Discovery, decisions over diagrams, honest SLAs. <a href="domains.html#d6">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d2"><span><strong>D2 Models, Prompting &amp; Context (13%).</strong> Model choice, caching order, Skills. <a href="domains.html#d2">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d7"><span><strong>D7 Developer Productivity (7%).</strong> Guidance vs enforcement, config scopes. <a href="domains.html#d7">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="autopsies"><span><strong>Run the four production autopsies</strong> and memorize the three-question diagnosis tree. <a href="autopsies.html">Autopsies</a></span></label></li>
+    <li><label><input type="checkbox" value="practice"><span><strong>Take the practice set</strong> and review which traps caught you. <a href="practice.html">Practice</a></span></label></li>
+    <li><label><input type="checkbox" value="examday"><span><strong>Rehearse the exam-day plan:</strong> two passes, never blank, "choose N" means exactly N. <a href="exam-day.html">Exam Day</a></span></label></li>
+  </ul>
+
+  <h2>About these notes</h2>
+  <div class="card">
+    <p>These notes draw on three sources:</p>
+    <ul>
+      <li>Vivek Amilkanthawar's free course, <a href="https://youtu.be/YjjeATv2Edc" rel="noopener">CCAR-P Full Course: All 16 Episodes in One Video</a>. The <code>▶ timestamps</code> throughout the site point into it.</li>
+      <li>The author's companion <a href="https://github.com/vivek081166/ccarp-study-kit" rel="noopener">ccarp-study-kit</a>. Items from the kit are tagged <span class="kit">KIT</span>.</li>
+      <li>The official <strong>CCAR-P Exam Guide v1.0</strong> (effective July 2026), linked from the <a href="https://anthropic-partners.skilljar.com/page/partner-certifications" rel="noopener">Anthropic Partner Academy</a>. Exam facts and domain weights were checked against it on 2026-09-25.</li>
+    </ul>
+    <p>Trap-family names such as "scale, not strategy" and "compliance theater" are study-aid labels, not Anthropic terminology. Every practice question is original. None are real or leaked exam items.</p>
+    <p class="src">This is independent study material. It is not affiliated with or endorsed by Anthropic. Always check the official certification page for current exam details.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-P Exam Traps</strong> · Independent study notes · Not affiliated with Anthropic.</p>
+    <p>Find the constraint. Name the principle. Pick the option that breaks nothing.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
