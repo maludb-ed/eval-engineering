@@ -127,20 +127,23 @@ require __DIR__ . '/includes/header.php';
             <?php foreach ($MODULES as $m): ?>
                 <div class="col">
                     <div class="ev-module-card p-4 h-100" id="module-<?= (int)$m['no'] ?>">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <span class="ev-module-icon"><i class="bi bi-<?= htmlspecialchars($m['icon']) ?>"></i></span>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="ev-module-no">Module <?= (int)$m['no'] ?></span>
-                                    <span class="badge text-bg-light border">
-                                        <i class="bi bi-clock me-1"></i><?= htmlspecialchars($m['time']) ?>
-                                    </span>
+                        <a class="ev-card-link stretched-link" href="module.php?m=<?= (int)$m['no'] ?>"
+                           aria-label="Open Module <?= (int)$m['no'] ?>: <?= htmlspecialchars($m['title']) ?>">
+                            <div class="d-flex align-items-start gap-3 mb-3">
+                                <span class="ev-module-icon"><i class="bi bi-<?= htmlspecialchars($m['icon']) ?>"></i></span>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="ev-module-no">Module <?= (int)$m['no'] ?></span>
+                                        <span class="badge text-bg-light border">
+                                            <i class="bi bi-clock me-1"></i><?= htmlspecialchars($m['time']) ?>
+                                        </span>
+                                    </div>
+                                    <h3 class="h5 fw-bold mb-0 mt-1"><?= htmlspecialchars($m['title']) ?></h3>
                                 </div>
-                                <h3 class="h5 fw-bold mb-0 mt-1"><?= htmlspecialchars($m['title']) ?></h3>
                             </div>
-                        </div>
 
-                        <p class="text-secondary small mb-2"><?= htmlspecialchars($m['blurb']) ?></p>
+                            <p class="text-secondary small mb-2"><?= htmlspecialchars($m['blurb']) ?></p>
+                        </a>
                         <p class="small mb-3">
                             <span class="badge rounded-pill text-bg-secondary-subtle text-secondary-emphasis border ev-task-badge">
                                 <i class="bi bi-bookmark-check me-1"></i>Task <?= htmlspecialchars($m['task']) ?>
@@ -150,11 +153,19 @@ require __DIR__ . '/includes/header.php';
                         <ul class="ev-topic-list">
                             <?php foreach ($m['topics'] as $t): ?>
                                 <li>
-                                    <span class="ev-topic-id"><?= htmlspecialchars($t['id']) ?></span>
-                                    <span><?= htmlspecialchars($t['title']) ?></span>
+                                    <a href="module.php?m=<?= (int)$m['no'] ?>#<?= htmlspecialchars($t['id']) ?>">
+                                        <span class="ev-topic-id"><?= htmlspecialchars($t['id']) ?></span>
+                                        <span><?= htmlspecialchars($t['title']) ?></span>
+                                    </a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
+
+                        <div class="mt-3 pt-2 border-top">
+                            <a class="ev-module-open small fw-semibold text-decoration-none" href="module.php?m=<?= (int)$m['no'] ?>">
+                                Study this module <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>

@@ -32,5 +32,50 @@
         applyTheme(next);
       });
     });
+
+    initQuizzes();
   });
+
+  // ---- Sample-question quizzes (module.php) -----------------------------
+  function initQuizzes() {
+    document.querySelectorAll('.ev-quiz').forEach(function (quiz) {
+      var answer = parseInt(quiz.getAttribute('data-answer'), 10);
+      var options = quiz.querySelectorAll('.ev-quiz-option');
+      var checkBtn = quiz.querySelector('.ev-quiz-check');
+      var result = quiz.querySelector('.ev-quiz-result');
+      var explain = quiz.querySelector('.ev-quiz-explain');
+      var selected = -1;
+      var done = false;
+
+      options.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          if (done) return;
+          selected = parseInt(opt.getAttribute('data-idx'), 10);
+          options.forEach(function (o) { o.classList.remove('selected'); });
+          opt.classList.add('selected');
+          checkBtn.disabled = false;
+        });
+      });
+
+      checkBtn.addEventListener('click', function () {
+        if (done || selected < 0) return;
+        done = true;
+        options.forEach(function (o) {
+          var idx = parseInt(o.getAttribute('data-idx'), 10);
+          o.classList.remove('selected');
+          if (idx === answer) o.classList.add('correct');
+          else if (idx === selected) o.classList.add('incorrect');
+          o.disabled = true;
+        });
+        var ok = selected === answer;
+        result.textContent = ok
+          ? 'Correct.'
+          : 'Not quite — the correct answer is ' + String.fromCharCode(65 + answer) + '.';
+        result.classList.remove('d-none');
+        result.classList.add(ok ? 'text-success' : 'text-danger');
+        explain.classList.remove('d-none');
+        checkBtn.classList.add('d-none');
+      });
+    });
+  }
 })();
