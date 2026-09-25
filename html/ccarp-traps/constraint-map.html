@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Constraint Map · CCAR-P Exam Traps</title>
+<meta name="description" content="Searchable map from CCAR-P question-stem clues to the principle being tested, the correct move, and the usual distractors.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-P Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html">Start</a>
+      <a href="traps.html">Trap Families</a>
+      <a href="constraint-map.html" aria-current="page">Constraint Map</a>
+      <a href="domains.html">Domains</a>
+      <a href="autopsies.html">Autopsies</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Cheat sheet</p>
+    <h1>Constraint map</h1>
+    <p class="lede">The clause that decides an item is usually buried mid-stem. This map links common stem clues to the principle being tested, the move that satisfies it, and the trap families the distractors usually come from.</p>
+  </section>
+
+  <div class="toolbar">
+    <input type="search" id="map-search" placeholder="Search clues, e.g. cache, audit, PHI, tools…" aria-label="Search the constraint map">
+    <select id="map-domain" aria-label="Filter by domain">
+        <option value="all">All domains</option>
+        <option value="d1">D1 Design</option>
+        <option value="d2">D2 Models</option>
+        <option value="d3">D3 Integration</option>
+        <option value="d4">D4 Eval</option>
+        <option value="d5">D5 Governance</option>
+        <option value="d6">D6 Stakeholders</option>
+        <option value="d7">D7 DevProd</option>
+    </select>
+    <span class="src" data-map-count></span>
+  </div>
+
+  <div class="table-wrap">
+    <table class="stack" data-map-table>
+      <thead>
+        <tr><th>If the stem says…</th><th>Principle</th><th>Correct move</th><th>Typical distractors</th><th>Domain</th></tr>
+      </thead>
+      <tbody>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">“must / never / guarantee / cannot be allowed”</td>
+          <td data-label="Principle"><em>Must</em> → code; <em>should</em> → prompt</td>
+          <td data-label="Correct move">Deterministic check, permission rule or hook, outside the model</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Governance</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">“reproducible / auditable / same path every time”</td>
+          <td data-label="Principle">Predictability over flexibility</td>
+          <td data-label="Correct move">Fixed workflow with a bounded model step, not an agent</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip pro" href="traps.html#t8">T8 Over-orchestration</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Design</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">“same fields / fixed format / rarely changes”</td>
+          <td data-label="Principle">Simplest pattern that meets the requirement</td>
+          <td data-label="Correct move">Augmented model or workflow</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip pro" href="traps.html#t8">T8 Over-orchestration</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Design</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">One prompt doing several jobs; output inconsistent run to run</td>
+          <td data-label="Principle">Decomposition</td>
+          <td data-label="Correct move">A chain of steps, each one testable, passed forward in code</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip pro" href="traps.html#t9">T9 Gold plating</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Design</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">System drifts; corrections “never flow back anywhere”</td>
+          <td data-label="Principle">The four-part shape includes <strong>feedback</strong></td>
+          <td data-label="Correct move">Capture corrections and outcomes; feed them into evals and the next update</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip pro" href="traps.html#t8">T8 Over-orchestration</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Design</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Tightly coupled parts (clauses cross-reference each other) + “parallelize for latency”</td>
+          <td data-label="Principle">Don't split shared context</td>
+          <td data-label="Correct move">One well-contexted agent; parallelize only after measuring a latency problem</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t8">T8 Over-orchestration</a><a class="chip pro" href="traps.html#t7">T7 Wrong layer</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Design</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Independent directions, high-value task, context overflowing</td>
+          <td data-label="Principle">Context isolation / parallel breadth</td>
+          <td data-label="Correct move">Orchestrator + parallel sub-agents with their own context, and the ~15× token cost justified</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Design</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Sponsor says “transform”; discovery shows fixed reports + modest budget</td>
+          <td data-label="Principle">Serve the pillar the constraint points to</td>
+          <td data-label="Correct move">Simple workflow aimed at efficiency/productivity, with the avoided cost named</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t12">T12 Stated pillar</a><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip pro" href="traps.html#t8">T8 Over-orchestration</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Design</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">“accuracy well past target, cost hurting”</td>
+          <td data-label="Principle">Tune down; let the eval prove it</td>
+          <td data-label="Correct move">Drop a model tier and rerun the eval set</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip found" href="traps.html#t2">T2 Knob</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Models</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">“output format wobbles; format described in prose”</td>
+          <td data-label="Principle">Show, don't tell</td>
+          <td data-label="Correct move">Add a few worked examples of the exact output</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip found" href="traps.html#t3">T3 Louder</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Models</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Same large static prompt/policy on every request + short dynamic message</td>
+          <td data-label="Principle">Prompt caching needs a stable prefix</td>
+          <td data-label="Correct move">Static first, dynamic last; enable caching</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t16">T16 Stale fact</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Models</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Caching on, but <code>cache_read_input_tokens</code> ≈ 0 <span class="kit">KIT</span></td>
+          <td data-label="Principle">The prefix isn't byte-stable</td>
+          <td data-label="Correct move">Move timestamps and other per-request content after the cached block; set the breakpoint on the last identical block</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Models</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Chain of thought added; latency up, eval accuracy unchanged</td>
+          <td data-label="Principle">CoT isn't free</td>
+          <td data-label="Correct move">Use reasoning only where it measurably earns its cost</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Models</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">“agent gets worse over long sessions; paste every doc up front”</td>
+          <td data-label="Principle">More context ≠ better context</td>
+          <td data-label="Correct move">Retrieval or Skills so each step sees only what it needs</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip found" href="traps.html#t3">T3 Louder</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Models</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“only needs to read tickets and draft replies” (but has refund/delete)</td>
+          <td data-label="Principle">Least privilege</td>
+          <td data-label="Correct move"><strong>Remove</strong> the unused tools</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“shared service account can read every record”</td>
+          <td data-label="Principle">The agent's authority should equal the user's</td>
+          <td data-label="Correct move">Query on behalf of the requesting user so the system enforces access</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Agent reads emails / web pages / documents + has a powerful tool</td>
+          <td data-label="Principle">Indirect prompt injection</td>
+          <td data-label="Correct move">Treat content as untrusted data + least privilege + a deterministic authorization step</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“one value, once, from an endpoint you already call”</td>
+          <td data-label="Principle">Simplest integration mechanism</td>
+          <td data-label="Correct move">Direct API call</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip pro" href="traps.html#t8">T8 Over-orchestration</a><a class="chip found" href="traps.html#t11">T11 Convenience</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Many tools, changing often, shared across several agents</td>
+          <td data-label="Principle">Reusable tool surface</td>
+          <td data-label="Correct move">MCP server with tool discovery</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t8">T8 Over-orchestration</a><a class="chip found" href="traps.html#t11">T11 Convenience</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Sub-task genuinely needs its own reasoning, context and tools</td>
+          <td data-label="Principle">Specialist delegation</td>
+          <td data-label="Correct move">Agent-to-agent, accepting the coordination cost</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Gold plating</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“dozens of tools; picks the wrong one; latency and cost climbing”</td>
+          <td data-label="Principle">Least privilege for attention</td>
+          <td data-label="Correct move">Trim tools to the workflow + load the rest on demand</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip pro" href="traps.html#t7">T7 Wrong layer</a><a class="chip pro" href="traps.html#t8">T8 Over-orchestration</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">MCP server forwards the client's token to upstream APIs <span class="kit">KIT</span></td>
+          <td data-label="Principle">Confused deputy</td>
+          <td data-label="Correct move">Audience-bound tokens; the server uses its own scoped credentials upstream</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“right after documents were refreshed / re-embedded”; latency normal</td>
+          <td data-label="Principle">Stale or mismatched index</td>
+          <td data-label="Correct move">Investigate retrieval/indexing first; reindex consistently</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t7">T7 Wrong layer</a><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“clauses split across two chunks”</td>
+          <td data-label="Principle">Chunk for coherence</td>
+          <td data-label="Correct move">Split on the document's own structure (clause, section)</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“how many / filter / aggregate” over records</td>
+          <td data-label="Principle">Match retrieval to data shape</td>
+          <td data-label="Correct move">Query the database directly</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip pro" href="traps.html#t7">T7 Wrong layer</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Code questions: “where is X defined / what calls it?”</td>
+          <td data-label="Principle">Code has structure</td>
+          <td data-label="Correct move">Retrieve by symbol / call graph, not fuzzy similarity</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“a few hundred pages, rarely changes”</td>
+          <td data-label="Principle">Sometimes no retrieval</td>
+          <td data-label="Correct move">Put it in the prompt and cache it</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t16">T16 Stale fact</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“dashboards green, but quality slipping”</td>
+          <td data-label="Principle">Monitor quality, not only uptime</td>
+          <td data-label="Correct move">Sample outputs, score against a rubric/judge, alert on drift</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t6">T6 Eval blindness</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Average latency fine, users still abandon</td>
+          <td data-label="Principle">Watch the tail</td>
+          <td data-label="Correct move">Trace per stage; target p95, not the mean</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip found" href="traps.html#t2">T2 Knob</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">“make it faster but keep quality defensible”</td>
+          <td data-label="Principle">Accuracy ↔ latency trade-off</td>
+          <td data-label="Correct move">Route simple traffic to a faster model, keep verification, commit to p95 + escalation</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t6">T6 Eval blindness</a><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip found" href="traps.html#t2">T2 Knob</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Integration</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Several changes shipped in one release</td>
+          <td data-label="Principle">Change one variable at a time</td>
+          <td data-label="Correct move">A/B test each change against the golden set</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t6">T6 Eval blindness</a><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Eval</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">“haven't measured where cost comes from yet”</td>
+          <td data-label="Principle">Baseline before optimizing</td>
+          <td data-label="Correct move">Measure first</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t10">T10 Premature opt.</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Eval</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Static block + simple work + not time-sensitive</td>
+          <td data-label="Principle">Output-neutral cost wins</td>
+          <td data-label="Correct move">Cache + route + batch; check the bill before and after</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip pro" href="traps.html#t10">T10 Premature opt.</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Eval</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Fails only on the longest inputs; details lost mid-document</td>
+          <td data-label="Principle">Context problem (lost in the middle)</td>
+          <td data-label="Correct move">Chunk / summarize section by section</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t7">T7 Wrong layer</a><a class="chip found" href="traps.html#t3">T3 Louder</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Eval</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Noisy judge scores on text-to-SQL</td>
+          <td data-label="Principle">Code-grade where right/wrong is clear</td>
+          <td data-label="Correct move">Run the query; compare returned rows</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip pro" href="traps.html#t9">T9 Gold plating</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Eval</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">High accuracy eval; healthcare / PII system</td>
+          <td data-label="Principle">Safety and security are first-class metrics</td>
+          <td data-label="Correct move">A separate safety eval with its own pass line</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Eval</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">“must never leave the internal network”</td>
+          <td data-label="Principle">Enforce at the boundary</td>
+          <td data-label="Correct move">A code check on every outbound call that blocks restricted fields</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Governance</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Irreversible action + “worried about throughput”</td>
+          <td data-label="Principle">Human by risk tier</td>
+          <td data-label="Correct move">Gate only the irreversible, high-impact step</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip course" href="traps.html#t14">T14 Self-confidence</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Governance</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">EU users; data must stay in region and be deletable</td>
+          <td data-label="Principle">Map the data flow first</td>
+          <td data-label="Correct move">Region pinning + minimization + per-user deletion</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Governance</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Protected health information (PHI)</td>
+          <td data-label="Principle">HIPAA = BAA + safeguards</td>
+          <td data-label="Correct move">BAA + HIPAA-ready access; no raw PHI in logs</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip pro" href="traps.html#t16">T16 Stale fact</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Governance</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">“FedRAMP High”</td>
+          <td data-label="Principle">FedRAMP authorizes the <em>environment</em></td>
+          <td data-label="Correct move">Deploy inside an authorized boundary</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t7">T7 Wrong layer</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Governance</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Occasional fabricated facts or citations</td>
+          <td data-label="Principle">Hallucination hygiene</td>
+          <td data-label="Correct move">Allow “I don't know”, require quotes, verify claims against them</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Scale</a><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip found" href="traps.html#t3">T3 Louder</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Governance</span></td>
+        </tr>
+        <tr data-domain="d6">
+          <td data-label="If the stem says" class="clue">“rejected twice; the design is correct”</td>
+          <td data-label="Principle">Alignment problem, not architecture</td>
+          <td data-label="Correct move">Back to discovery; present the design as a decision that serves their constraint</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t3">T3 Louder</a><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip pro" href="traps.html#t7">T7 Wrong layer</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D6 Stakeholders</span></td>
+        </tr>
+        <tr data-domain="d6">
+          <td data-label="If the stem says" class="clue">“sign off that it will never misclassify”</td>
+          <td data-label="Principle">No determinism promises</td>
+          <td data-label="Correct move">Measured rate + human review path for low-confidence / high-impact cases</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t2">T2 Knob</a><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D6 Stakeholders</span></td>
+        </tr>
+        <tr data-domain="d6">
+          <td data-label="If the stem says" class="clue">Justifying a cheaper, slightly less accurate model to a sponsor</td>
+          <td data-label="Principle">Narrate the trade-off in business terms</td>
+          <td data-label="Correct move">What it buys, what it costs, which pillar it serves</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t3">T3 Louder</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D6 Stakeholders</span></td>
+        </tr>
+        <tr data-domain="d6">
+          <td data-label="If the stem says" class="clue">“an assistant that answers staff questions” (a feature)</td>
+          <td data-label="Principle">Discovery finds the deciding constraint</td>
+          <td data-label="Correct move">Ask what must never happen; find the one constraint that eliminates options</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip found" href="traps.html#t1">T1 Scale</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D6 Stakeholders</span></td>
+        </tr>
+        <tr data-domain="d7">
+          <td data-label="If the stem says" class="clue">“guarantee no engineer's agent can run destructive commands”</td>
+          <td data-label="Principle">Enforcement at the right scope</td>
+          <td data-label="Correct move">Managed-policy deny rule + allow list for routine work</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip course" href="traps.html#t15">T15 Wrong scope</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D7 DevProd</span></td>
+        </tr>
+        <tr data-domain="d7">
+          <td data-label="If the stem says" class="clue">Shared build/test commands vs personal shortcuts</td>
+          <td data-label="Principle">Right content, right layer</td>
+          <td data-label="Correct move">Checked-in project file for shared; personal file outside the repo</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Gold plating</a><a class="chip course" href="traps.html#t15">T15 Wrong scope</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D7 DevProd</span></td>
+        </tr>
+        <tr data-domain="d7">
+          <td data-label="If the stem says" class="clue">Incident: “give the tool prod write access to go faster”</td>
+          <td data-label="Principle">Least privilege under pressure</td>
+          <td data-label="Correct move">Read, diagnose, propose; changes go through the normal deploy path</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t11">T11 Convenience</a><a class="chip found" href="traps.html#t4">T4 Prompt-as-guarantee</a><a class="chip pro" href="traps.html#t5">T5 Compliance theater</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D7 DevProd</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="empty-note" data-map-empty hidden>No clues match. Try a broader word.</p>
+  </div>
+
+  <div class="callout" style="margin-top:2rem">
+    <p><strong>Pattern across the three official sample questions:</strong> none of the correct answers was a bigger model, and none added machinery. Each one found the real layer, removed what shouldn't be there, and kept the simplest design that met the constraint.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-P Exam Traps</strong> · Independent study notes · Not affiliated with Anthropic.</p>
+    <p>Rows tagged <span class="kit">KIT</span> come from the ccarp-study-kit rather than the video course.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
