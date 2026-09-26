@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Constraint Map · CCAR-F Exam Traps</title>
+<meta name="description" content="Searchable map from CCA-F question-stem clues to the principle tested, the correct mechanism, and the usual distractors.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-F Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html">Start</a>
+      <a href="traps.html">Trap Families</a>
+      <a href="constraint-map.html" aria-current="page">Constraint Map</a>
+      <a href="domains.html">Domains</a>
+      <a href="scenarios.html">Scenarios</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Cheat sheet</p>
+    <h1>Constraint map</h1>
+    <p class="lede">Foundations stems describe a symptom or a requirement, and the answer is a specific mechanism. This map links 69 common stem clues to the principle being tested, the move that satisfies it, and the trap families the distractors usually come from.</p>
+  </section>
+
+  <div class="toolbar">
+    <input type="search" id="map-search" placeholder="Search clues, e.g. hook, batch, CLAUDE.md, retry…" aria-label="Search the constraint map">
+    <select id="map-domain" aria-label="Filter by domain">
+        <option value="all">All domains</option>
+        <option value="d1">D1 Agentic</option>
+        <option value="d2">D2 Tools &amp; MCP</option>
+        <option value="d3">D3 Claude Code</option>
+        <option value="d4">D4 Prompting</option>
+        <option value="d5">D5 Context</option>
+    </select>
+    <span class="src" data-map-count></span>
+  </div>
+
+  <div class="table-wrap">
+    <table class="stack" data-map-table>
+      <thead><tr><th>If the stem says…</th><th>Principle</th><th>Correct move</th><th>Typical distractors</th><th>Domain</th></tr></thead>
+      <tbody>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Loop exits after the first tool request; the task never finishes</td>
+          <td data-label="Principle">The inspect step is missing</td>
+          <td data-label="Correct move">Check <code>stop_reason</code>; on <code>tool_use</code>, execute, append and call again</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Knob, not design</a><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Model repeats the identical tool call forever</td>
+          <td data-label="Principle">The append step is missing</td>
+          <td data-label="Correct move">Append the tool result to the conversation history</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a><a class="chip found" href="traps.html#t2">T2 Text as control flow</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">“How should the loop decide it's done?”</td>
+          <td data-label="Principle"><code>stop_reason</code> drives control flow</td>
+          <td data-label="Correct move">Exit on <code>end_turn</code>; any cap is only a fail-safe</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t2">T2 Text as control flow</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Every subagent reported success, but coverage has holes</td>
+          <td data-label="Principle">Decomposition was scoped too narrowly</td>
+          <td data-label="Correct move">Fix the coordinator's task decomposition</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t16">T16 Over-engineering</a><a class="chip pro" href="traps.html#t7">T7 Assumed shared memory</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">One subagent failed mid-workflow; siblings finished</td>
+          <td data-label="Principle">Side effects may already be committed</td>
+          <td data-label="Correct move">Retry only the failed subagent</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a><a class="chip course" href="traps.html#t15">T15 Error conflation</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Coordinator can't delegate at all</td>
+          <td data-label="Principle">Delegation needs the Task tool</td>
+          <td data-label="Correct move">Add <code>Task</code> to the coordinator's <code>allowedTools</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a><a class="chip course" href="traps.html#t16">T16 Over-engineering</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Subagent “should already know” earlier findings</td>
+          <td data-label="Principle">Subagent context is isolated</td>
+          <td data-label="Correct move">Pass the findings summary explicitly in the Task prompt</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t7">T7 Assumed shared memory</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Rule must hold <strong>every time</strong> (refund limit, ID verification)</td>
+          <td data-label="Principle">Guarantee → deterministic control</td>
+          <td data-label="Correct move">Hook or prerequisite gate that blocks the tool call</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Tool results arrive in mixed date/status formats</td>
+          <td data-label="Principle">Normalize deterministically</td>
+          <td data-label="Correct move"><code>PostToolUse</code> hook transforms the result before the model sees it</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a><a class="chip found" href="traps.html#t4">T4 Knob, not design</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Steps fully known in advance (per-file review)</td>
+          <td data-label="Principle">Predictable → prompt chaining</td>
+          <td data-label="Correct move">Fixed pipeline: per-file passes + integration pass</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t16">T16 Over-engineering</a><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Open-ended investigation (hidden legacy dependencies)</td>
+          <td data-label="Principle">Unknown → adaptive</td>
+          <td data-label="Correct move">Dynamic decomposition that generates subtasks from findings</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Explore several alternatives from one expensive analysis</td>
+          <td data-label="Principle">Branch from a shared baseline</td>
+          <td data-label="Correct move"><code>fork_session</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t11">T11 Stale context</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Resuming after the code changed</td>
+          <td data-label="Principle">Stale tool results</td>
+          <td data-label="Correct move">Name what changed, or start a fresh session seeded with a summary</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t11">T11 Stale context</a><a class="chip pro" href="traps.html#t7">T7 Assumed shared memory</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d1">
+          <td data-label="If the stem says" class="clue">Escalation hands the human a transcript</td>
+          <td data-label="Principle">Structured handoff</td>
+          <td data-label="Correct move">Customer ID, root cause, amount, recommended action</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t10">T10 Lossy handoff</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D1 Agentic</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Agent confuses two similar tools</td>
+          <td data-label="Principle">Descriptions drive selection</td>
+          <td data-label="Correct move">Expand descriptions: inputs, examples, edge cases, boundaries vs siblings</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t16">T16 Over-engineering</a><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Good descriptions, but the system prompt's keywords steer to the wrong tool</td>
+          <td data-label="Principle">Prompt and descriptions interact</td>
+          <td data-label="Correct move">Review the system prompt wording together with the descriptions</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t16">T16 Over-engineering</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Agent retries a policy violation over and over</td>
+          <td data-label="Principle">Business errors aren't retryable</td>
+          <td data-label="Correct move"><code>retriable: false</code> + customer-friendly explanation</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t15">T15 Error conflation</a><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Tool returns “operation failed”</td>
+          <td data-label="Principle">Structured error metadata</td>
+          <td data-label="Correct move"><code>errorCategory</code>, <code>isRetryable</code>, description</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t15">T15 Error conflation</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Zero search results treated as a failure</td>
+          <td data-label="Principle">Empty ≠ error</td>
+          <td data-label="Correct move">Report a valid empty result distinctly from an access failure</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t15">T15 Error conflation</a><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Malformed request vs downstream 503</td>
+          <td data-label="Principle">Did the tool execute?</td>
+          <td data-label="Correct move">Protocol error vs <code>isError</code> tool result</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t15">T15 Error conflation</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Subagent has 18 tools and misuses some</td>
+          <td data-label="Principle">Least privilege for tools</td>
+          <td data-label="Correct move">Scope 4–5 role-specific tools</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t18">T18 Tool sprawl</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">A tool call must <strong>always</strong> happen / a specific tool must run first</td>
+          <td data-label="Principle"><code>tool_choice</code></td>
+          <td data-label="Correct move"><code>"any"</code> for some tool; forced selection for a named tool</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a><a class="chip course" href="traps.html#t18">T18 Tool sprawl</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Teammates don't get the MCP server</td>
+          <td data-label="Principle">Scope</td>
+          <td data-label="Correct move">Project <code>.mcp.json</code> in the repo</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t12">T12 Wrong config scope</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">API key needed in <code>.mcp.json</code></td>
+          <td data-label="Principle">No committed secrets</td>
+          <td data-label="Correct move"><code>${ENV_VAR}</code> expansion</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t12">T12 Wrong config scope</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Server runs on the same machine</td>
+          <td data-label="Principle">Transport</td>
+          <td data-label="Correct move">stdio (SSE only for remote hosts)</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t16">T16 Over-engineering</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Integrating a mainstream issue tracker</td>
+          <td data-label="Principle">Buy before build</td>
+          <td data-label="Correct move">Use the existing community MCP server</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t16">T16 Over-engineering</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Find where a function is called / files by extension</td>
+          <td data-label="Principle">Contents vs names</td>
+          <td data-label="Correct move">Grep for contents; Glob for paths</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d2">
+          <td data-label="If the stem says" class="clue">Edit fails: anchor text not unique</td>
+          <td data-label="Principle">Edit matches unique text</td>
+          <td data-label="Correct move">Fall back to Read + Write</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t13">T13 Invented feature</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D2 Tools &amp; MCP</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Rule works for one developer, not teammates</td>
+          <td data-label="Principle">Placement, not phrasing</td>
+          <td data-label="Correct move">Move it from <code>~/.claude/CLAUDE.md</code> to project <code>CLAUDE.md</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t12">T12 Wrong config scope</a><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Giant always-loaded <code>CLAUDE.md</code></td>
+          <td data-label="Principle">Modular memory</td>
+          <td data-label="Correct move"><code>@import</code> + <code>.claude/rules/</code> topic files</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a><a class="chip course" href="traps.html#t16">T16 Over-engineering</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Unsure which instructions are active</td>
+          <td data-label="Principle">Verify, don't guess</td>
+          <td data-label="Correct move">Run <code>/memory</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Whole team needs <code>/review</code> on clone</td>
+          <td data-label="Principle">Shared command location</td>
+          <td data-label="Correct move"><code>.claude/commands/</code> in the repo</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t12">T12 Wrong config scope</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Occasional workflow bloating every session</td>
+          <td data-label="Principle">On-demand container</td>
+          <td data-label="Correct move">A skill in <code>.claude/skills/</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Skill's verbose output floods the conversation</td>
+          <td data-label="Principle">Structural isolation</td>
+          <td data-label="Correct move"><code>context: fork</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Review skill must never write files</td>
+          <td data-label="Principle">Frontmatter guarantee</td>
+          <td data-label="Correct move"><code>allowed-tools</code> restricted to reads</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Test-file conventions for files spread across directories</td>
+          <td data-label="Principle">Pattern-scoped rules</td>
+          <td data-label="Correct move"><code>.claude/rules/</code> file with <code>paths: **/*.test.*</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t16">T16 Over-engineering</a><a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Monolith → microservices, dozens of files</td>
+          <td data-label="Principle">Complex → plan first</td>
+          <td data-label="Correct move">Plan mode from the start (Explore sub-agent for discovery)</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Add a single validation check</td>
+          <td data-label="Principle">Contained → direct</td>
+          <td data-label="Correct move">Direct execution</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t16">T16 Over-engineering</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Output inconsistent after a prose spec</td>
+          <td data-label="Principle">Show, don't describe</td>
+          <td data-label="Correct move">2–3 concrete input/output example pairs</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a><a class="chip found" href="traps.html#t4">T4 Knob, not design</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Fixing one bug breaks another</td>
+          <td data-label="Principle">Interacting issues</td>
+          <td data-label="Correct move">Send them together in one detailed message</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Claude Code hangs in the CI job</td>
+          <td data-label="Principle">Non-interactive mode</td>
+          <td data-label="Correct move"><code>-p</code> / <code>--print</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t13">T13 Invented feature</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Pipeline must parse the findings</td>
+          <td data-label="Principle">Enforced structure</td>
+          <td data-label="Correct move"><code>--output-format json</code> + <code>--json-schema</code></td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t13">T13 Invented feature</a><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Same session wrote and reviewed the code</td>
+          <td data-label="Principle">Self-review bias</td>
+          <td data-label="Correct move">Fresh, independent review instance</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t9">T9 Self-review</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d3">
+          <td data-label="If the stem says" class="clue">Re-review after new commits floods duplicates</td>
+          <td data-label="Principle">Carry prior findings</td>
+          <td data-label="Correct move">Include earlier findings in context; report only new issues</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t11">T11 Stale context</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D3 Claude Code</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Too many false positives in review</td>
+          <td data-label="Principle">Explicit criteria</td>
+          <td data-label="Correct move">Categorical rules for what to report and what to skip; disable the noisy category meanwhile</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a><a class="chip course" href="traps.html#t16">T16 Over-engineering</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Inconsistent format or extraction</td>
+          <td data-label="Principle">Examples, not sampling</td>
+          <td data-label="Correct move">2–4 targeted few-shot examples incl. edge/ambiguous cases</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t4">T4 Knob, not design</a><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Most reliable structured output</td>
+          <td data-label="Principle">Tool use + JSON schema</td>
+          <td data-label="Correct move">Define an extraction tool with a schema</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Schema-valid output, but totals don't reconcile</td>
+          <td data-label="Principle">Syntax ≠ semantics</td>
+          <td data-label="Correct move">Semantic validation (e.g. <code>calculated_total</code> vs <code>stated_total</code>)</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t6">T6 False assurance</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Model invents values for absent fields</td>
+          <td data-label="Principle">Required forces fabrication</td>
+          <td data-label="Correct move">Nullable/optional fields; <code>unclear</code>/<code>other</code> enums</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t6">T6 False assurance</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Validation failed</td>
+          <td data-label="Principle">Feedback loop</td>
+          <td data-label="Correct move">Retry with the document, the failed output and the specific errors</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a><a class="chip found" href="traps.html#t4">T4 Knob, not design</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Retries keep failing: the data isn't in the source</td>
+          <td data-label="Principle">Retry futility</td>
+          <td data-label="Correct move">Stop after 1–2; escalate or return null</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Overnight / weekly volume, cost-sensitive</td>
+          <td data-label="Principle">Batch API</td>
+          <td data-label="Correct move">Message Batches: ~50% cheaper, up to 24 h, no SLA</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Pre-merge check blocks a developer</td>
+          <td data-label="Principle">Blocking → synchronous</td>
+          <td data-label="Correct move">Real-time API, not batch</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Some batch items failed</td>
+          <td data-label="Principle">Isolate by ID</td>
+          <td data-label="Correct move">Resubmit only the failed <code>custom_id</code>s</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d4">
+          <td data-label="If the stem says" class="clue">Large PR review is inconsistent</td>
+          <td data-label="Principle">Attention dilution</td>
+          <td data-label="Correct move">Per-file passes + cross-file integration pass</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a><a class="chip pro" href="traps.html#t9">T9 Self-review</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D4 Prompting</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Agent forgot the account number from turn 1</td>
+          <td data-label="Principle">Durable facts</td>
+          <td data-label="Correct move">Case-facts block injected into every prompt</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t10">T10 Lossy handoff</a><a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Tool results swamp the context</td>
+          <td data-label="Principle">Trim at the source</td>
+          <td data-label="Correct move">Keep only the relevant fields before they enter history</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Customer explicitly asks for a human</td>
+          <td data-label="Principle">Honor it</td>
+          <td data-label="Correct move">Hand off immediately, with a structured summary</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Frustrated customer, simple in-policy issue</td>
+          <td data-label="Principle">Don't over-escalate</td>
+          <td data-label="Correct move">Acknowledge and resolve</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Policy is silent on the request</td>
+          <td data-label="Principle">Don't invent policy</td>
+          <td data-label="Correct move">Escalate</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Several customer records match</td>
+          <td data-label="Principle">Don't guess</td>
+          <td data-label="Correct move">Ask for another identifier</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Subagent reports “search failed”</td>
+          <td data-label="Principle">Structured error context</td>
+          <td data-label="Correct move">Failure type, attempted query, partial results, alternatives</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t15">T15 Error conflation</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">One source failed; report due</td>
+          <td data-label="Principle">Proceed honestly</td>
+          <td data-label="Correct move">Use the partial results and annotate coverage gaps</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip course" href="traps.html#t15">T15 Error conflation</a><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Model answers from “typical patterns”, not the code it read</td>
+          <td data-label="Principle">Context degradation</td>
+          <td data-label="Correct move">Subagents, scratchpad files, <code>/compact</code>, or a summary-seeded fresh session</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a><a class="chip pro" href="traps.html#t11">T11 Stale context</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">97% accuracy; leadership wants to auto-approve</td>
+          <td data-label="Principle">Segment validation</td>
+          <td data-label="Correct move">Validate by document type and field; stratified sampling of the auto lane</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t6">T6 False assurance</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Routing extractions to human review</td>
+          <td data-label="Principle">Calibrated confidence</td>
+          <td data-label="Correct move">Field-level scores calibrated on labeled data</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a><a class="chip found" href="traps.html#t6">T6 False assurance</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Two credible sources disagree on a figure</td>
+          <td data-label="Principle">Preserve the conflict</td>
+          <td data-label="Correct move">Report both values with attributions</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t10">T10 Lossy handoff</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">2021 vs 2024 figure “contradict”</td>
+          <td data-label="Principle">Check the dates</td>
+          <td data-label="Correct move">Temporal trend, not a conflict; require dates in outputs</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t10">T10 Lossy handoff</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+        <tr data-domain="d5">
+          <td data-label="If the stem says" class="clue">Citations disappear between agents</td>
+          <td data-label="Principle">Provenance</td>
+          <td data-label="Correct move">Structured claim–source mapping (URL, excerpt, date)</td>
+          <td data-label="Typical distractors"><span class="chips"><a class="chip pro" href="traps.html#t10">T10 Lossy handoff</a></span></td>
+          <td data-label="Domain"><span class="chip dom">D5 Context</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="empty-note" data-map-empty hidden>No clues match. Try a broader word.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-F Exam Traps</strong> · Independent study notes for Claude Certified Architect – Foundations (CCAR-F) · Not affiliated with Anthropic.</p>
+    <p>Sitting the Professional exam next? See <a href="../ccarp-traps/">CCAR-P Exam Traps</a>.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

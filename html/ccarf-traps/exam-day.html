@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exam Day · CCAR-F Exam Traps</title>
+<meta name="description" content="CCA-F exam format, pacing, logistics, retakes and renewal.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-F Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html">Start</a>
+      <a href="traps.html">Trap Families</a>
+      <a href="constraint-map.html">Constraint Map</a>
+      <a href="domains.html">Domains</a>
+      <a href="scenarios.html">Scenarios</a>
+      <a href="exam-day.html" aria-current="page">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Format &amp; tactics · <a href="https://youtu.be/cLa3Qf9SUYs?t=7204" rel="noopener">EP12 ▶ 2:00:04</a></p>
+    <h1>Exam day</h1>
+    <p class="lede">The exam is closed-book, on one screen, with no AI help, so you bring a method rather than a pile of facts. This page covers the format, the pace, the reading method, what the official samples teach, and the logistics that end sittings before they start.</p>
+  </section>
+
+  <h2>The format</h2>
+  <div class="grid grid-4">
+    <div class="card stat"><div class="num">60</div><div class="lbl">items in 4 scenarios, with several items hanging off each scenario</div></div>
+    <div class="card stat"><div class="num">120</div><div class="lbl">minutes (2 per item); plan ~135 min of seat time</div></div>
+    <div class="card stat"><div class="num">720</div><div class="lbl">scaled pass, 100–1,000, criterion-referenced (not a curve)</div></div>
+    <div class="card stat"><div class="num">2</div><div class="lbl">item types; each item states how many responses to select</div></div>
+  </div>
+  <div class="callout warn">
+    <p><strong>Multiple-response trap:</strong> an earlier version of the guide said every item had one right answer and three distractors, and all the published samples are single-answer. The current exam also has multiple-response items. An item asking for two is asking two questions: judge each option on its own, and make sure your pair isn't one idea in two forms.</p>
+  </div>
+
+  <h2>Pace: two passes</h2>
+  <div class="timeline" role="list">
+    <div role="listitem"><strong>Item 20</strong><span>by 0:30</span></div>
+    <div role="listitem"><strong>Item 40</strong><span>by 1:00</span></div>
+    <div role="listitem"><strong>Item 60</strong><span>by 1:30, end of pass 1</span></div>
+    <div role="listitem"><strong>30 min</strong><span>pass 2: flagged items</span></div>
+  </div>
+  <p style="margin-top:1rem"><strong>Guess, flag, finish, return.</strong> Never leave a blank, because a blank can't be marked correct. Read each scenario once, build a picture of it (its tools, its targets, where the human sits), then let the items walk through it.</p>
+
+  <h2>Reading method</h2>
+  <ol class="steps">
+    <li><h3>Last sentence first</h3><p>Find the ask: first step, root cause, most maintainable, most reliable. That word decides between a cheap fix and a mechanism.</p></li>
+    <li><h3>Find the cause the stem handed you</h3><p>Stems state the diagnosis mid-prose (“both descriptions are one line”, “the file lives in her home directory”). Any option fixing some other weakness is a distractor.</p></li>
+    <li><h3>Find the clause that limits valid answers</h3><p>An absolute (<em>must / never / always / cannot</em>) or a consequence that acts like one. “Must apply automatically” rules out anything a person has to invoke.</p></li>
+    <li><h3>Kill by shape, not option by option</h3><p>Plausible advice aimed past the cause · the right answer to a different question · more machinery than the cause needs. See <a href="traps.html">Trap Families</a>.</p></li>
+    <li><h3>Count the responses, then move on</h3><p>Nothing carries between items. Few-shot examples can be wrong on two items and right on the third, because the requirement moved while the system stayed the same.</p></li>
+  </ol>
+
+  <h2>What the 12 official sample questions teach</h2>
+  <p>The guide publishes 12 samples: three each for Scenarios 1, 2, 3 and 5. Here they're paraphrased as the move they reward and the reasons the distractors lose.</p>
+  <div class="table-wrap">
+    <table class="stack">
+      <thead><tr><th>Situation</th><th>Rewarded move</th><th>Why the distractors lose</th></tr></thead>
+      <tbody>
+        <tr><td data-label="Situation" class="clue">Support agent skips customer verification ~12% of the time before refunds</td><td data-label="Rewarded move">A programmatic prerequisite that blocks refund/order tools until identity is verified</td><td data-label="Why the distractors lose">A system-prompt rule and few-shot examples are probabilistic when money moves; a routing classifier controls which tools are available, not their order. <a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a> <a class="chip course" href="traps.html#t16">T16 Over-engineering</a></td></tr>
+        <tr><td data-label="Situation" class="clue">Agent picks the wrong one of two tools with one-line descriptions: “most effective first step”</td><td data-label="Rewarded move">Expand both descriptions: inputs, examples, edge cases, boundaries</td><td data-label="Why the distractors lose">Few-shot adds tokens without fixing the cause; a keyword router is over-engineered; merging the tools is valid but not a first step. <a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a> <a class="chip course" href="traps.html#t16">T16 Over-engineering</a> <a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></td></tr>
+        <tr><td data-label="Situation" class="clue">55% first-contact resolution: escalates easy cases, attempts hard ones</td><td data-label="Rewarded move">Explicit escalation criteria plus few-shot examples</td><td data-label="Why the distractors lose">Self-reported confidence is poorly calibrated; sentiment doesn't track complexity; a trained classifier comes before prompting has been tried. <a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a> <a class="chip course" href="traps.html#t16">T16 Over-engineering</a></td></tr>
+        <tr><td data-label="Situation" class="clue">Whole team needs a <code>/review</code> command</td><td data-label="Rewarded move"><code>.claude/commands/</code> in the repository</td><td data-label="Why the distractors lose"><code>~/.claude/commands/</code> is personal; <code>CLAUDE.md</code> holds instructions, not commands; a commands array in <code>.claude/config.json</code> doesn't exist. <a class="chip course" href="traps.html#t12">T12 Wrong config scope</a> <a class="chip course" href="traps.html#t13">T13 Invented feature</a></td></tr>
+        <tr><td data-label="Situation" class="clue">Monolith → microservices restructuring</td><td data-label="Rewarded move">Plan mode first</td><td data-label="Why the distractors lose">Direct execution risks late rework; waiting for complexity to appear ignores that the stem already states it. <a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></td></tr>
+        <tr><td data-label="Situation" class="clue">Area-specific conventions; test files spread across the codebase</td><td data-label="Rewarded move"><code>.claude/rules/</code> files with glob <code>paths</code> frontmatter</td><td data-label="Why the distractors lose">One big file relies on inference; skills need invoking, so they're not automatic; per-directory <code>CLAUDE.md</code> can't follow scattered files. <a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a> <a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a></td></tr>
+        <tr><td data-label="Situation" class="clue">Research report covers only one sub-area of the topic</td><td data-label="Rewarded move">The coordinator's decomposition was too narrow</td><td data-label="Why the distractors lose">The other options blame downstream agents that did their assigned work correctly. <a class="chip pro" href="traps.html#t7">T7 Assumed shared memory</a></td></tr>
+        <tr><td data-label="Situation" class="clue">Search subagent times out</td><td data-label="Rewarded move">Return structured error context: failure type, query, partial results, alternatives</td><td data-label="Why the distractors lose">A generic status hides context; reporting empty as success suppresses the error; killing the whole workflow is unnecessary. <a class="chip course" href="traps.html#t15">T15 Error conflation</a></td></tr>
+        <tr><td data-label="Situation" class="clue">Synthesis agent frequently needs to verify simple facts</td><td data-label="Rewarded move">A scoped <code>verify_fact</code> tool for the common simple checks; complex ones still go through the coordinator</td><td data-label="Why the distractors lose">Batching creates blocking dependencies; full tool access over-provisions the agent; speculative caching can't predict what's needed. <a class="chip course" href="traps.html#t18">T18 Tool sprawl</a></td></tr>
+        <tr><td data-label="Situation" class="clue">CI job hangs waiting for input</td><td data-label="Rewarded move"><code>claude -p</code></td><td data-label="Why the distractors lose">A “headless” env var and <code>--batch</code> don't exist; <code>&lt; /dev/null</code> is a Unix workaround, not the fix. <a class="chip course" href="traps.html#t13">T13 Invented feature</a></td></tr>
+        <tr><td data-label="Situation" class="clue">Move a blocking pre-merge check and an overnight report to the Batches API?</td><td data-label="Rewarded move">Batch only the overnight report</td><td data-label="Why the distractors lose">Batch has no latency SLA, so it's unfit for a blocking check; <code>custom_id</code> already handles result ordering. <a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a></td></tr>
+        <tr><td data-label="Situation" class="clue">14-file PR gets inconsistent, contradictory reviews</td><td data-label="Rewarded move">Per-file passes plus a cross-file integration pass</td><td data-label="Why the distractors lose">A bigger context window doesn't fix attention dilution; requiring consensus suppresses real intermittent findings; pushing work onto developers dodges the fix. <a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a> <a class="chip pro" href="traps.html#t9">T9 Self-review</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src" style="margin-top:8px">Paraphrased from Section 9 of the official exam guide. Scenarios 4 and 6 have no published samples.</p>
+
+  <h2>Out-of-scope filter</h2>
+  <p>The current guide lists topics that won't appear. An option that rests on one of these is rarely the one they want. The list can change without notice.</p>
+  <div class="chips">
+    <span class="chip">Fine-tuning / training custom models</span><span class="chip">Hosting &amp; deploying MCP servers (networking)</span><span class="chip">Vector database internals</span><span class="chip">Computer use</span><span class="chip">Vision / image analysis</span><span class="chip">Streaming</span><span class="chip">Token counting</span><span class="chip">Cloud-provider configuration</span><span class="chip">Auth &amp; billing</span><span class="chip">Prompt caching beyond knowing it exists</span>
+  </div>
+
+  <h2>Logistics</h2>
+  <div class="table-wrap">
+    <table class="stack">
+      <thead><tr><th>Topic</th><th>What to know</th><th>Trap</th></tr></thead>
+      <tbody>
+        <tr><td data-label="Topic" class="clue">Registration</td><td data-label="What to know">Through the Anthropic Partner Academy. Requires a company email on a Claude Partner Network member domain; joining the network at the entry tier is free for an organization.</td><td data-label="Trap">Personal email addresses are rejected at sign-up.</td></tr>
+        <tr><td data-label="Topic" class="clue">Prerequisites</td><td data-label="What to know">None. Recommended: 6+ months building with the Claude API, Agent SDK, Claude Code and MCP. Foundations isn't required before Professional.</td><td data-label="Trap">Studying only from docs, without having built a loop yourself.</td></tr>
+        <tr><td data-label="Topic" class="clue">Delivery</td><td data-label="What to know">Pearson VUE, online (OnVUE) or at a test center. Closed book, no AI tools or translators. 18+.</td><td data-label="Trap">The name on your government ID must match your registration exactly.</td></tr>
+        <tr><td data-label="Topic" class="clue">Rescheduling</td><td data-label="What to know">The exam guide says 24 h before; the FAQ says 48 h.</td><td data-label="Trap">Use <strong>48 h</strong> to be safe.</td></tr>
+        <tr><td data-label="Topic" class="clue">Fee</td><td data-label="What to know">$125 per attempt; partner-tier discounts apply.</td><td data-label="Trap">Every retake is paid.</td></tr>
+        <tr><td data-label="Topic" class="clue">Score report</td><td data-label="What to know">Pass/fail, the scaled score, and percent correct per domain.</td><td data-label="Trap">Domain percentages are diagnostic only. Use them to see which design question you're weak on.</td></tr>
+        <tr><td data-label="Topic" class="clue">Retakes</td><td data-label="What to know">Wait 14, 30, then 90 days after the 1st, 2nd and 3rd fail. Max 4 attempts per rolling 12 months.</td><td data-label="Trap">You can't retake after passing to raise your score.</td></tr>
+        <tr><td data-label="Topic" class="clue">Validity &amp; renewal</td><td data-label="What to know">12 months; Credly badge. On-time renewal is a free, open-book, unproctored assessment, and it adds 12 months to your current expiry.</td><td data-label="Trap">Let it lapse and you retake the full exam at full fee.</td></tr>
+        <tr><td data-label="Topic" class="clue">Practice exam</td><td data-label="What to know">None currently offered. The official practice test appears to have been retired in the move to Pearson; the 12 guide samples are the only real items you can see.</td><td data-label="Trap">Trusting any site selling “real” questions. Candidates sign a confidentiality agreement.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src" style="margin-top:10px">Checked against the official Foundations Exam Guide v1.0 and the Partner Academy FAQ and policies pages on 2026-09-26. Confirm current details on the <a href="https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification" rel="noopener">official certification page</a> before booking.</p>
+
+  <div class="callout ok" style="margin-top:2rem">
+    <p class="mantra">The stem picks the answer, not the options.</p>
+    <p>Name the question. Find the absolute. If there isn't one, answer the cause the stem named at the size the evidence justifies.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-F Exam Traps</strong> · Independent study notes for Claude Certified Architect – Foundations (CCAR-F) · Not affiliated with Anthropic.</p>
+    <p>Sitting the Professional exam next? See <a href="../ccarp-traps/">CCAR-P Exam Traps</a>.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

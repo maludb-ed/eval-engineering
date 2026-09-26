@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trap Families · CCAR-F Exam Traps</title>
+<meta name="description" content="The 18 recurring wrong-answer patterns on the Claude Certified Architect – Foundations exam.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-F Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html">Start</a>
+      <a href="traps.html" aria-current="page">Trap Families</a>
+      <a href="constraint-map.html">Constraint Map</a>
+      <a href="domains.html">Domains</a>
+      <a href="scenarios.html">Scenarios</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Core of the notes</p>
+    <h1>The 18 trap families</h1>
+    <p class="lede">Foundations items usually offer one mechanism-level fix and three plausible distractors. The distractors come from a small set of families. Learn each family's <em>tell</em> and you can strike the option before you finish reading it.</p>
+  </section>
+
+  <h2>First, the three shapes of a wrong option</h2>
+  <p>The official guide's own answer explanations reject distractors for three recurring reasons. Every trap family below is a specific version of one of them. <span class="src">(Framing from <a href="https://youtu.be/cLa3Qf9SUYs?t=7204" rel="noopener">EP12 ▶ 2:00:04</a> of the CCAR-F course.)</span></p>
+  <div class="grid grid-3">
+    <div class="card"><h3 style="margin-top:0">1 · Plausible advice aimed past the cause</h3><p>A real technique (few-shot examples, a firmer prompt line) that doesn't touch the cause the stem named. Nobody calls it bad. It's beside the point.</p><p class="src">Families: T1, T3, T4, T5</p></div>
+    <div class="card"><h3 style="margin-top:0">2 · The right answer to a question you weren't asked</h3><p>Good engineering that answers the wrong ask, e.g. consolidating two tools when the stem asked for the most effective <em>first step</em>. Read the last sentence of the stem first.</p><p class="src">Families: T16, T17</p></div>
+    <div class="card"><h3 style="margin-top:0">3 · More machinery than the cause needs</h3><p>A routing classifier, a trained model, a second reviewer or a bigger context window, when a description change or a <code>stop_reason</code> check removes the cause.</p><p class="src">Families: T8, T9, T16, T18</p></div>
+  </div>
+  <div class="callout">
+    <p><strong>Proportion is the test.</strong> When the stem asks for a first step, the cheap fix at the cause wins. When the stem says <em>must / never / always / cannot</em>, only a mechanism wins, because advice can't promise “never”. Note that an absolute <em>inside an option</em> (“tell it never to call the gate”) isn't an absolute in the requirement; it's still advice.</p>
+  </div>
+
+  <h2>The 18 families</h2>
+  <div class="chips" style="margin-top:1rem">
+    <span class="chip found">Enforcement: T1–T6</span>
+    <span class="chip pro">Context &amp; handoffs: T7–T11</span>
+    <span class="chip course">Design &amp; configuration: T12–T18</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="seg" data-group-filter role="group" aria-label="Filter by group">
+      <button type="button" data-group="all" aria-pressed="true">All</button>
+      <button type="button" data-group="found" aria-pressed="false">Enforcement</button>
+      <button type="button" data-group="pro" aria-pressed="false">Context</button>
+      <button type="button" data-group="course" aria-pressed="false">Design &amp; config</button>
+    </div>
+    <span class="spacer"></span>
+    <button type="button" class="icon-btn" data-flash-toggle aria-pressed="false">Flashcard mode: off</button>
+  </div>
+
+  <div class="grid grid-2" data-trap-grid>
+    <article class="card trap-card" id="t1" data-group="found">
+      <header><span class="trap-id">T1</span><div><h3>Prompt as guarantee</h3><span class="chip found">Enforcement</span></div></header>
+      <p class="tell">“Strengthen the system prompt.” “Add MUST in capitals.” “Add few-shot examples of the rule.” “Tell the skill not to write files.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Prompts are probabilistic. Even “works in 99% of test runs” is a non-zero failure rate, and the exam treats that as unacceptable for financial, security or identity rules.</dd>
+          <dt>Right-answer pattern</dt><dd>A deterministic control: an Agent SDK hook that intercepts the tool call, a prerequisite gate (e.g. no <code>process_refund</code> until <code>get_customer</code> verifies), forced <code>tool_choice</code>, <code>allowed-tools</code> frontmatter, or business rules in tool code.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-4">1.4</a>, <a href="domains.html#ts-1-5">1.5</a>, <a href="domains.html#ts-2-3">2.3</a>, <a href="domains.html#ts-3-2">3.2</a></dd>
+        </dl>
+        <p class="hook">Hook: “Guaranteed / required / must never → hook. Preferred / stylistic → prompt.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t2" data-group="found">
+      <header><span class="trap-id">T2</span><div><h3>Text as control flow</h3><span class="chip found">Enforcement</span></div></header>
+      <p class="tell">“End the loop when the reply contains ‘task complete’.” “Stop after 15 iterations.” “Treat assistant text as the done signal.” “Have it emit a DONE token.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>The model can emit text <em>alongside</em> a tool request, and it can say “finished step one” mid-task. An iteration cap masks bugs instead of controlling the loop.</dd>
+          <dt>Right-answer pattern</dt><dd>Drive the loop with <code>stop_reason</code>: <code>tool_use</code> → execute, append the result, call again; <code>end_turn</code> → exit. A cap is only a runaway fail-safe.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-1">1.1</a></dd>
+        </dl>
+        <p class="hook">Hook: “stop_reason drives the loop; a cap is only a seatbelt.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t3" data-group="found">
+      <header><span class="trap-id">T3</span><div><h3>Louder, not explicit</h3><span class="chip found">Enforcement</span></div></header>
+      <p class="tell">“Be careful / thorough / conservative.” “Only report high-confidence findings.” “Write longer, more detailed instructions.” “Still wrong, try again.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Adjectives aren't checkable, and prose gets re-interpreted on every run. Vague feedback doesn't converge.</dd>
+          <dt>Right-answer pattern</dt><dd>Categorical, mechanically checkable criteria (what to report and what to skip), 2–4 worked examples including edge cases, and specific failing test cases as feedback.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-3-5">3.5</a>, <a href="domains.html#ts-4-1">4.1</a>, <a href="domains.html#ts-4-2">4.2</a></dd>
+        </dl>
+        <p class="hook">Hook: “Criteria you can check beat adjectives you can't.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t4" data-group="found">
+      <header><span class="trap-id">T4</span><div><h3>Knob, not design</h3><span class="chip found">Enforcement</span></div></header>
+      <p class="tell">“Lower the temperature to fix inconsistent formatting.” “Raise max_tokens.” “Try a different model” after validation failures.</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Inconsistent structure is a pattern problem, not a sampling problem. A bigger token budget can't make the model run a tool your loop never executes.</dd>
+          <dt>Right-answer pattern</dt><dd>Few-shot examples for format; a validation-feedback retry loop for extraction errors; fix the loop plumbing for loop bugs.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-1">1.1</a>, <a href="domains.html#ts-4-2">4.2</a>, <a href="domains.html#ts-4-4">4.4</a></dd>
+        </dl>
+        <p class="hook">Hook: “Pattern problems need examples, not sampling tweaks.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t5" data-group="found">
+      <header><span class="trap-id">T5</span><div><h3>Unreliable proxy</h3><span class="chip found">Enforcement</span></div></header>
+      <p class="tell">“Escalate when sentiment turns negative.” “Escalate when self-reported confidence &lt; 0.7.” “Route by one document-level confidence score.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Sentiment doesn't track complexity, and self-reported confidence is poorly calibrated. One document score hides a single hard field.</dd>
+          <dt>Right-answer pattern</dt><dd>Explicit escalation criteria with few-shot examples. There are three canonical triggers: the customer asks for a human, a policy gap or exception, or no meaningful progress. Use field-level confidence calibrated on labeled data.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-4-1">4.1</a>, <a href="domains.html#ts-5-2">5.2</a>, <a href="domains.html#ts-5-5">5.5</a></dd>
+        </dl>
+        <p class="hook">Hook: “Feelings and self-grades aren't routing signals.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t6" data-group="found">
+      <header><span class="trap-id">T6</span><div><h3>False assurance</h3><span class="chip found">Enforcement</span></div></header>
+      <p class="tell">“97% accurate overall, so auto-approve.” “It passed the schema, so it's correct.” “Mark every field required for completeness.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>An aggregate can hide a failing document type. A schema stops syntax errors, not semantic ones. Required fields for absent data force fabricated values.</dd>
+          <dt>Right-answer pattern</dt><dd>Validate by document type and field, stratified sampling of the high-confidence lane, semantic checks (e.g. <code>calculated_total</code> vs <code>stated_total</code>), and nullable fields with <code>unclear</code>/<code>other</code> enum values.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-4">1.4</a>, <a href="domains.html#ts-4-3">4.3</a>, <a href="domains.html#ts-4-4">4.4</a>, <a href="domains.html#ts-5-5">5.5</a></dd>
+        </dl>
+        <p class="hook">Hook: “Valid isn't correct, and the average isn't every segment.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t7" data-group="pro">
+      <header><span class="trap-id">T7</span><div><h3>Assumed shared memory</h3><span class="chip pro">Context &amp; handoffs</span></div></header>
+      <p class="tell">“The subagent already knows; the coordinator spawned it.” “The API remembers the earlier turn.” “The resumed agent will notice the files changed.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Subagents start with empty context, the Messages API is stateless, and a resumed session trusts its old tool results.</dd>
+          <dt>Right-answer pattern</dt><dd>Pass context explicitly in the Task prompt (goals, quality criteria, a findings summary), send the full history on every call, and tell a resumed agent exactly what changed.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-2">1.2</a>, <a href="domains.html#ts-1-3">1.3</a>, <a href="domains.html#ts-1-7">1.7</a>, <a href="domains.html#ts-5-1">5.1</a>, <a href="domains.html#ts-5-4">5.4</a></dd>
+        </dl>
+        <p class="hook">Hook: “Only what you send exists.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t8" data-group="pro">
+      <header><span class="trap-id">T8</span><div><h3>Bigger window, same attention</h3><span class="chip pro">Context &amp; handoffs</span></div></header>
+      <p class="tell">“Move to a larger context window.” “Review the 40-file PR in one pass.” “Keep everything in one long session.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Attention quality doesn't scale with capacity. Details in the middle get lost, and usable context is smaller than the advertised window.</dd>
+          <dt>Right-answer pattern</dt><dd>Per-file passes plus a cross-file integration pass, a case-facts block, subagents and scratchpad files, <code>/compact</code>, and trimming tool results to the fields that matter.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-4-6">4.6</a>, <a href="domains.html#ts-5-1">5.1</a>, <a href="domains.html#ts-5-4">5.4</a></dd>
+        </dl>
+        <p class="hook">Hook: “Capacity isn't attention.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t9" data-group="pro">
+      <header><span class="trap-id">T9</span><div><h3>Self-review</h3><span class="chip pro">Context &amp; handoffs</span></div></header>
+      <p class="tell">“Have the session that wrote the code review it.” “Instruct the model to critically review its own output.” “Take a consensus vote across repeated runs.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>The generating session keeps the reasoning that produced the code, so it validates itself. Voting suppresses real but intermittent catches.</dd>
+          <dt>Right-answer pattern</dt><dd>Use a fresh, independent instance without the generation context, and multi-pass review for large changes.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-3-6">3.6</a>, <a href="domains.html#ts-4-6">4.6</a></dd>
+        </dl>
+        <p class="hook">Hook: “A fresh pair of eyes has to actually be fresh.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t10" data-group="pro">
+      <header><span class="trap-id">T10</span><div><h3>Lossy handoff</h3><span class="chip pro">Context &amp; handoffs</span></div></header>
+      <p class="tell">“Summarize the whole conversation.” “Keep a sliding window of recent turns.” “Pass findings on as a prose summary.” “Pick the more credible source” or “average the two figures”.</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Summaries drop IDs, amounts and dates. Prose loses citations. Choosing or averaging a conflict silently destroys information.</dd>
+          <dt>Right-answer pattern</dt><dd>A persistent case-facts block, structured claim–source mappings with dates, conflicts annotated with both values and attributions, and a structured human handoff (customer ID, root cause, amount, recommendation).</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-3">1.3</a>, <a href="domains.html#ts-1-4">1.4</a>, <a href="domains.html#ts-5-1">5.1</a>, <a href="domains.html#ts-5-6">5.6</a></dd>
+        </dl>
+        <p class="hook">Hook: “Structure survives handoffs; prose doesn't.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t11" data-group="pro">
+      <header><span class="trap-id">T11</span><div><h3>Stale context</h3><span class="chip pro">Context &amp; handoffs</span></div></header>
+      <p class="tell">“Resume the old session; the context is valuable.” “Re-run the expensive analysis for each alternative.” “Just keep going in the same session.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Stale file reads produce confident, hallucinated edits, and re-computing a shared baseline wastes the work.</dd>
+          <dt>Right-answer pattern</dt><dd>Mostly valid → <code>--resume</code> and name what changed. Largely stale → start a fresh session seeded with a structured summary. Exploring alternatives → <code>fork_session</code> from the shared baseline.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-7">1.7</a>, <a href="domains.html#ts-5-4">5.4</a></dd>
+        </dl>
+        <p class="hook">Hook: “Resume continues one timeline, fork branches it, and a fresh start plus a summary beats stale context.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t12" data-group="course">
+      <header><span class="trap-id">T12</span><div><h3>Wrong config scope</h3><span class="chip course">Design &amp; configuration</span></div></header>
+      <p class="tell">“Put it in <code>~/.claude/CLAUDE.md</code>.” “Add the server to <code>~/.claude.json</code>.” “Create the command in <code>~/.claude/commands/</code>.” “Hardcode the key in <code>.mcp.json</code>.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>User-level files never reach version control, so teammates never get them. Committing secrets leaks them.</dd>
+          <dt>Right-answer pattern</dt><dd>Project <code>CLAUDE.md</code>, <code>.mcp.json</code> with <code>${ENV_VAR}</code> expansion, <code>.claude/commands/</code>, <code>.claude/skills/</code>, <code>.claude/rules/</code> with <code>paths</code> globs. Verify what's loaded with <code>/memory</code>.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-2-4">2.4</a>, <a href="domains.html#ts-3-1">3.1</a>, <a href="domains.html#ts-3-2">3.2</a>, <a href="domains.html#ts-3-3">3.3</a></dd>
+        </dl>
+        <p class="hook">Hook: “If teammates need it, it lives in the repo. If it's secret, it lives in the environment.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t13" data-group="course">
+      <header><span class="trap-id">T13</span><div><h3>Invented feature</h3><span class="chip course">Design &amp; configuration</span></div></header>
+      <p class="tell">“Set a headless env var.” “Use the <code>--batch</code> flag.” “Pipe the prompt via stdin redirection.” “Let the model call tools mid-batch.” “Edit by line number.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>These features don't exist, and the exam plants them as distractors.</dd>
+          <dt>Right-answer pattern</dt><dd><code>-p</code>/<code>--print</code> for non-interactive runs; <code>--output-format json</code> + <code>--json-schema</code>; the Message Batches API is single-turn and keyed by <code>custom_id</code>; Edit matches unique text, not line numbers.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-2-5">2.5</a>, <a href="domains.html#ts-3-6">3.6</a>, <a href="domains.html#ts-4-5">4.5</a></dd>
+        </dl>
+        <p class="hook">Hook: “If you've never seen the flag, the exam probably invented it.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t14" data-group="course">
+      <header><span class="trap-id">T14</span><div><h3>Blind or blanket retry</h3><span class="chip course">Design &amp; configuration</span></div></header>
+      <p class="tell">“Retry all the subagents.” “Resubmit the whole batch.” “Simply retry the request.” “Keep retrying until the field appears.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Completed siblings may already have committed side effects, and blind retries are dice rolls. Data that isn't in the source can't be retried into existence; pressing for it forces hallucination.</dd>
+          <dt>Right-answer pattern</dt><dd>Retry only the failed subagent; resubmit only failed <code>custom_id</code>s; retry with the specific validation errors appended; escalate or fail gracefully after 1–2 attempts when the information is absent.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-2">1.2</a>, <a href="domains.html#ts-4-4">4.4</a>, <a href="domains.html#ts-4-5">4.5</a>, <a href="domains.html#ts-5-3">5.3</a></dd>
+        </dl>
+        <p class="hook">Hook: “Retry only what failed, include the error, and only if the data exists.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t15" data-group="course">
+      <header><span class="trap-id">T15</span><div><h3>Error conflation</h3><span class="chip course">Design &amp; configuration</span></div></header>
+      <p class="tell">“Return ‘operation failed’.” “Zero results is an error, so retry.” “Report the timeout as an empty result.” “Retry the policy violation.” “Halt everything on one failure.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>A generic error hides the recovery signal. An empty result isn't an error, and a business-rule error is never retryable.</dd>
+          <dt>Right-answer pattern</dt><dd>Structured errors (<code>errorCategory</code>, <code>isRetryable</code>, description) in four classes: transient, validation, business, permission. A tool that ran and failed returns <code>isError</code>; a malformed request is a protocol error. Proceed with partial results plus coverage notes.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-2-2">2.2</a>, <a href="domains.html#ts-5-3">5.3</a></dd>
+        </dl>
+        <p class="hook">Hook: “Empty is an answer; an error is a signal. Never confuse them.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t16" data-group="course">
+      <header><span class="trap-id">T16</span><div><h3>Over-engineering</h3><span class="chip course">Design &amp; configuration</span></div></header>
+      <p class="tell">“Build a routing classifier for tool selection.” “Add a second model to filter findings.” “Use dynamic decomposition for a known checklist.” “Write a custom MCP server for a mainstream tracker.” “Use SSE for a local server.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>It skips the cheap fix at the root cause, and the exam asks for the best <em>first</em> step.</dd>
+          <dt>Right-answer pattern</dt><dd>Enrich tool descriptions first, rewrite the criteria, use a fixed pipeline, use the community server, use stdio for local servers, and execute simple fixes directly.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-6">1.6</a>, <a href="domains.html#ts-2-1">2.1</a>, <a href="domains.html#ts-2-4">2.4</a>, <a href="domains.html#ts-3-4">3.4</a>, <a href="domains.html#ts-4-1">4.1</a></dd>
+        </dl>
+        <p class="hook">Hook: “The best first step is the cheapest fix at the root cause.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t17" data-group="course">
+      <header><span class="trap-id">T17</span><div><h3>Mismatched strategy</h3><span class="chip course">Design &amp; configuration</span></div></header>
+      <p class="tell">“Use a fixed pipeline to explore a legacy codebase.” “Start directly and switch to plan mode if it gets hard” (the stem says dozens of files). “Move the pre-merge check to batch.” “Glob to search file contents.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Strategy has to fit the task: known steps or open-ended discovery, contained or cross-cutting, blocking or latency-tolerant, names or contents.</dd>
+          <dt>Right-answer pattern</dt><dd>Adaptive decomposition for discovery, plan mode from the start when the scope is stated, the synchronous API for human-blocking work, Grep for contents and Glob for names, and one synthesized reply to multi-issue requests.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-1-4">1.4</a>, <a href="domains.html#ts-1-6">1.6</a>, <a href="domains.html#ts-2-5">2.5</a>, <a href="domains.html#ts-3-4">3.4</a>, <a href="domains.html#ts-4-5">4.5</a></dd>
+        </dl>
+        <p class="hook">Hook: “The scope in the stem tells you the mode.”</p>
+      </div>
+    </article>
+    <article class="card trap-card" id="t18" data-group="course">
+      <header><span class="trap-id">T18</span><div><h3>Tool sprawl</h3><span class="chip course">Design &amp; configuration</span></div></header>
+      <p class="tell">“Give every subagent the full tool set so it's never blocked.” “One generic do-everything tool.”</p>
+      <button type="button" class="icon-btn reveal-btn">Reveal</button>
+      <div class="trap-body">
+        <dl>
+          <dt>Why it's wrong</dt><dd>Eighteen tools degrade selection compared with a focused four or five, and agents misuse tools outside their role.</dd>
+          <dt>Right-answer pattern</dt><dd>Scoped tools per role (least privilege), purpose-specific tools with clear contracts, and a narrow cross-role tool for high-frequency needs.</dd>
+          <dt>Task statements</dt><dd><a href="domains.html#ts-2-1">2.1</a>, <a href="domains.html#ts-2-3">2.3</a></dd>
+        </dl>
+        <p class="hook">Hook: “Four or five focused tools beat eighteen generic ones.”</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="callout" style="margin-top:2rem">
+    <p><strong>On exam day:</strong> as you read each option, silently label it with a trap number. When three options carry a label, the fourth is your answer. Foundations answers are usually a <em>specific mechanism</em> (a hook, <code>stop_reason</code>, <code>.mcp.json</code>, <code>custom_id</code>, a fresh instance), not an attitude.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-F Exam Traps</strong> · Independent study notes for Claude Certified Architect – Foundations (CCAR-F) · Not affiliated with Anthropic.</p>
+    <p>Trap-family names are study-aid labels, not Anthropic terminology.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

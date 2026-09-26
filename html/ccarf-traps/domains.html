@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Domain Notes · CCAR-F Exam Traps</title>
+<meta name="description" content="Key facts and exam traps for all 30 CCA-F task statements across the five domains.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-F Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html">Start</a>
+      <a href="traps.html">Trap Families</a>
+      <a href="constraint-map.html">Constraint Map</a>
+      <a href="domains.html" aria-current="page">Domains</a>
+      <a href="scenarios.html">Scenarios</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Official blueprint · 5 domains · 30 task statements</p>
+    <h1>Domain notes</h1>
+    <p class="lede">Every official task statement, with its key facts and the traps questions build on it. Headings are numbered like the exam guide (1.1–5.6) so you can map weak areas from your score report straight back here.</p>
+    <p class="src">Video links point to the matching lessons of Vivek Amilkanthawar's free <a href="https://youtu.be/cLa3Qf9SUYs" rel="noopener">CCAR-F Full Course</a>.</p>
+  </section>
+
+  <div class="with-toc" style="margin-top:2rem">
+    <nav class="toc" aria-label="Domains">
+      <ol>
+        <li><a href="#d1">D1 Agentic <span class="w">27%</span></a></li>
+        <li><a href="#d2">D2 Tools &amp; MCP <span class="w">18%</span></a></li>
+        <li><a href="#d3">D3 Claude Code <span class="w">20%</span></a></li>
+        <li><a href="#d4">D4 Prompting <span class="w">20%</span></a></li>
+        <li><a href="#d5">D5 Context <span class="w">15%</span></a></li>
+      </ol>
+    </nav>
+    <div>
+      <section class="domain" id="d1">
+        <div class="domain-head"><h2>D1 · Agentic Architecture &amp; Orchestration</h2><span class="weight-pill">27%</span></div>
+        <p class="src">7 task statements · Video: <a href="https://youtu.be/cLa3Qf9SUYs?t=641" rel="noopener">EP02 ▶ 10:41</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=1313" rel="noopener">EP03 ▶ 21:53</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=1986" rel="noopener">EP04 ▶ 33:06</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=7839" rel="noopener">EP13 ▶ 2:10:39</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=8488" rel="noopener">EP14 ▶ 2:21:28</a> · <a href="practice.html?domain=d1">Practise this domain</a></p>
+        <div class="concepts">
+          <div class="concept" id="ts-1-1">
+            <h3>1.1 Agentic Loops</h3>
+            <p class="src">Task statement: Design and implement agentic loops for autonomous task execution</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Loop lifecycle: send request → inspect <code>stop_reason</code> → execute requested tools → return results into the conversation → repeat.</li>
+              <li><code>stop_reason: "tool_use"</code> means the model is requesting tool execution; <code>stop_reason: "end_turn"</code> means the model is finished and the loop should exit.</li>
+              <li>Tool results must be appended to the conversation history so the model can reason about its next action; the model is stateless between API calls.</li>
+              <li>If you skip the inspect step, the agent goes silent after one tool call; if you skip the append step, the model never sees the result and retries the same tool.</li>
+              <li>The next action is chosen by model-driven decision-making over the accumulated context, not by pre-configured decision trees or hardcoded routes.</li>
+              <li>The model can emit conversational text <em>alongside</em> a <code>tool_use</code> stop reason — the presence of assistant text is never a completion signal.</li>
+              <li>A hard iteration cap is acceptable only as a fail-safe against runaway loops; it must never be the primary stop mechanism.</li>
+              <li>Official anti-patterns: parsing natural-language phrases ("I'm done", "task complete") for termination; arbitrary iteration caps as the primary stop; checking assistant text as a completion indicator.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Any option that terminates the loop by regex/string-matching the assistant's text ("task complete") is wrong — the model may say "finished step one, moving to step two" and the loop breaks mid-task.</li>
+              <li>"Stop after N iterations" offered as the loop's control mechanism is wrong; <code>end_turn</code> drives control flow, caps are only a safety net.</li>
+              <li>Options where a decision tree or hardcoded route determines the next tool call are wrong — the correct answer is that tool results enter the conversation and the model reasons about what to do next.</li>
+              <li>Code-snippet questions with one loop step missing: name the dropped step (inspect <code>stop_reason</code>, execute the tool, or append the result) rather than a plausible-sounding unrelated fix.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-1-2">
+            <h3>1.2 Multi-Agent Orchestration</h3>
+            <p class="src">Task statement: Orchestrate multi-agent systems with coordinator-subagent patterns</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Hub-and-spoke topology: the coordinator manages all inter-subagent communication, error handling, and routing; subagents do not communicate peer-to-peer.</li>
+              <li>Subagents have isolated context — they do not inherit the coordinator's conversation history.</li>
+              <li>Coordinator responsibilities: task decomposition, delegation, result aggregation, and dynamic subagent selection based on query complexity.</li>
+              <li>Iterative refinement loop: evaluate the synthesized result for gaps, re-delegate targeted subtasks, re-synthesize until coverage is sufficient.</li>
+              <li>Overly narrow task decomposition is the signature risk: every subagent succeeds individually while the aggregate output has incomplete coverage.</li>
+              <li>Routing all subagent communication through the coordinator provides observability and a single point of error handling.</li>
+              <li>Context isolation prevents attention dilution — a subagent doing one focused job is not distracted by dozens of turns of unrelated coordinator history.</li>
+              <li>When one subagent fails mid-workflow, retry only the failed subagent; successful siblings may already have committed side effects.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Options letting subagents message each other directly are wrong — in the tested coordinator-subagent pattern, everything routes through the hub.</li>
+              <li>"The subagents underperformed" as the diagnosis when every subagent reported success but coverage is incomplete — the correct root cause is the coordinator's overly narrow decomposition.</li>
+              <li>Blanket retry of all subagents after one failure — wrong because completed subagents may have side effects; the graded answer is a targeted retry of only the failed one.</li>
+              <li>Assuming a subagent can see the coordinator's earlier conversation "because it was spawned from it" — context is isolated and only explicitly passed information is available.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-1-3">
+            <h3>1.3 Subagent Invocation &amp; Context Passing</h3>
+            <p class="src">Task statement: Configure subagent invocation, context passing, and spawning</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Subagents are spawned via the Task tool; the coordinator's <code>allowedTools</code> must include "Task" or delegation is impossible.</li>
+              <li>Subagent context must be explicitly passed in the invocation prompt — there is no automatic inheritance of coordinator history and no shared memory.</li>
+              <li><code>AgentDefinition</code> configures each subagent type: description, system prompt, and per-subagent tool restrictions.</li>
+              <li>Parallel subagents are spawned by issuing multiple Task tool calls in a single coordinator response.</li>
+              <li>Coordinator delegation prompts should specify goals plus quality criteria, not step-by-step procedures.</li>
+              <li>Use structured data formats that separate content from metadata (source URLs, document names, page numbers) so attribution survives multi-agent hand-offs.</li>
+              <li>Fork-based session management lets you explore divergent approaches from a shared, already-computed baseline instead of recomputing it per branch.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Coordinator can't delegate" scenarios where the answer is a missing "Task" entry in <code>allowedTools</code> — distractors point at prompts, model choice, or subagent definitions.</li>
+              <li>Options assuming a subagent automatically sees the coordinator's conversation or a shared memory store — all context transfer is explicit via the prompt.</li>
+              <li>Delegation prompts written as rigid step-by-step procedures presented as best practice — the graded answer specifies goals and quality criteria.</li>
+              <li>Passing findings between agents as unstructured prose when citations must survive — the correct pattern separates content from source metadata in a structured format.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-1-4">
+            <h3>1.4 Workflow Enforcement &amp; Handoffs</h3>
+            <p class="src">Task statement: Implement multi-step workflows with enforcement and handoff patterns</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Programmatic enforcement (hooks, prerequisite gates) provides deterministic compliance; prompt-based guidance is probabilistic with a non-zero failure rate.</li>
+              <li>Rules that must never break — identity verification before financial operations, compliance boundaries — belong in code, not in the prompt.</li>
+              <li>Prerequisite gates block downstream tool calls until required steps complete, e.g., block <code>process_refund</code> until <code>get_customer</code> has verified the customer.</li>
+              <li>Prompts remain appropriate for preferences: style, tone, and formatting, where occasional deviation causes no real harm.</li>
+              <li>Structured handoff protocols for escalation carry customer details, root cause, and recommended actions so a human can act without transcript access.</li>
+              <li>A complete handoff summary includes concrete fields such as customer ID, root cause, refund amount, and a recommendation.</li>
+              <li>Multi-concern requests should be decomposed, investigated in parallel where independent, and synthesized into one unified resolution.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Strengthen the prompt" (firmer wording, all-caps, more examples) offered where the scenario demands <em>guaranteed</em> compliance — the graded answer is a hook or prerequisite gate.</li>
+              <li>Escalation options that hand the human a raw transcript, or nothing at all, instead of a structured summary with customer ID, root cause, and recommended action.</li>
+              <li>Workflows that answer only the first issue in a multi-issue message, or return disjointed per-issue replies instead of a synthesized unified resolution.</li>
+              <li>Treating "works in 99% of test runs" as sufficient for a financial or security rule — non-zero failure rates are the stated reason prompts alone fail this requirement.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-1-5">
+            <h3>1.5 Agent SDK Hooks</h3>
+            <p class="src">Task statement: Apply Agent SDK hooks for tool call interception and data normalization</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Hooks provide deterministic guarantees; prompts provide only probabilistic compliance — the central distinction this task statement tests.</li>
+              <li>Interception hooks run before a tool call executes and can block or redirect it to enforce compliance rules.</li>
+              <li>Canonical interception example: block any refund over $500 and redirect to human escalation, guaranteed regardless of the prompt.</li>
+              <li><code>PostToolUse</code> hooks transform or normalize tool results before the model sees them.</li>
+              <li>Canonical normalization example: reconciling Unix timestamps, ISO 8601 dates, and numeric status codes from different backends into one consistent format.</li>
+              <li>Normalizing in a hook uses cheap deterministic code instead of model reasoning, saving tokens and preventing conversion errors.</li>
+              <li>Rule of thumb: "guaranteed / required / must never happen" → hook; "preferred / usually / stylistic" → prompt.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>When the stem says compliance must be <em>guaranteed</em>, distractors offer stronger prompt wording, few-shot examples, or confidence thresholds — all probabilistic; the answer is a hook.</li>
+              <li>Options that normalize inconsistent data formats via prompt instructions ("always convert dates to ISO 8601") instead of a <code>PostToolUse</code> hook — probabilistic and token-wasteful.</li>
+              <li>Confusing hook timing: interception/blocking happens before tool execution; result transformation happens in <code>PostToolUse</code> after the tool returns.</li>
+              <li>Believing a 99%-reliable prompt can be tuned to 100% — the exam treats any non-zero failure rate as unacceptable for financial or security rules.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-1-6">
+            <h3>1.6 Task Decomposition Strategies</h3>
+            <p class="src">Task statement: Design task decomposition strategies for complex workflows</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Two tested strategies: fixed sequential pipelines (prompt chaining) versus dynamic adaptive decomposition.</li>
+              <li>Prompt chaining hard-codes a known step sequence, guaranteeing every step runs in order and nothing is skipped.</li>
+              <li>Canonical prompt-chaining example: analyze each file individually, then a separate cross-file integration pass.</li>
+              <li>Dynamic adaptive decomposition generates new subtasks from what each step discovers, building the plan as it goes.</li>
+              <li>Canonical adaptive example: open-ended investigation such as hunting hidden dependencies in a legacy codebase.</li>
+              <li>Selection rule: prompt chaining for predictable multi-aspect reviews; dynamic decomposition for open-ended investigation.</li>
+              <li>Decomposition quality drives outcome quality — subtasks scoped too narrowly produce incomplete coverage even when every subtask succeeds.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Picking dynamic adaptive decomposition for a workflow whose steps are fully known in advance — over-engineering; the graded answer is the fixed pipeline that guarantees sequence.</li>
+              <li>Picking a fixed pipeline for genuinely open-ended investigation — the script can't anticipate what discovery will surface; the graded answer is adaptive decomposition.</li>
+              <li>Single-prompt "do the whole review at once" options where the tested pattern is per-file passes plus a distinct integration pass.</li>
+              <li>Blaming execution when coverage is incomplete — if every subtask succeeded but the result has holes, the decomposition itself was scoped wrong.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-1-7">
+            <h3>1.7 Session State, Resumption &amp; Forking</h3>
+            <p class="src">Task statement: Manage session state, resumption, and forking</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Sessions persist state — conversation history, tool results, findings — and can be resumed rather than rebuilt.</li>
+              <li>Resumption uses <code>--resume &lt;session-name&gt;</code> and is appropriate when prior context remains mostly valid.</li>
+              <li>When resuming after changes, explicitly identify what changed so the agent performs targeted re-analysis instead of trusting stale results.</li>
+              <li><code>fork_session</code> branches divergent explorations from a shared baseline, so expensive shared analysis is computed once and inherited by every branch.</li>
+              <li>Forked branches are independent — exploring alternative approaches in parallel without cross-contamination or re-computing the baseline.</li>
+              <li>Stale tool results are the key hazard of resumption: old file reads and schemas make the agent reason confidently about a reality that no longer exists.</li>
+              <li>When prior tool results are largely stale, prefer a fresh session seeded with a structured summary of prior findings over resuming the old session.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Resuming a session whose tool results are stale because "the context is valuable" — the graded answer is a fresh session seeded with a structured summary of the findings.</li>
+              <li>Re-running the expensive shared analysis for each alternative approach instead of computing it once and using <code>fork_session</code> to branch.</li>
+              <li>Treating fork and resume as interchangeable: resume continues one timeline; fork creates divergent branches from a shared baseline.</li>
+              <li>Assuming a resumed agent automatically detects that the environment changed — stale results are trusted unless you explicitly direct re-analysis or start fresh.</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>The loop is plumbing: inspect <code>stop_reason</code>, execute, append, repeat. Exit on <code>end_turn</code>.</li>
+            <li>Hub and spoke: subagents get only what you pass them; retry only the one that failed.</li>
+            <li>Guaranteed rules → hooks and gates. Preferences → prompts.</li>
+            <li>Known steps → pipeline; open-ended discovery → adaptive decomposition.</li>
+            <li>Resume continues, fork branches, and a fresh session plus a summary beats stale context.</li>
+          </ul>
+        </div>
+      </section>
+      <section class="domain" id="d2">
+        <div class="domain-head"><h2>D2 · Tool Design &amp; MCP Integration</h2><span class="weight-pill">18%</span></div>
+        <p class="src">5 task statements · Video: <a href="https://youtu.be/cLa3Qf9SUYs?t=2628" rel="noopener">EP05 ▶ 43:48</a> · <a href="practice.html?domain=d2">Practise this domain</a></p>
+        <div class="concepts">
+          <div class="concept" id="ts-2-1">
+            <h3>2.1 Tool Descriptions &amp; Interface Boundaries</h3>
+            <p class="src">Task statement: Design effective tool interfaces with clear descriptions and boundaries</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Tool descriptions are the primary mechanism the model uses for tool selection; minimal descriptions lead to unreliable selection.</li>
+              <li>Good descriptions include input formats, example queries, edge cases, and explicit boundary statements distinguishing the tool from similar alternatives.</li>
+              <li>Ambiguous or overlapping descriptions (and near-identical names) cause misrouting between tools that cover similar ground.</li>
+              <li>The first-step fix for tool confusion is expanding each tool's description — a low-effort, root-cause remedy.</li>
+              <li>Renaming tools to eliminate functional overlap is the next escalation when enriched descriptions are not enough.</li>
+              <li>Generic multi-purpose tools should be split into purpose-specific tools with defined contracts.</li>
+              <li>System prompt wording affects tool selection: keyword-sensitive instructions can override well-written descriptions, so review prompts and descriptions together.</li>
+              <li>A useful description template: what the tool does, when to use it over its siblings, an example invocation with realistic arguments, and the error conditions it can return.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Adding few-shot examples or building a routing classifier to fix tool confusion — both are over-engineered distractors; the root-cause fix is better descriptions.</li>
+              <li>Assuming the model uses anything beyond name, description, and input schema to choose a tool — there is no other selection signal.</li>
+              <li>Fixing only the tool descriptions while ignoring a system prompt whose keywords steer the agent toward the wrong tool.</li>
+              <li>Jumping straight to splitting or renaming tools when the question asks for the best <em>first</em> step — description enrichment comes before structural changes.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-2-2">
+            <h3>2.2 Structured Error Responses for MCP Tools</h3>
+            <p class="src">Task statement: Implement structured error responses for MCP tools</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>MCP communicates tool failure to the agent via the <code>isError</code> flag pattern on tool results.</li>
+              <li>Structured error metadata should include an <code>errorCategory</code>, an <code>isRetryable</code> boolean, and a human-readable description.</li>
+              <li>Four error classes: transient (retryable), validation (fix the input), business (not retryable), permission (escalate).</li>
+              <li>Business rule violations should return a <code>retriable: false</code> flag plus a customer-friendly explanation, so the agent explains the policy rather than looping.</li>
+              <li>Uniform, undifferentiated error responses prevent the agent from making appropriate recovery decisions.</li>
+              <li>Subagents should recover locally from transient failures rather than escalating every timeout to the coordinator.</li>
+              <li>A malformed request (tool never ran) is a JSON-RPC protocol error; a post-invocation external failure (404, 503) is a tool result with <code>is_error: true</code>.</li>
+              <li>Zero results from a successful query is a valid empty result, not an access failure — the two must be reported distinguishably.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Options that return plain-text or generic error messages ("operation failed") — they hide the retry/abandon/escalate signal and cause wasted retry turns.</li>
+              <li>Treating a business error as retryable: the agent wastes multiple turns retrying a policy violation that can never succeed; the graded fix is <code>retriable: false</code> with an explanation.</li>
+              <li>Reporting a malformed request as an <code>is_error</code> tool result (or a downstream 404/503 as a protocol error) — the JSON-RPC vs. tool-result boundary is whether the tool actually executed.</li>
+              <li>Flagging an empty search result as an error (causes endless retries) or, inversely, marking an access failure as a successful empty result (causes silent data gaps).</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-2-3">
+            <h3>2.3 Tool Distribution &amp; tool_choice</h3>
+            <p class="src">Task statement: Distribute tools appropriately across agents and configure tool choice</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Giving an agent too many tools (e.g., 18 instead of a focused 4–5) degrades tool selection reliability.</li>
+              <li>Agents holding tools outside their specialization tend to misuse them (attention drift into out-of-role work).</li>
+              <li>Scoped tool access is least privilege applied to tools: restrict each subagent's tool set to what its role needs.</li>
+              <li>Replace generic tools with constrained, purpose-specific alternatives rather than sharing one broad tool everywhere.</li>
+              <li>For high-frequency cross-role needs, provide a narrow scoped tool (e.g., a scoped <code>verify_fact</code> for a synthesis agent) and route the complex remainder through the coordinator.</li>
+              <li><code>tool_choice: "auto"</code> — tool use optional; the model may return plain text.</li>
+              <li><code>tool_choice: "any"</code> — the model must call some tool from the list; guarantees a tool call in pipelines.</li>
+              <li>Forced tool selection (naming a specific tool) guarantees that exact tool is called — used to ensure a prerequisite step runs first, then switch to <code>"auto"</code>.</li>
+              <li>Business rules should be enforced in tool code, not in prompt instructions — structural fixes beat prompt fixes.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Give the subagent the full tool set so it never gets blocked" — wrong; broad access degrades selection and invites misuse. Scoped tools plus coordinator delegation is the graded pattern.</li>
+              <li>Relying on <code>tool_choice: "auto"</code> when the scenario requires a guaranteed tool call — <code>"auto"</code> permits a plain-text reply; use <code>"any"</code> or forced selection.</li>
+              <li>Enforcing a required tool ordering through system-prompt instructions instead of forcing the first tool via <code>tool_choice</code> — prompt wording cannot guarantee sequencing.</li>
+              <li>Routing every small verification through the coordinator when the stem describes a high-frequency, mostly-simple need — the scoped cross-role tool is the intended answer.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-2-4">
+            <h3>2.4 MCP Server Integration &amp; Configuration</h3>
+            <p class="src">Task statement: Integrate MCP servers into Claude Code and agent workflows</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Project-scoped MCP servers go in <code>.mcp.json</code> in the repository — shared with the team via version control; right for shared tooling.</li>
+              <li>User-scoped MCP servers go in <code>~/.claude.json</code> — personal or experimental servers not forced on teammates.</li>
+              <li><code>.mcp.json</code> supports environment variable expansion (e.g., <code>${GITHUB_TOKEN}</code>) so credentials stay local; secrets are never committed.</li>
+              <li>Tools from all configured MCP servers are discovered at connection time.</li>
+              <li>Detailed MCP tool descriptions (capabilities and outputs) should be enhanced just like native tool descriptions — they drive selection.</li>
+              <li>MCP resources expose content catalogs (issue lists, directory trees, schemas), reducing blind exploratory tool calls.</li>
+              <li>Prefer existing community MCP servers over custom implementations for standard integrations; build custom only for team-specific needs.</li>
+              <li>stdio transport is the default for a server on the same machine (no network, no auth overhead); SSE is for servers that must run on a remote host.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Putting a team-shared server in <code>~/.claude.json</code> — it never reaches version control, so teammates lack it; shared tooling belongs in project-scoped <code>.mcp.json</code>.</li>
+              <li>Hardcoding an API key or password into a committed <code>.mcp.json</code> — the graded answer uses environment variable expansion.</li>
+              <li>Choosing SSE transport for a server running on the same machine as the client — stdio is correct; SSE adds latency and authentication design for no benefit.</li>
+              <li>Writing a custom MCP server for a standard integration (e.g., a mainstream issue tracker) when a community server exists — buy before build.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-2-5">
+            <h3>2.5 Built-in Tools (Read, Write, Edit, Bash, Grep, Glob)</h3>
+            <p class="src">Task statement: Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) effectively</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Grep searches file contents for patterns — function names, error messages, call sites; Glob matches file paths by name or extension pattern.</li>
+              <li>Mnemonic: Grep is for contents, Glob is for names.</li>
+              <li>Glob works on paths without reading file contents, making it fast and token-efficient for scoping work by file type.</li>
+              <li>Read loads full file contents into context; Write overwrites an entire file.</li>
+              <li>Edit performs targeted modifications via unique text matching — not line numbers, because models miscount lines over large contexts and unique strings are immune to line-number drift.</li>
+              <li>Edit fails when the anchor text is not unique in the file; the fallback is Read the full file plus Write the complete modified file.</li>
+              <li>Build codebase understanding incrementally: start with Grep to find entry points, then Read selectively following imports — do not read all files upfront.</li>
+              <li>Tracing a function's usage across wrapper modules is a Grep job (content search across the codebase).</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Answers that use Glob to search inside files or Grep to find files by extension — swapped roles are the standard distractor pair.</li>
+              <li>"Read every file in the module first, then analyze" — exhausts context; the graded strategy is Grep-first incremental exploration.</li>
+              <li>Expecting Edit to target changes by line number, or treating a failed Edit (non-unique match) as a dead end instead of falling back to Read + Write.</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>Descriptions are the selection signal, so enrich them first.</li>
+            <li>Errors are structured: category, retryable flag, and empty ≠ error.</li>
+            <li>Four or five scoped tools per role; <code>tool_choice</code> when a call must happen.</li>
+            <li>Team servers in <code>.mcp.json</code> with env-var secrets; stdio when local.</li>
+            <li>Grep for contents, Glob for names; Edit by unique text.</li>
+          </ul>
+        </div>
+      </section>
+      <section class="domain" id="d3">
+        <div class="domain-head"><h2>D3 · Claude Code Configuration &amp; Workflows</h2><span class="weight-pill">20%</span></div>
+        <p class="src">6 task statements · Video: <a href="https://youtu.be/cLa3Qf9SUYs?t=3292" rel="noopener">EP06 ▶ 54:52</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=3973" rel="noopener">EP07 ▶ 1:06:13</a> · <a href="practice.html?domain=d3">Practise this domain</a></p>
+        <div class="concepts">
+          <div class="concept" id="ts-3-1">
+            <h3>3.1 CLAUDE.md Hierarchy</h3>
+            <p class="src">Task statement: Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular organization</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s2">S2 Code Generation with Claude Code</a><a class="chip" href="scenarios.html#s5">S5 Claude Code for Continuous Integration</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>The hierarchy has three levels: user (<code>~/.claude/CLAUDE.md</code>), project (root <code>CLAUDE.md</code> or <code>.claude/CLAUDE.md</code>), and directory-level files scoped to a subfolder.</li>
+              <li>User-level settings apply only to that user; instructions in <code>~/.claude/CLAUDE.md</code> are not shared with teammates because they never enter version control.</li>
+              <li>Project-level CLAUDE.md is committed to the repo and ships with every clone — the correct home for team-wide conventions.</li>
+              <li>Diagnostic pattern: a rule that works for one developer but not teammates is trapped in a user-level file; move it to project level.</li>
+              <li>The <code>@import</code> syntax references external files from CLAUDE.md, keeping the root file modular instead of monolithic.</li>
+              <li>The <code>.claude/rules/</code> directory organizes topic-specific rule files (e.g., database conventions, API security) split out of a large CLAUDE.md.</li>
+              <li>The <code>/memory</code> command verifies which memory files are currently loaded — the first step when diagnosing configuration drift.</li>
+              <li>CLAUDE.md content is injected automatically at session start, so an oversized monolithic file costs tokens on every session.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Any option that fixes "teammates don't get the standards" by rewording the rule or strengthening the prompt is wrong — the root cause is placement (user level vs project level), not phrasing.</li>
+              <li>Putting team-shared configuration in the home-directory file is the classic wrong answer; it can never reach version control.</li>
+              <li>Options that keep everything in one giant always-loaded CLAUDE.md (treating it as a knowledge base) lose to <code>@import</code> plus focused <code>.claude/rules/</code> files.</li>
+              <li>Guessing at which instructions are active instead of running <code>/memory</code> — the exam rewards verifying loaded memory files over speculation.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-3-2">
+            <h3>3.2 Slash Commands &amp; Skills</h3>
+            <p class="src">Task statement: Create and configure custom slash commands and skills</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s2">S2 Code Generation with Claude Code</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Project-scoped commands live in <code>.claude/commands/</code> and are shared through version control; user-scoped commands live in <code>~/.claude/commands/</code> and stay personal.</li>
+              <li>"The whole team needs a <code>/review</code> command on clone" → create it in <code>.claude/commands/</code> in the project repository.</li>
+              <li>Skills live in <code>.claude/skills/</code> as folders with <code>SKILL.md</code> files configured via YAML frontmatter.</li>
+              <li><code>context: fork</code> runs a skill in an isolated sub-agent context so verbose output stays out of the main conversation and only the final result returns.</li>
+              <li><code>allowed-tools</code> frontmatter restricts a skill's tool access — e.g., a review-only skill gets read operations, preventing accidental destructive writes.</li>
+              <li><code>argument-hint</code> frontmatter prompts developers for required parameters they did not supply.</li>
+              <li>Decision rule: CLAUDE.md holds always-loaded universal standards; skills hold on-demand workflows.</li>
+              <li>Developers can create personal variants of team skills to customize shared workflows.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Placing a team command in the home-directory commands folder — it never reaches teammates; project <code>.claude/commands/</code> is the shared location.</li>
+              <li>Stuffing an occasional workflow into CLAUDE.md (always loaded, tokens on every session) when an on-demand skill is the right container.</li>
+              <li>Handling a skill's verbose output with prompt instructions ("be concise") instead of the structural fix, <code>context: fork</code>.</li>
+              <li>Trusting a prompt to keep a review skill from writing files instead of restricting it with <code>allowed-tools</code> — the frontmatter guarantee beats the instruction.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-3-3">
+            <h3>3.3 Path-Specific Rules</h3>
+            <p class="src">Task statement: Apply path-specific rules for conditional convention loading</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s2">S2 Code Generation with Claude Code</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li><code>.claude/rules/</code> files support YAML frontmatter <code>paths</code> fields containing glob patterns that control when the rule file activates.</li>
+              <li>Path-scoped rules load only when Claude edits files matching the glob, reducing irrelevant context in every other session.</li>
+              <li>Glob-pattern rules beat directory-level CLAUDE.md files when file types are spread across directories — e.g., test files living alongside code throughout the repo.</li>
+              <li>A single rule file with a pattern like <code>**/*.test.py</code> covers matching files everywhere, with no per-directory duplication.</li>
+              <li>Canonical scenario: distinct conventions for React components, API handlers, and DB models with tests spread throughout → rule files with frontmatter glob patterns.</li>
+              <li>Conditional loading saves tokens and prevents cross-contamination, such as styling conventions being applied to database scripts.</li>
+              <li>Decision rule: CLAUDE.md = universal standards, skills = on-demand workflows, path rules = file-type conventions scattered across the codebase.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Choosing per-directory CLAUDE.md files for conventions keyed to file type — when tests or components are spread across many directories, that means duplication; glob-based path rules are the graded answer.</li>
+              <li>Dumping all file-type conventions into the root CLAUDE.md so they load on every session — path rules exist precisely to avoid this always-loaded cost.</li>
+              <li>Confusing scoping mechanisms: directory-level CLAUDE.md scopes by location, <code>paths</code> frontmatter scopes by pattern; questions hinge on which dimension the scenario describes.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-3-4">
+            <h3>3.4 Plan Mode vs Direct Execution</h3>
+            <p class="src">Task statement: Determine when to use plan mode vs direct execution</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s2">S2 Code Generation with Claude Code</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Plan mode targets complex tasks: large-scale changes, multiple valid approaches, and architectural decisions.</li>
+              <li>Direct execution suits simple, well-scoped changes — the official example is adding a single validation check.</li>
+              <li>Plan mode enables safe codebase exploration and design before committing to any changes.</li>
+              <li>The Explore sub-agent isolates verbose discovery output during investigation, returning only concise summaries to the main context.</li>
+              <li>Canonical scenario: monolith-to-microservices restructuring touching dozens of files → enter plan mode to explore, map dependencies, and design first.</li>
+              <li>The modes combine: plan mode for investigation and design approval, then direct execution for implementation.</li>
+              <li>Selection signals live in the scenario text: stated file counts, architectural scope, and ambiguity all point to plan mode; a clear, contained fix points to direct execution.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Start with direct execution and switch to plan mode if it gets hard" is wrong when the scenario already states the complexity — dozens of files or service boundaries mean plan mode from the start.</li>
+              <li>Over-planning in the other direction: forcing plan mode onto a trivial single-file fix wastes effort; well-scoped changes execute directly.</li>
+              <li>Letting verbose exploration flood the main session instead of delegating discovery to the Explore sub-agent.</li>
+              <li>Treating plan mode and direct execution as mutually exclusive for a whole task — the graded pattern often plans the investigation, then implements directly after approval.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-3-5">
+            <h3>3.5 Iterative Refinement</h3>
+            <p class="src">Task statement: Apply iterative refinement techniques for progressive improvement</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s2">S2 Code Generation with Claude Code</a><a class="chip" href="scenarios.html#s4">S4 Developer Productivity with Claude</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Concrete input/output examples are the most effective way to communicate expected transformations — provide 2–3 worked pairs rather than prose descriptions.</li>
+              <li>Test-driven iteration: write the test suite first, then iterate by sharing specific test failures with Claude.</li>
+              <li>Tests written before implementation should cover expected behavior, edge cases, and performance requirements.</li>
+              <li>The interview pattern has Claude ask you questions to surface design considerations before building.</li>
+              <li>Multiple interacting issues (fixing one affects another) belong in a single detailed message for a holistic fix.</li>
+              <li>Fully independent issues can be handled sequentially in separate iterations.</li>
+              <li>Feedback should be specific: concrete test cases with example input and expected output, not general complaints.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Responding to inconsistent output by writing longer, more detailed prose instructions — the graded answer is adding concrete input/output example pairs instead.</li>
+              <li>Feeding interacting bugs to Claude one at a time, so each fix regresses another — interacting issues go in one combined message.</li>
+              <li>Writing the implementation first and bolting tests on afterward when the scenario calls for test-driven iteration — the tests come first, and their failures drive the loop.</li>
+              <li>Vague iteration feedback ("still wrong, try again") offered as an answer choice — specific failures and expected outputs are what make refinement converge.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-3-6">
+            <h3>3.6 CI/CD Integration</h3>
+            <p class="src">Task statement: Integrate Claude Code into CI/CD pipelines</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s5">S5 Claude Code for Continuous Integration</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>The <code>-p</code> (or <code>--print</code>) flag runs Claude Code in non-interactive mode for automated pipelines; without it, CI jobs hang waiting for terminal input.</li>
+              <li><code>--output-format json</code> combined with the <code>--json-schema</code> flag enforces structured, machine-parseable output — e.g., structured findings posted as PR comments.</li>
+              <li>CLAUDE.md is the mechanism for providing project context to CI runs; documenting testing standards there improves test generation quality.</li>
+              <li>Session context isolation: the session that generated code is less effective at reviewing its own changes, because it retains the reasoning that produced them.</li>
+              <li>Automated code review should run in a fresh, independent Claude instance, separate from the session that wrote the code.</li>
+              <li>When re-running reviews after new commits, include prior review findings in context so only new issues are reported.</li>
+              <li>Provide existing test files in context so generated tests do not duplicate coverage that already exists.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Invented mechanisms: a "headless" environment variable, a <code>--batch</code> flag, or stdin redirection offered instead of <code>-p</code>/<code>--print</code> — those features do not exist; eliminate them on sight.</li>
+              <li>Letting the same session that wrote the code review it — self-review bias means it validates its own reasoning; the graded answer is a fresh independent instance.</li>
+              <li>Parsing Claude's prose output in the pipeline instead of enforcing structure with <code>--output-format json</code> and <code>--json-schema</code>.</li>
+              <li>Re-running reviews from scratch after each commit without prior findings in context, flooding the PR with duplicate reports of already-addressed issues.</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>Team rules and commands live in the repo; user-level files never ship.</li>
+            <li><code>CLAUDE.md</code> = always-loaded universals; skills = on-demand; path rules = scattered file types.</li>
+            <li>Stated scope decides plan mode vs direct execution.</li>
+            <li>Iterate with examples, tests first, and specific failures.</li>
+            <li>CI: <code>-p</code>, JSON output with a schema, and a fresh reviewer instance.</li>
+          </ul>
+        </div>
+      </section>
+      <section class="domain" id="d4">
+        <div class="domain-head"><h2>D4 · Prompt Engineering &amp; Structured Output</h2><span class="weight-pill">20%</span></div>
+        <p class="src">6 task statements · Video: <a href="https://youtu.be/cLa3Qf9SUYs?t=4637" rel="noopener">EP08 ▶ 1:17:17</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=5291" rel="noopener">EP09 ▶ 1:28:11</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=7839" rel="noopener">EP13 ▶ 2:10:39</a> · <a href="practice.html?domain=d4">Practise this domain</a></p>
+        <div class="concepts">
+          <div class="concept" id="ts-4-1">
+            <h3>4.1 Explicit Review Criteria</h3>
+            <p class="src">Task statement: Design prompts with explicit criteria to improve precision and reduce false positives</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s5">S5 Claude Code for Continuous Integration</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Explicit criteria beat vague instructions — e.g., "flag comments only when claimed behavior contradicts actual code behavior" is testable; "be careful" is not.</li>
+              <li>General instructions like "be conservative" or "only report high-confidence findings" fail to improve precision compared to specific categorical criteria.</li>
+              <li>High false-positive rates erode developer trust; one noisy category undermines confidence in the accurate ones.</li>
+              <li>Write review criteria that explicitly define which issue categories to report and which to skip.</li>
+              <li>Temporarily disabling high false-positive categories is a recognized remediation to restore developer trust while criteria are rewritten.</li>
+              <li>Define explicit severity criteria with a concrete code example for each severity level.</li>
+              <li>Good criteria are mechanically checkable — e.g., "flag any function exceeding 40 lines," "flag any new third-party dependency."</li>
+              <li>In CI pipelines, fail builds only on explicitly named finding categories, never on vague concerns.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Options that add adjectives ("careful," "thorough," "conservative") to fix false positives — the vague-adjective trap; the credited answer is a list of categorical, checkable rules.</li>
+              <li>Confidence thresholds or self-reported confidence scores offered as the precision fix — poorly calibrated and not the root cause.</li>
+              <li>Building a second classifier or filtering model to screen findings — over-engineering when rewriting the criteria fixes the root cause.</li>
+              <li>Leaving a known-noisy category running while "tuning" it — the exam credits temporarily disabling it to restore trust.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-4-2">
+            <h3>4.2 Few-Shot Prompting</h3>
+            <p class="src">Task statement: Apply few-shot prompting to improve output consistency and quality</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s5">S5 Claude Code for Continuous Integration</a><a class="chip" href="scenarios.html#s6">S6 Structured Data Extraction</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Few-shot examples are the most effective technique for achieving consistently formatted, actionable output.</li>
+              <li>Use roughly 2–4 targeted examples; returns diminish (and can turn negative) beyond about 6.</li>
+              <li>Examples should demonstrate ambiguous-case handling, showing the reasoning, not just the answer.</li>
+              <li>Few-shot examples enable the model to generalize judgment to novel patterns rather than copy the samples.</li>
+              <li>Effective for reducing hallucination in extraction — demonstrate outputting null when the source lacks the information.</li>
+              <li>In review tasks, include examples distinguishing acceptable existing patterns from genuine issues.</li>
+              <li>In extraction tasks, include examples showing correct extraction from documents with varied structures and formats.</li>
+              <li>Examples must show the exact desired output format concretely — demonstrating beats describing.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Adjusting temperature to fix inconsistent extraction or formatting — it is a pattern problem, not a sampling problem; the fix is worked examples.</li>
+              <li>Writing longer, more detailed instructions instead of adding examples — prose is re-interpreted each run; examples are not.</li>
+              <li>Example sets containing only easy, obvious cases — without edge and ambiguous cases the model gains no judgment.</li>
+              <li>Treating more examples as strictly better — double-digit example counts over-prompt and can degrade output.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-4-3">
+            <h3>4.3 Structured Output via Tool Use &amp; JSON Schemas</h3>
+            <p class="src">Task statement: Enforce structured output using tool use and JSON schemas</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s5">S5 Claude Code for Continuous Integration</a><a class="chip" href="scenarios.html#s6">S6 Structured Data Extraction</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Tool use with JSON schemas is the most reliable approach for guaranteed schema-compliant structured output; plain-text JSON requests get conversational preambles and markdown wrapping.</li>
+              <li><code>tool_choice: "auto"</code> — the model may return plain text; <code>"any"</code> — the model must call some tool; forced — the model must call the named tool.</li>
+              <li>Use <code>"any"</code> to guarantee structured output when the correct schema depends on the input (e.g., unknown document types).</li>
+              <li>Force a specific tool with <code>tool_choice: {"type": "tool", "name": "extract_metadata"}</code> to ensure a particular extraction runs first.</li>
+              <li>Strict schemas via tool use eliminate syntax errors but do not prevent semantic errors (wrong values, sums that do not reconcile).</li>
+              <li>Required fields force fabrication when the source lacks the data — design fields as optional/nullable when documents may not contain them.</li>
+              <li>Extensible enums: include "unclear" for ambiguous cases and "other" plus a free-text detail field for unanticipated categories.</li>
+              <li>Include format normalization rules in the prompt alongside the strict output schema.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Add 'respond only with valid JSON' to the prompt" offered as the most reliable approach — tool use with a schema is the credited answer.</li>
+              <li>Assuming schema enforcement guarantees correct values — semantic errors survive; only syntax errors are eliminated.</li>
+              <li>Marking every field required "for completeness" — required fields on absent data cause fabricated values.</li>
+              <li>Confusing <code>"any"</code> with forced selection — <code>"any"</code> guarantees a tool call but not <em>which</em> tool; only forced selection pins the specific tool.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-4-4">
+            <h3>4.4 Validation, Retry &amp; Feedback Loops</h3>
+            <p class="src">Task statement: Implement validation, retry, and feedback loops for extraction quality</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s5">S5 Claude Code for Continuous Integration</a><a class="chip" href="scenarios.html#s6">S6 Structured Data Extraction</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Retry-with-error-feedback: on validation failure, append the specific validation errors to the retry prompt rather than rerunning blind.</li>
+              <li>The follow-up request should include the original document, the failed extraction, and the specific errors.</li>
+              <li>With its own failed output and the exact error in context, second-attempt correction rates exceed 90% in practice.</li>
+              <li>Retries are ineffective when the required information is simply absent from the source — no amount of retrying recovers missing data.</li>
+              <li>Persistent retries on missing data waste tokens and can force hallucination; fail gracefully or escalate after one or two attempts.</li>
+              <li>Distinguish semantic validation errors (wrong values, unreconciled sums) from schema syntax errors (already eliminated by tool use).</li>
+              <li>Self-correction schema design: require <code>calculated_total</code> alongside <code>stated_total</code> with a conflict flag so discrepancies self-flag.</li>
+              <li>Adding <code>detected_pattern</code> fields to structured findings enables systematic false-positive analysis and prompt refinement.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Simply retry the request" without appending the validator's specific error — blind retries are a dice roll, not a fix.</li>
+              <li>Retrying repeatedly when the source document lacks the information — the credited answer recognizes retry futility and escalates.</li>
+              <li>Assuming schema-conformant output means correct output — skipping semantic validation because "the schema guarantees it."</li>
+              <li>Reaching for temperature changes or a different model when a validation-feedback loop addresses the root cause.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-4-5">
+            <h3>4.5 Batch Processing Strategies</h3>
+            <p class="src">Task statement: Design efficient batch processing strategies</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s5">S5 Claude Code for Continuous Integration</a><a class="chip" href="scenarios.html#s6">S6 Structured Data Extraction</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Message Batches API: 50% cost savings, up to a 24-hour processing window, no guaranteed latency SLA.</li>
+              <li>Batch fits non-blocking, latency-tolerant workloads (overnight reports, weekly audits); use the synchronous API for human-blocking tasks.</li>
+              <li>The Batch API does not support multi-turn tool calling within a request — pre-fetch all needed data into the prompt before submission.</li>
+              <li><code>custom_id</code> fields correlate batch request/response pairs.</li>
+              <li>Handle partial failures by resubmitting only the failed items, identified via <code>custom_id</code>.</li>
+              <li>SLA arithmetic: a 30-hour deadline minus the 24-hour maximum window means submitting every 6 hours.</li>
+              <li>Refine prompts on a small sample via the real-time API before batch-processing the full volume.</li>
+              <li>Route mixed workloads by urgency: latency-tolerant items to batch, urgent items to real-time.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Moving human-blocking work (like a pre-merge check) to batch because batch jobs are "usually fast" — without an SLA that is disqualifying.</li>
+              <li>Resubmitting the entire batch after a partial failure instead of isolating failed items by <code>custom_id</code>.</li>
+              <li>Answer options referencing invented features, such as a <code>--batch</code> CLI flag — spotting nonexistent features eliminates the option instantly.</li>
+              <li>Designs assuming the model can call tools mid-request inside a batch — batch is single-turn, fire-and-forget.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-4-6">
+            <h3>4.6 Multi-Instance &amp; Multi-Pass Review</h3>
+            <p class="src">Task statement: Design multi-instance and multi-pass review architectures</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s5">S5 Claude Code for Continuous Integration</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>A model retains its reasoning context from generation, making it less likely to question its own output — the core self-review limitation.</li>
+              <li>Independent review instances without the prior reasoning context are more effective at catching subtle issues than self-review instructions.</li>
+              <li>In CI, the session that generated code should not review it — use a fresh, separate instance.</li>
+              <li>Multi-pass review: split large reviews into per-file local analysis passes plus a separate cross-file integration pass.</li>
+              <li>The multi-pass split fixes attention dilution, the cause of inconsistent and contradictory findings on large PRs.</li>
+              <li>A larger context window does not fix attention dilution — capacity is not attention quality.</li>
+              <li>Scope the integration pass to cross-file concerns only: data flow and interface boundaries.</li>
+              <li>Verification passes can have the model self-report confidence alongside each finding for downstream routing.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Add an instruction telling the model to review its own output critically" — self-review is structurally biased regardless of prompt wording.</li>
+              <li>Reviewing a large PR in one pass with a bigger context window — more capacity does not restore attention quality; split the passes instead.</li>
+              <li>Consensus voting across repeated review runs — it suppresses the real intermittent catches and is called out as a wrong answer.</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>Checkable criteria beat adjectives; disable a noisy category while you fix it.</li>
+            <li>Two to four examples, including edge and null cases, fix consistency better than temperature.</li>
+            <li>Tool use + schema for structure; nullable fields; semantic checks still needed.</li>
+            <li>Retry with the error appended; stop when the data isn't there.</li>
+            <li>Batch = 50% cheaper, up to 24 h, no SLA, single-turn, <code>custom_id</code>.</li>
+          </ul>
+        </div>
+      </section>
+      <section class="domain" id="d5">
+        <div class="domain-head"><h2>D5 · Context Management &amp; Reliability</h2><span class="weight-pill">15%</span></div>
+        <p class="src">6 task statements · Video: <a href="https://youtu.be/cLa3Qf9SUYs?t=1986" rel="noopener">EP04 ▶ 33:06</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=5930" rel="noopener">EP10 ▶ 1:38:50</a> · <a href="https://youtu.be/cLa3Qf9SUYs?t=8488" rel="noopener">EP14 ▶ 2:21:28</a> · <a href="practice.html?domain=d5">Practise this domain</a></p>
+        <div class="concepts">
+          <div class="concept" id="ts-5-1">
+            <h3>5.1 Conversation Context in Long Interactions</h3>
+            <p class="src">Task statement: Manage conversation context to preserve critical information across long interactions</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>The API is stateless — the complete conversation history must be passed in each subsequent request, and only what you send exists for the model.</li>
+              <li>Progressive summarization condenses numerical values, percentages, dates, and customer-stated expectations into vague summaries; each pass loses precision.</li>
+              <li>Lost in the middle: models reliably process the beginning and end of long inputs but may omit information positioned in the middle.</li>
+              <li>Tool results accumulate in context and consume tokens disproportionately to their relevance; trim them to relevant fields before they enter history.</li>
+              <li>Case-facts block: extract transactional facts into a persistent structured block injected into every prompt, immune to summarization loss and middle-of-context decay.</li>
+              <li>Hybrid preservation pattern: structured extraction of critical data + summarized general discussion + recent exchanges retained verbatim.</li>
+              <li>Place key-findings summaries at the beginning of aggregated inputs; require subagents to include metadata (dates, source locations) in structured outputs.</li>
+              <li>Prompt caching: a <code>cache_control</code> breakpoint caches a reusable prefix for ~5 minutes; reuse pays roughly 1/10 of the input price on the cached portion.</li>
+              <li>Cache stable sections (system prompt, few-shot examples); do not cache the always-changing final user turn.</li>
+              <li>Usable context is smaller than the advertised window: tool definitions and the system prompt consume budget, and attention degrades near the absolute limit.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Summarize the whole conversation" offered as the fix for a forgotten account number or amount — summarization is lossy and silently drops IDs and numbers; the graded answer extracts durable facts into a case block.</li>
+              <li>A pure sliding window that keeps only recent turns — it deletes critical facts stated early (the turn-1 allergy, the original order number).</li>
+              <li>Assuming a bigger context window solves reliability — attention quality does not scale with window size, and documents near the limit still degrade.</li>
+              <li>Options implying the API remembers prior calls — every request must carry its own history.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-5-2">
+            <h3>5.2 Escalation &amp; Ambiguity Resolution</h3>
+            <p class="src">Task statement: Design effective escalation and ambiguity resolution patterns</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>The three canonical escalation triggers: explicit customer request for a human, policy exceptions or gaps, and inability to make meaningful progress.</li>
+              <li>An explicit request for a human is honored immediately; when the issue is within capability but the customer is frustrated, acknowledge the frustration and offer to resolve.</li>
+              <li>Sentiment-based escalation and self-reported confidence scores are unreliable proxies — sentiment does not track complexity, and confidence is poorly calibrated.</li>
+              <li>Poor escalation calibration (escalating easy cases, attempting hard ones) is fixed with explicit escalation criteria plus few-shot examples in the system prompt.</li>
+              <li>When policy is ambiguous or silent on a request, escalate — the agent must not invent policy.</li>
+              <li>Multiple matching customer records require asking for an additional identifier, not heuristic selection.</li>
+              <li>Escalations should carry a structured handoff (customer ID, root cause, amount, attempted steps, recommended action) rather than a raw transcript.</li>
+              <li>Zero records returned from a tool is a valid result, not an error or an automatic escalation trigger.</li>
+              <li>The exam weighs confidently answering something that should have escalated as a worse failure than escalating too eagerly.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>Options that route escalation through a sentiment analyzer or a self-reported confidence threshold — both are named unreliable proxies; the graded answer is explicit criteria with examples.</li>
+              <li>"Try to resolve it first, then transfer if that fails" when the customer explicitly asked for a human — immediate handoff is the correct behavior.</li>
+              <li>Escalating a frustrated customer whose issue is simple and in-policy — acknowledge and resolve instead.</li>
+              <li>Picking one of several matching records by a heuristic such as most-recent activity — the correct move is asking the customer for another identifier.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-5-3">
+            <h3>5.3 Error Propagation in Multi-Agent Systems</h3>
+            <p class="src">Task statement: Implement error propagation strategies across multi-agent systems</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s1">S1 Customer Support Resolution Agent</a><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Structured error context — failure type, attempted query, partial results, and alternative approaches — enables intelligent coordinator recovery.</li>
+              <li>Generic error statuses ("operation failed", "search unavailable") hide the context the coordinator needs to choose a recovery path.</li>
+              <li>Silently suppressing errors and terminating the whole workflow on a single failure are both anti-patterns; report the failure in structured form instead.</li>
+              <li>Subagents implement local recovery for transient failures only (e.g., retrying a timeout) and propagate only errors they cannot resolve.</li>
+              <li>Distinguish access failures (timeouts needing retry decisions) from valid empty results — zero matches from a successful search is a result, not an error.</li>
+              <li>Conflating empty results with errors causes endless retries; conflating errors with empty results causes silent data gaps in the final output.</li>
+              <li>Synthesis output should include coverage annotations marking which findings are well supported and where the gaps are.</li>
+              <li>When one subagent fails partway, retry only the failed subagent — successful siblings may have side effects that must not be repeated.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>A subagent returning a bare "search failed" or empty success — the graded answer always names the four-part structured error context (failure type, what was attempted, partial results, alternatives).</li>
+              <li>Treating zero search results as a failure to retry with new parameters — a valid empty result is not an error.</li>
+              <li>Rerunning every subagent after one fails — the blanket retry repeats side effects; retry only the failed one.</li>
+              <li>Halting the entire workflow (or shipping the report silently incomplete) after a single recoverable subagent failure — proceed with partials and annotate coverage honestly.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-5-4">
+            <h3>5.4 Context in Large Codebase Exploration</h3>
+            <p class="src">Task statement: Manage context effectively in large codebase exploration</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s2">S2 Code Generation with Claude Code</a><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Context degradation symptom: in extended sessions the model gives inconsistent answers and references "typical patterns" instead of the actual code it read.</li>
+              <li>Spawn subagents to investigate specific questions so verbose exploration output stays isolated while the main agent preserves coordination context.</li>
+              <li>Subagents start with empty context — summarize key findings from earlier phases and inject the summary into each subagent's initial context.</li>
+              <li>Scratchpad files persist key findings (signatures, mappings, notes) across context boundaries; agents reference them for subsequent questions.</li>
+              <li>Structured state persistence enables crash recovery: each agent exports state to a known location as a manifest the coordinator loads on resume.</li>
+              <li>Use <code>/compact</code> to strip verbose discovery logs and reduce context usage during extended exploration sessions.</li>
+              <li>When prior context is largely stale, a fresh session seeded with a dense structured summary beats resuming a cluttered session — stale tool results cause hallucinated edits.</li>
+              <li>Don't read every file upfront: build understanding incrementally so exploration output doesn't exhaust the window before analysis begins.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Just continue in the same session" (or "use a bigger context window") when the agent has begun answering from generic patterns — the graded fixes are delegation, scratchpads, <code>/compact</code>, or a summary-seeded fresh session.</li>
+              <li>Resuming a stale session after the codebase changed and trusting Friday's file reads — hallucinated line numbers follow; reseed a fresh session instead.</li>
+              <li>Having subagents rediscover the codebase from scratch when the coordinator already holds phase findings — inject a findings summary into their initial context.</li>
+              <li>Keeping all state in-context with no exported manifests, so one crash loses the entire exploration.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-5-5">
+            <h3>5.5 Human Review &amp; Confidence Calibration</h3>
+            <p class="src">Task statement: Design human review workflows and confidence calibration</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s6">S6 Structured Data Extraction</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Aggregate accuracy metrics (e.g., 97% overall) can mask poor performance on specific document types or fields; validate by document type and by field before automating.</li>
+              <li>Stratified random sampling of high-confidence extractions measures the true error rate in the lane no human normally reviews.</li>
+              <li>Ongoing sampling of the automated lane is what detects novel confident-hallucination patterns after deployment.</li>
+              <li>Confidence should be output at field level, not only per document — one wrong hard field hides inside an otherwise easy document.</li>
+              <li>Calibrate review thresholds against a labeled validation set; uncalibrated raw scores do not map to known error rates.</li>
+              <li>Route extractions with low model confidence or ambiguous source content to human review.</li>
+              <li>Prioritize scarce reviewer attention on historically low-confidence fields, weak document types, and contradiction cases.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"97% accurate, so auto-approve high-confidence extractions and move on" — the aggregate may hide a failing segment; segment-level validation and continued sampling are the graded answer.</li>
+              <li>Reviewing only low-confidence extractions and never auditing the high-confidence stream — errors there are invisible without stratified random sampling.</li>
+              <li>Using a single document-level confidence score (or an arbitrary uncalibrated threshold) for routing — field-level scores calibrated on labeled data are required.</li>
+              <li>Treating the model's self-reported confidence as trustworthy without calibration — it is a proxy that must be measured against known answers first.</li>
+            </ul></div>
+          </div>
+          <div class="concept" id="ts-5-6">
+            <h3>5.6 Provenance &amp; Uncertainty in Multi-Source Synthesis</h3>
+            <p class="src">Task statement: Preserve information provenance and handle uncertainty in multi-source synthesis</p>
+            <div class="chips" style="margin-bottom:.6em"><a class="chip" href="scenarios.html#s3">S3 Multi-Agent Research System</a><a class="chip" href="scenarios.html#s6">S6 Structured Data Extraction</a></div>
+            <details open><summary><strong>Key facts</strong></summary>
+            <ul>
+              <li>Source attribution is lost during summarization steps when findings are compressed; unstructured hand-offs are where provenance dies.</li>
+              <li>Subagents should output structured claim-source mappings (source URL or document name, relevant excerpt, publication date) that downstream agents must preserve.</li>
+              <li>Conflicting statistics from credible sources are annotated with both values and both attributions — never arbitrarily selected, averaged, or silently dropped.</li>
+              <li>Document analysis should be completed with conflicting values included and explicitly annotated, deferring reconciliation to the coordinator or a human.</li>
+              <li>Reports should structurally separate well-established findings from contested or weakly-supported ones.</li>
+              <li>Publication or data-collection dates are required in structured outputs; temporal differences otherwise get misread as contradictions.</li>
+              <li>A 2021 statistic differing from a 2024 statistic is temporal progression, not a conflict to resolve.</li>
+              <li>Render each content type natively in synthesis output (tables or JSON for data/schemas, prose for narrative, lists for technical findings) instead of uniform flattened prose.</li>
+            </ul></details>
+            <div class="callout warn" style="margin:.8em 0 0">
+            <p style="margin-bottom:.3em"><strong>Exam traps</strong></p>
+            <ul style="margin:0">
+              <li>"Pick the more credible source" or "use the average" when two credible sources disagree — the graded answer annotates the conflict with both values and attributions.</li>
+              <li>Flagging a contradiction between figures from different years — check dates first; it's likely a trend, and the fix is requiring dates in structured outputs.</li>
+              <li>Passing raw summarized text between agents and expecting citations to survive — only enforced claim-source mapping structures preserve attribution.</li>
+              <li>Presenting contested and well-established findings with equal confidence in one undifferentiated report section.</li>
+            </ul></div>
+          </div>
+        </div>
+        <div class="recap">
+          <h3>60-second recap</h3>
+          <ul>
+            <li>The API is stateless; pin durable facts in a case-facts block.</li>
+            <li>Escalate on explicit request, policy gap, or no progress, never on sentiment.</li>
+            <li>Structured error context up the chain; annotate coverage gaps.</li>
+            <li>Validate by segment; sample the high-confidence lane; calibrate confidence per field.</li>
+            <li>Keep claim–source mappings with dates; report conflicts, don't resolve them silently.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-F Exam Traps</strong> · Independent study notes for Claude Certified Architect – Foundations (CCAR-F) · Not affiliated with Anthropic.</p>
+    <p>Lesson content adapted from the open-source learn-claude study plugin (MIT). Domain weights: official exam guide.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
