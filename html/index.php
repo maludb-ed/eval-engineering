@@ -141,6 +141,7 @@ $h = fn($s) => htmlspecialchars((string)$s);
                 <span class="lp-motion-on"><?= lp_icon('pause') ?>Pause</span>
                 <span class="lp-motion-off" hidden><?= lp_icon('play') ?>Play</span>
             </button>
+            <a class="lp-pill" href="#exam-traps">Exam traps</a>
             <a class="lp-pill lp-pill-cta" href="<?= $EVAL_BASE ?>"><?= lp_icon('arrow') ?>Open course</a>
         </div>
     </header>
@@ -292,6 +293,25 @@ $h = fn($s) => htmlspecialchars((string)$s);
         <p class="lp-index-foot">
             <?= $h($SITE_TITLE) ?> · <?= $h($COURSE['subtitle']) ?> · <?= $h($COURSE['version']) ?>
         </p>
+    </section>
+
+    <!-- ============================ EXAM TRAPS ============================ -->
+    <section class="lp-index" id="exam-traps" aria-labelledby="lp-traps-title">
+        <p class="lp-eyebrow">Companion study sites / exam traps</p>
+        <h2 class="lp-index-title" id="lp-traps-title">Spot the trap, <span>pick the answer.</span></h2>
+        <div class="lp-index-grid">
+            <a class="lp-card lp-cyan" href="ccarp-traps/">
+                <span class="lp-card-kicker">CCAR-P · Architect Professional · 63 items</span>
+                <span class="lp-card-title">CCAR-P Exam Traps</span>
+                <span class="lp-card-blurb">16 trap families, a stem-to-principle constraint map, notes for all seven domains, production autopsies, and practice questions with every distractor labeled.</span>
+            </a>
+            <a class="lp-card lp-gold" href="ccarf-traps/">
+                <span class="lp-card-kicker">CCAR-F · Architect Foundations · 60 items</span>
+                <span class="lp-card-title">CCAR-F Exam Traps</span>
+                <span class="lp-card-blurb">18 trap families, notes for all 30 task statements, the six exam scenarios, a 150-question practice bank, and a timed 60-question mock exam.</span>
+            </a>
+        </div>
+        <p class="lp-index-foot">Independent study notes · not affiliated with Anthropic</p>
     </section>
 
 </main>
