@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scenarios · CCAR-F Exam Traps</title>
+<meta name="description" content="The six official CCA-F exam scenarios, what each tests, and the traps each leans on.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-F Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html">Start</a>
+      <a href="traps.html">Trap Families</a>
+      <a href="constraint-map.html">Constraint Map</a>
+      <a href="domains.html">Domains</a>
+      <a href="scenarios.html" aria-current="page">Scenarios</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">How items are framed</p>
+    <h1>The six exam scenarios</h1>
+    <p class="lede">Foundations questions sit inside recurring production scenarios, and each sitting draws four of the six officially published ones at random. Know each setting well enough that you only need to read the part of the stem that changes.</p>
+  </section>
+  <div class="grid grid-3" style="margin-top:1.5rem">
+    <div class="card"><h3 style="margin-top:0">Three builds, three not</h3><p>Scenarios 1, 3 and 4 are things <em>you build</em> with the Agent SDK. Scenarios 2 and 5 drop Claude Code into a repository, and 6 is a document pipeline. A draw of four always crosses that line, so you can't prepare only one half.</p></div>
+    <div class="card"><h3 style="margin-top:0">The small domain you can't dodge</h3><p>D5 Context &amp; Reliability is only 15% of the weight, but it's a primary domain in <strong>four of six</strong> scenarios, so at least two of your four will lean on it. D4 is named in only two.</p></div>
+    <div class="card"><h3 style="margin-top:0">The scenario names who the answer is for</h3><p>Same four options, different consumer: if a <em>person</em> reads the output, explicit criteria plus examples fix vague content. If a <em>service</em> parses it, only a schema makes the shape certain.</p></div>
+  </div>
+  <p class="src" style="margin-top:.8rem">Insights adapted from <a href="https://youtu.be/cLa3Qf9SUYs?t=6575" rel="noopener">EP11 ▶ 1:49:35</a> of the CCAR-F course. Primary domains per scenario follow the official guide.</p>
+  <div class="grid grid-2" style="margin-top:1.5rem">
+      <article class="card" id="s1">
+        <p class="eyebrow" style="margin:0">Scenario 1 · domains D1, D2, D5</p>
+        <h3 style="margin:.2em 0 .5em">Customer Support Resolution Agent</h3>
+        <p>Agent SDK support agent with MCP tools <code>get_customer</code>, <code>lookup_order</code>, <code>process_refund</code>, <code>escalate_to_human</code>; target of 80%+ first-contact resolution.</p>
+        <p class="src"><strong>Architect question it asks most:</strong> What can it touch? · 3 official sample questions in the guide</p>
+        <p style="margin-bottom:.3em"><strong>What it tests</strong></p>
+        <ul>
+            <li>Refund limits and identity checks enforced by hooks and prerequisite gates, not prompts.</li>
+            <li>Escalation triggers: an explicit request, a policy gap, or no progress. Not sentiment.</li>
+            <li>Structured handoff to the human; a case-facts block for IDs and amounts.</li>
+            <li>Business-rule errors are non-retryable; an empty lookup isn't an error.</li>
+        </ul>
+        <p style="margin-bottom:.3em"><strong>Traps it leans on</strong></p>
+        <div class="chips" style="margin-bottom:.8em"><a class="chip found" href="traps.html#t1">T1 Prompt as guarantee</a><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a><a class="chip course" href="traps.html#t15">T15 Error conflation</a><a class="chip pro" href="traps.html#t10">T10 Lossy handoff</a></div>
+        <p class="src">Task statements: <a href="domains.html#ts-1-1">1.1</a>, <a href="domains.html#ts-1-2">1.2</a>, <a href="domains.html#ts-1-4">1.4</a>, <a href="domains.html#ts-1-5">1.5</a>, <a href="domains.html#ts-2-1">2.1</a>, <a href="domains.html#ts-2-2">2.2</a>, <a href="domains.html#ts-2-3">2.3</a>, <a href="domains.html#ts-2-4">2.4</a>, <a href="domains.html#ts-5-1">5.1</a>, <a href="domains.html#ts-5-2">5.2</a>, <a href="domains.html#ts-5-3">5.3</a></p>
+        <p style="margin:0"><a class="btn secondary" style="display:inline-block;text-decoration:none" href="practice.html?scenario=1">Practise this scenario (32 questions) →</a></p>
+      </article>
+      <article class="card" id="s2">
+        <p class="eyebrow" style="margin:0">Scenario 2 · domains D3, D5</p>
+        <h3 style="margin:.2em 0 .5em">Code Generation with Claude Code</h3>
+        <p>A team development workflow: slash commands, <code>CLAUDE.md</code>, plan mode vs direct execution.</p>
+        <p class="src"><strong>Architect question it asks most:</strong> What can it touch? · 3 official sample questions in the guide</p>
+        <p style="margin-bottom:.3em"><strong>What it tests</strong></p>
+        <ul>
+            <li>Team conventions and commands live in the repo, not in <code>~/.claude</code>.</li>
+            <li>Stated scope (dozens of files) → plan mode from the start.</li>
+            <li>Path-scoped rules for file types spread across directories.</li>
+            <li>Long sessions degrade: <code>/compact</code>, subagents, or a fresh session seeded with a summary.</li>
+        </ul>
+        <p style="margin-bottom:.3em"><strong>Traps it leans on</strong></p>
+        <div class="chips" style="margin-bottom:.8em"><a class="chip course" href="traps.html#t12">T12 Wrong config scope</a><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a><a class="chip pro" href="traps.html#t8">T8 Bigger window, same attention</a><a class="chip pro" href="traps.html#t11">T11 Stale context</a></div>
+        <p class="src">Task statements: <a href="domains.html#ts-3-1">3.1</a>, <a href="domains.html#ts-3-2">3.2</a>, <a href="domains.html#ts-3-3">3.3</a>, <a href="domains.html#ts-3-4">3.4</a>, <a href="domains.html#ts-3-5">3.5</a>, <a href="domains.html#ts-5-4">5.4</a></p>
+        <p style="margin:0"><a class="btn secondary" style="display:inline-block;text-decoration:none" href="practice.html?scenario=2">Practise this scenario (16 questions) →</a></p>
+      </article>
+      <article class="card" id="s3">
+        <p class="eyebrow" style="margin:0">Scenario 3 · domains D1, D2, D5</p>
+        <h3 style="margin:.2em 0 .5em">Multi-Agent Research System</h3>
+        <p>A coordinator delegating to search / analyze / synthesize / report subagents that produce cited reports.</p>
+        <p class="src"><strong>Architect question it asks most:</strong> Where does the work run? · 3 official sample questions in the guide</p>
+        <p style="margin-bottom:.3em"><strong>What it tests</strong></p>
+        <ul>
+            <li>Hub and spoke; subagents only know what the Task prompt passes them.</li>
+            <li>Coverage holes with every subagent succeeding → a decomposition problem.</li>
+            <li>Structured claim–source mappings with dates; report conflicts, don't resolve them silently.</li>
+            <li>Retry only the failed subagent; proceed with partials and annotate gaps.</li>
+        </ul>
+        <p style="margin-bottom:.3em"><strong>Traps it leans on</strong></p>
+        <div class="chips" style="margin-bottom:.8em"><a class="chip pro" href="traps.html#t7">T7 Assumed shared memory</a><a class="chip pro" href="traps.html#t10">T10 Lossy handoff</a><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a><a class="chip course" href="traps.html#t15">T15 Error conflation</a></div>
+        <p class="src">Task statements: <a href="domains.html#ts-1-1">1.1</a>, <a href="domains.html#ts-1-2">1.2</a>, <a href="domains.html#ts-1-3">1.3</a>, <a href="domains.html#ts-1-6">1.6</a>, <a href="domains.html#ts-1-7">1.7</a>, <a href="domains.html#ts-2-1">2.1</a>, <a href="domains.html#ts-2-2">2.2</a>, <a href="domains.html#ts-2-3">2.3</a>, <a href="domains.html#ts-5-1">5.1</a>, <a href="domains.html#ts-5-3">5.3</a>, <a href="domains.html#ts-5-4">5.4</a>, <a href="domains.html#ts-5-6">5.6</a></p>
+        <p style="margin:0"><a class="btn secondary" style="display:inline-block;text-decoration:none" href="practice.html?scenario=3">Practise this scenario (29 questions) →</a></p>
+      </article>
+      <article class="card" id="s4">
+        <p class="eyebrow" style="margin:0">Scenario 4 · domains D2, D3, D1</p>
+        <h3 style="margin:.2em 0 .5em">Developer Productivity with Claude</h3>
+        <p>Agent SDK tooling over built-in tools (Read, Write, Edit, Bash, Grep, Glob) plus MCP servers; legacy-codebase work.</p>
+        <p class="src"><strong>Architect question it asks most:</strong> What can it touch? · <strong>no official samples</strong>, so you're least likely to have seen its item shapes</p>
+        <p style="margin-bottom:.3em"><strong>What it tests</strong></p>
+        <ul>
+            <li>Grep for contents, Glob for names; explore incrementally, don't read everything.</li>
+            <li>Edit uses unique text; fall back to Read + Write.</li>
+            <li>Adaptive decomposition for open-ended legacy investigation.</li>
+            <li>Scoped tools per role; community MCP servers before custom ones.</li>
+        </ul>
+        <p style="margin-bottom:.3em"><strong>Traps it leans on</strong></p>
+        <div class="chips" style="margin-bottom:.8em"><a class="chip course" href="traps.html#t17">T17 Mismatched strategy</a><a class="chip course" href="traps.html#t13">T13 Invented feature</a><a class="chip course" href="traps.html#t18">T18 Tool sprawl</a><a class="chip course" href="traps.html#t16">T16 Over-engineering</a></div>
+        <p class="src">Task statements: <a href="domains.html#ts-1-1">1.1</a>, <a href="domains.html#ts-1-3">1.3</a>, <a href="domains.html#ts-1-6">1.6</a>, <a href="domains.html#ts-1-7">1.7</a>, <a href="domains.html#ts-2-1">2.1</a>, <a href="domains.html#ts-2-4">2.4</a>, <a href="domains.html#ts-2-5">2.5</a>, <a href="domains.html#ts-3-2">3.2</a>, <a href="domains.html#ts-3-3">3.3</a>, <a href="domains.html#ts-3-4">3.4</a>, <a href="domains.html#ts-3-5">3.5</a></p>
+        <p style="margin:0"><a class="btn secondary" style="display:inline-block;text-decoration:none" href="practice.html?scenario=4">Practise this scenario (29 questions) →</a></p>
+      </article>
+      <article class="card" id="s5">
+        <p class="eyebrow" style="margin:0">Scenario 5 · domains D3, D4</p>
+        <h3 style="margin:.2em 0 .5em">Claude Code for Continuous Integration</h3>
+        <p>Automated code review, test generation and PR feedback; actionable findings with minimal false positives.</p>
+        <p class="src"><strong>Architect question it asks most:</strong> Where does the work run? (every published sample) · 3 official sample questions in the guide</p>
+        <p style="margin-bottom:.3em"><strong>What it tests</strong></p>
+        <ul>
+            <li><code>-p</code> for non-interactive runs; <code>--output-format json</code> + <code>--json-schema</code>.</li>
+            <li>A fresh reviewer instance, never the session that wrote the code.</li>
+            <li>Explicit categorical criteria to cut false positives, not “be conservative”.</li>
+            <li>Include prior findings so re-reviews report only new issues.</li>
+        </ul>
+        <p style="margin-bottom:.3em"><strong>Traps it leans on</strong></p>
+        <div class="chips" style="margin-bottom:.8em"><a class="chip course" href="traps.html#t13">T13 Invented feature</a><a class="chip pro" href="traps.html#t9">T9 Self-review</a><a class="chip found" href="traps.html#t3">T3 Louder, not explicit</a><a class="chip pro" href="traps.html#t11">T11 Stale context</a></div>
+        <p class="src">Task statements: <a href="domains.html#ts-3-1">3.1</a>, <a href="domains.html#ts-3-6">3.6</a>, <a href="domains.html#ts-4-1">4.1</a>, <a href="domains.html#ts-4-2">4.2</a>, <a href="domains.html#ts-4-3">4.3</a>, <a href="domains.html#ts-4-4">4.4</a>, <a href="domains.html#ts-4-5">4.5</a>, <a href="domains.html#ts-4-6">4.6</a></p>
+        <p style="margin:0"><a class="btn secondary" style="display:inline-block;text-decoration:none" href="practice.html?scenario=5">Practise this scenario (21 questions) →</a></p>
+      </article>
+      <article class="card" id="s6">
+        <p class="eyebrow" style="margin:0">Scenario 6 · domains D4, D5</p>
+        <h3 style="margin:.2em 0 .5em">Structured Data Extraction</h3>
+        <p>Unstructured documents → JSON-schema-validated output; edge cases and downstream integration.</p>
+        <p class="src"><strong>Architect question it asks most:</strong> How is intent carried? · <strong>no official samples</strong>, so you're least likely to have seen its item shapes</p>
+        <p style="margin-bottom:.3em"><strong>What it tests</strong></p>
+        <ul>
+            <li>Tool use + a JSON schema; nullable fields to avoid fabrication.</li>
+            <li>Validation-feedback retries; stop when the data isn't in the source.</li>
+            <li>Batch for latency-tolerant volume, keyed by <code>custom_id</code>.</li>
+            <li>Validate by document type; stratified sampling; field-level calibrated confidence.</li>
+        </ul>
+        <p style="margin-bottom:.3em"><strong>Traps it leans on</strong></p>
+        <div class="chips" style="margin-bottom:.8em"><a class="chip found" href="traps.html#t6">T6 False assurance</a><a class="chip course" href="traps.html#t14">T14 Blind or blanket retry</a><a class="chip found" href="traps.html#t4">T4 Knob, not design</a><a class="chip found" href="traps.html#t5">T5 Unreliable proxy</a></div>
+        <p class="src">Task statements: <a href="domains.html#ts-4-2">4.2</a>, <a href="domains.html#ts-4-3">4.3</a>, <a href="domains.html#ts-4-4">4.4</a>, <a href="domains.html#ts-4-5">4.5</a>, <a href="domains.html#ts-5-5">5.5</a>, <a href="domains.html#ts-5-6">5.6</a></p>
+        <p style="margin:0"><a class="btn secondary" style="display:inline-block;text-decoration:none" href="practice.html?scenario=6">Practise this scenario (23 questions) →</a></p>
+      </article>
+  </div>
+  <div class="callout" style="margin-top:2rem">
+    <p><strong>Study tip:</strong> you can't know which four scenarios you'll get, so don't skip any of them. But the scenario tells you which domains are in play, and that narrows the traps to watch for.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-F Exam Traps</strong> · Independent study notes for Claude Certified Architect – Foundations (CCAR-F) · Not affiliated with Anthropic.</p>
+    <p>Sitting the Professional exam next? See <a href="../ccarp-traps/">CCAR-P Exam Traps</a>.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

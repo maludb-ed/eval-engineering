@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCAR-F Exam Traps</title>
+<meta name="description" content="Independent review notes for the Claude Certified Architect – Foundations (CCA-F) exam, organized around the wrong-answer patterns the exam is built on.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var t=JSON.parse(localStorage.getItem("ccarp-theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">⚑</span> CCAR-F Exam Traps</a>
+    <button class="icon-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html" aria-current="page">Start</a>
+      <a href="traps.html">Trap Families</a>
+      <a href="constraint-map.html">Constraint Map</a>
+      <a href="domains.html">Domains</a>
+      <a href="scenarios.html">Scenarios</a>
+      <a href="exam-day.html">Exam Day</a>
+      <a href="practice.html">Practice</a>
+    </nav>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <section class="page-intro">
+    <p class="eyebrow">Claude Certified Architect – Foundations · CCAR-F</p>
+    <h1>Advice can't promise “never”. Only a mechanism can.</h1>
+    <p class="lede">Foundations items describe a real production system, then offer four options that all sound sensible. Usually three of them are the same wrong answer in different clothes. These notes teach you to spot those wrong answers by shape and pick the mechanism the stem is asking for.</p>
+  </section>
+
+  <p class="eyebrow">Exam at a glance</p>
+  <div class="grid grid-4">
+    <div class="card stat"><div class="num">60</div><div class="lbl">items: multiple choice and multiple response</div></div>
+    <div class="card stat"><div class="num">120<small style="font-size:1rem"> min</small></div><div class="lbl">2 minutes per item; plan ~135 min of seat time</div></div>
+    <div class="card stat"><div class="num">720</div><div class="lbl">scaled pass mark (100–1,000 scale)</div></div>
+    <div class="card stat"><div class="num">4 <small style="font-size:1rem">of</small> 6</div><div class="lbl">published scenarios drawn at random. <a href="scenarios.html">Read all six</a></div></div>
+  </div>
+
+  <h2>Tool 1: every item asks one of four design questions</h2>
+  <p>Name which question you're in, and options that answer a different question drop off the page.</p>
+  <div class="grid grid-4">
+    <div class="card"><p class="eyebrow" style="margin-top:0">≈16 items · D1</p><h3 style="margin:.2em 0 .4em">Where does the work run?</h3><p class="src">One loop, a coordinator with subagents, or a headless CI run.</p></div>
+    <div class="card"><p class="eyebrow" style="margin-top:0">≈23 items · D2 + D3</p><h3 style="margin:.2em 0 .4em">What can it touch?</h3><p class="src">Tools, MCP servers, configuration, permissions: what it's allowed to do.</p></div>
+    <div class="card"><p class="eyebrow" style="margin-top:0">≈12 items · D4</p><h3 style="margin:.2em 0 .4em">How is intent carried?</h3><p class="src">Prompt structure, examples, schemas, and validation before anything downstream trusts the output.</p></div>
+    <div class="card"><p class="eyebrow" style="margin-top:0">≈9 items · D5</p><h3 style="margin:.2em 0 .4em">What survives?</h3><p class="src">What the system still knows an hour in, after a crash, and when it doesn't know.</p></div>
+  </div>
+
+  <h2>Tool 2: sort every option into two piles</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <p class="eyebrow" style="margin-top:0">Guidance: <em>asks</em></p>
+      <ul>
+        <li>A line in <code>CLAUDE.md</code> or another instruction file</li>
+        <li>A sentence in the system prompt, however firmly it's worded</li>
+        <li>Few-shot examples of the rule</li>
+        <li>A README note, a PR template, a team convention</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="eyebrow" style="margin-top:0">Guarantee: <em>stops</em></p>
+      <ul>
+        <li>A hook that blocks or rewrites the tool call</li>
+        <li>A prerequisite gate or permission rule that denies it</li>
+        <li>A schema the output must satisfy (tool use + JSON schema)</li>
+        <li>A forced <code>tool_choice</code>, or <code>allowed-tools</code> frontmatter</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">
+    <p class="mantra">When the stem says must, never, always or cannot, every guidance option is a distractor.</p>
+    <p>The difference isn't how strongly the words are written. It's whether anything actually stops when the words get ignored. A consequence can act as the absolute too: money moving to the wrong account is a claim about every future case, even when the stem never says “never”.</p>
+  </div>
+
+  <h2>The three reads, in order</h2>
+  <ol class="steps">
+    <li><h3>Read the last sentence of the stem first</h3><p>“Most effective <em>first step</em>”, “most likely <em>root cause</em>” and “most <em>maintainable</em>” are different questions, and the same system has a different right answer for each. Also check how many responses it wants.</p></li>
+    <li><h3>Name the design question, then look for an absolute</h3><p>If there's a <em>must / never / always / cannot</em>, it kills every option that only tells the system something. Only a mechanism in the path survives.</p></li>
+    <li><h3>No absolute? The stem already named the cause</h3><p>That's most items. Answer that cause at the size the evidence justifies. The cheap fix at the root beats extra machinery, and good engineering that answers a different question still loses.</p></li>
+  </ol>
+  <p class="src">Method adapted from Vivek Amilkanthawar's <a href="https://youtu.be/cLa3Qf9SUYs" rel="noopener">CCAR-F Full Course</a> (EP01, EP12, EP15).</p>
+
+  <h2>Study by weight</h2>
+  <p>Five domains, 30 task statements. <a href="domains.html">Open the domain notes →</a></p>
+  <div class="card">
+    <div class="bars">
+      <a class="bar-row" href="domains.html#d1"><span class="bar-label">D1 · Agentic Architecture &amp; Orchestration<small>Loops, subagents, hooks, decomposition, sessions</small></span><span class="bar-track"><span class="bar-fill" style="width:100%"></span></span><span class="bar-val">27%</span></a>
+      <a class="bar-row" href="domains.html#d3"><span class="bar-label">D3 · Claude Code Configuration &amp; Workflows<small>CLAUDE.md, commands, skills, rules, plan mode, CI</small></span><span class="bar-track"><span class="bar-fill" style="width:74%"></span></span><span class="bar-val">20%</span></a>
+      <a class="bar-row" href="domains.html#d4"><span class="bar-label">D4 · Prompt Engineering &amp; Structured Output<small>Criteria, few-shot, schemas, retries, batch, review</small></span><span class="bar-track"><span class="bar-fill" style="width:74%"></span></span><span class="bar-val">20%</span></a>
+      <a class="bar-row" href="domains.html#d2"><span class="bar-label">D2 · Tool Design &amp; MCP Integration<small>Descriptions, errors, tool_choice, .mcp.json, built-ins</small></span><span class="bar-track"><span class="bar-fill" style="width:66.7%"></span></span><span class="bar-val">18%</span></a>
+      <a class="bar-row" href="domains.html#d5"><span class="bar-label">D5 · Context Management &amp; Reliability<small>Case facts, escalation, errors, provenance</small></span><span class="bar-track"><span class="bar-fill" style="width:55.6%"></span></span><span class="bar-val">15%</span></a>
+    </div>
+  </div>
+  <div class="callout warn">
+    <p><strong>Don't leave D5 for last.</strong> It carries the smallest weight, but it's a primary domain in four of the six scenarios, so no draw avoids it.</p>
+  </div>
+
+  <h2>Your study path</h2>
+  <p>Tick steps off as you go. Progress is saved in this browser only.</p>
+  <div class="progress-line" aria-hidden="true"><span data-progress-bar></span></div>
+  <p class="src" data-progress-label>0 steps done</p>
+  <ul class="checklist" data-checklist="ccarf-progress">
+    <li><label><input type="checkbox" value="traps"><span><strong>Learn the 18 trap families</strong> and the three shapes of a wrong option. <a href="traps.html">Trap Families</a></span></label></li>
+    <li><label><input type="checkbox" value="scenarios"><span><strong>Read all six scenarios</strong> at your desk, before the clock is running. <a href="scenarios.html">Scenarios</a></span></label></li>
+    <li><label><input type="checkbox" value="map"><span><strong>Memorize the constraint map:</strong> stem clue → mechanism. <a href="constraint-map.html">Constraint Map</a></span></label></li>
+    <li><label><input type="checkbox" value="d1"><span><strong>D1 Agentic Architecture (27%).</strong> 7 task statements. <a href="domains.html#d1">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d3"><span><strong>D3 Claude Code Configuration (20%).</strong> 6 task statements. <a href="domains.html#d3">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d4"><span><strong>D4 Prompting &amp; Structured Output (20%).</strong> 6 task statements. <a href="domains.html#d4">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d2"><span><strong>D2 Tool Design &amp; MCP (18%).</strong> 5 task statements. <a href="domains.html#d2">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="d5"><span><strong>D5 Context &amp; Reliability (15%).</strong> 6 task statements. <a href="domains.html#d5">Notes</a></span></label></li>
+    <li><label><input type="checkbox" value="practice"><span><strong>Drill the 150-question bank</strong> by domain and scenario until your weakest topics stop repeating. <a href="practice.html">Practice</a></span></label></li>
+    <li><label><input type="checkbox" value="mock"><span><strong>Sit a timed 60-question mock</strong> using the two-pass plan. <a href="practice.html">Mock exam</a></span></label></li>
+    <li><label><input type="checkbox" value="examday"><span><strong>Rehearse exam day:</strong> logistics, pacing, out-of-scope filter. <a href="exam-day.html">Exam Day</a></span></label></li>
+  </ul>
+
+  <h2>About these notes</h2>
+  <div class="card">
+    <p>These notes draw on three sources:</p>
+    <ul>
+      <li>The official <strong>Claude Certified Architect – Foundations Exam Guide v1.0</strong> (effective July 2026), linked from the <a href="https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification" rel="noopener">Anthropic Partner Academy</a>. Exam facts, domains, weights and scenarios were checked against it on 2026-09-26.</li>
+      <li>The open-source <a href="https://github.com/maludb/learn-claude" rel="noopener">learn-claude</a> study plugin (MIT). The domain notes and the 150-question practice bank are adapted from it.</li>
+      <li>Vivek Amilkanthawar's free <a href="https://youtu.be/cLa3Qf9SUYs" rel="noopener">CCAR-F Full Course: All 16 Lessons</a>, which supplied the four design questions, the reading method and the three distractor shapes.</li>
+    </ul>
+    <p>The exam was called <strong>CCA-F</strong> until July 2026. Some prep material still uses that name. Trap-family names are study-aid labels, not Anthropic terminology. Every practice question is original; none are real or leaked exam items.</p>
+    <p class="src">This is independent study material. It is not affiliated with or endorsed by Anthropic. Always check the official certification page for current exam details.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>CCAR-F Exam Traps</strong> · Independent study notes for Claude Certified Architect – Foundations (CCAR-F) · Not affiliated with Anthropic.</p>
+    <p>Sitting the Professional exam next? See <a href="../ccarp-traps/">CCAR-P Exam Traps</a>.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
